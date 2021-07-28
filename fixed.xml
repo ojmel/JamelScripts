@@ -1,0 +1,30 @@
+<ROSETTASCRIPTS>
+    <TASKOPERATIONS>
+    </TASKOPERATIONS>
+    <SCOREFXNS>
+        <ScoreFunction name="stage1" weights="/sfs/lustre/bahamut/scratch/jws6pq/CMfiles/stage1.wts" symmetric="1">
+            <Reweight scoretype="atom_pair_constraint" weight="1"/>
+        </ScoreFunction>
+        <ScoreFunction name="stage2" weights="/sfs/lustre/bahamut/scratch/jws6pq/CMfiles/stage2.wts" symmetric="1">
+            <Reweight scoretype="atom_pair_constraint" weight="0.5"/>
+        </ScoreFunction>
+        <ScoreFunction name="fullatom" weights="/sfs/lustre/bahamut/scratch/jws6pq/CMfiles/stage3.wts" symmetric="1">
+            <Reweight scoretype="atom_pair_constraint" weight="0.5"/>
+        </ScoreFunction>
+    </SCOREFXNS>
+    <FILTERS>
+    </FILTERS>
+    <MOVERS>
+        <Hybridize name="hybridize" stage1_scorefxn="stage1" stage2_scorefxn="stage2" fa_scorefxn="fullatom" batch="1" stage1_increase_cycles="1.0" stage2_increase_cycles="1.0" linmin_only="1">
+            <Fragments three_mers="MERSfrags.200.3mers" nine_mers="MERSfrags.200.9mers"/>
+            <Template pdb="MERSonSARS2.pdb" cst_file="AUTO" weight="1.000" symmdef="/sfs/lustre/bahamut/scratch/jws6pq/CMfiles/SARS2.symm"/>
+            <Template pdb="MERSonSARS.pdb" cst_file="AUTO" weight="1.000" symmdef="/sfs/lustre/bahamut/scratch/jws6pq/CMfiles/SARS.symm"/>
+            <Template pdb="MERSonMERS.pdb" cst_file="AUTO" weight="1.000" symmdef="/sfs/lustre/bahamut/scratch/jws6pq/CMfiles/MERS.symm"/>
+        </Hybridize>
+    </MOVERS>
+    <APPLY_TO_POSE>
+    </APPLY_TO_POSE>
+    <PROTOCOLS>
+        <Add mover="hybridize"/>
+    </PROTOCOLS>
+</ROSETTASCRIPTS>
