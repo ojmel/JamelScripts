@@ -3,13 +3,13 @@
 #SBATCH --gres=gpu:v100:2    # number of GPUs
 #SBATCH -N 1            # number of nodes
 #SBATCH -c 16            # number of cores
-#SBATCH -t 20:00:00     # time
+#SBATCH -t 50:00:00     # time
 
 # IMPORTANT
 # run this with input FASTA and output full paths as $1 and $2
 export FASTA=$1
 export ALPHA_OUT=$2
-export MODEL_NAMES=$Poop
+export MODEL_NAMES=model_1
 # use preset = full_dbs or casp14
 export MODE=full_dbs
 

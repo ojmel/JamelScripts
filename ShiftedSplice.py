@@ -1,17 +1,16 @@
 import numpy as np
-
-file=open('SARS.fasta',"r")
-file2=open('MurineA59.fasta',"r")
+file=open('SARS2.fasta',"r")
+file2=open('MERS.fasta',"r")
 Fasta1=file.readlines()
 Fasta2=file2.readlines()
+#Default is 319
+FirstSplice=309
+#Sefault is 541
+SecondSplice=541
 Protein1=file.name.replace('.fasta','')
 Protein2=file2.name.replace('.fasta','')
-Title=Protein1+'w'+Protein2+'RBD.fasta'
-Title2=Protein2+'w'+Protein1+'RBD.fasta'
-#Default is 331
-FirstSplice=319
-#Sefault is 524
-SecondSplice=541
+Title=Protein1+'w'+Protein2+'_10AALeftShiftRBD.fasta'
+Title2=Protein2+'w'+Protein1+'_10AALeftShiftRBD.fasta'
 Sequence1=''
 Sequence2=''
 for i in range(len(Fasta1)-1):
@@ -21,8 +20,6 @@ for i in range(len(Fasta2)-1):
 Seqlength=len(Sequence1)
 Seqlength2=len(Sequence2)
 Sections=np.empty((3,2), dtype=object)
-print(Sequence1)
-print(Sequence2)
 Sections[0,0]=''
 Sections[1,0]=''
 Sections[2,0]=''

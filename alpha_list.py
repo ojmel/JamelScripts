@@ -13,14 +13,14 @@ def run_alpha(seqfile, outputdir):
   Args:
     seqfile: full path to FASTA file
     outputdir:  full path for output directory."""
-  os.system('/scratch/jws6pq/Notebook/Finished/alpha_run.sh %s %s' % (seqfile, outputdir))
+  os.system('/sfs/lustre/bahamut/scratch/jws6pq/CMfiles/alpha_run.sh %s %s' % (seqfile, outputdir))
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
-  parser.add_argument('-s', help='tab-separated list of sequence files',
+  parser.add_argument('-s', help='comma-separated list of sequence files',
                      type=str)
   parser.add_argument('-o', help='output directory', type=str)
   args = parser.parse_args()
-  seqlist = args.s.split('\n')
+  seqlist = args.s.split(',')
   for seq in seqlist:
     run_alpha(os.path.abspath(seq), os.path.abspath(args.o))
