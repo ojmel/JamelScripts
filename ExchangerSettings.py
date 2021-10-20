@@ -6,5 +6,5 @@ import RBDExchanger
 AlphaFoldEntry=''
 for line in list:
    FastaExchangeInputs['Fastafile2']=line.rstrip()+'.fasta'
-   AlphaFoldEntry+=(RBDExchanger.RBDExchange(FastaExchangeInputs['Fastafile1'],FastaExchangeInputs['Fastafile2'],FastaExchangeInputs['Boundary1'],FastaExchangeInputs['Boundary2']))
+   AlphaFoldEntry+=(RBDExchanger.RBDExchange(FastaExchangeInputs['Fastafile1'],FastaExchangeInputs['Fastafile2'],FastaExchangeInputs['Boundary1'],FastaExchangeInputs['Boundary2'])) + ','
 print(AlphaFoldEntry)
