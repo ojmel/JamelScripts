@@ -71,4 +71,4 @@ def RBDExchange(Fastafile1,Fastafile2,Boundary1,Boundary2):
     np.savetxt('EverythingProteinList.tsv', ProteinList, fmt="%s", delimiter=" ")
     AlphaFoldEntry=''
     AlphaFoldEntry+= "/scratch/jws6pq/Notebook/Finished/" + Title +',' + "/scratch/jws6pq/Notebook/Finished/" + Fastafile2
-    print(AlphaFoldEntry)
+    return AlphaFoldEntry
