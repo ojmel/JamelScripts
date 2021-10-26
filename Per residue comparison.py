@@ -2,7 +2,7 @@ import math
 import numpy as np
 
 k=1
-file5=open('SARS2-Caninef15LeftProteinList.tsv','r')
+file5=open('RandomProteinList.tsv','r')
 Title='E:\Research\\' + file5.name.replace('ProteinList.tsv', 'PercentDifference.tsv')
 Title2='E:\Research\\' + file5.name.replace('ProteinList.tsv', 'RBDPercentDifference.tsv')
 ProteinList=file5.readlines()

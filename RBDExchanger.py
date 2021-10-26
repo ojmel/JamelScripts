@@ -62,13 +62,16 @@ def RBDExchange(Fastafile1,Fastafile2,Boundary1,Boundary2):
     np.savetxt(Path2,NewSequence2,fmt="%s",delimiter=" ")
     ProteinList[m,0]=Protein1 + '.plddt'
     ProteinList[m+1,0] =Protein2 + '.plddt'
-    ProteinList[m+2,0] = 'E:\Plddt\\' +Protein1 +'w'+Protein2+ '_'+'TruncS1.plddt'
-    ProteinList[m+3,0] = 'E:\Plddt\\' +Protein2+'w'+Protein1+ '_'+'TruncS1.plddt'
+    ProteinList[m+2,0] = 'E:\Plddt\\' +Protein1 +'w'+Protein2+ '_'+'RBD.plddt'
+    ProteinList[m+3,0] = 'E:\Plddt\\' +Protein2+'w'+Protein1+ '_'+'RBD.plddt'
     ProteinList[m, 1]  = ProteinList[m+2,1]=len(Sections[0,0])
     ProteinList[m+1, 1] = ProteinList[m + 3, 1] =len(Sections[0, 1])
     ProteinList[m, 2] =ProteinList[m+3,2]=len(Sections[1, 0])
     ProteinList[m + 2, 2] =ProteinList[m+1,2]=len(Sections[1, 1])
+    print(Sections[1,0])
+    print(Sections[1,1])
     np.savetxt('EverythingProteinList.tsv', ProteinList, fmt="%s", delimiter=" ")
     AlphaFoldEntry=''
     AlphaFoldEntry+= "/scratch/jws6pq/Notebook/Finished/" + Title +',' + "/scratch/jws6pq/Notebook/Finished/" + Fastafile2
-    return AlphaFoldEntry
+    #return AlphaFoldEntry
+    return ProteinList
