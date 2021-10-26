@@ -1,6 +1,6 @@
 import numpy as np
 
-FastaExchangeInputs={"Fastafile1":'FullSARS2.fasta','Fastafile2':'SARS2.fasta','Boundary1':319,'Boundary2':541,"Fastalist":'poop'}
+FastaExchangeInputs={"Fastafile1":'FullSARS2.fasta','Fastafile2':'SARS2.fasta','Boundary1':319,'Boundary2':541,"Fastalist":''}
 file3 = open(FastaExchangeInputs['Fastalist'], "r")
 list=file3.readlines()
 import RBDExchanger
