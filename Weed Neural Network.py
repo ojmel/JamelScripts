@@ -9,13 +9,17 @@ i=0
 TrainingSize=20
 hiddenlayernodes=4
 input=VotingData[0:TrainingSize,(1,2,3)]
+input[:,1]/=1000000
 weights1= np.random.rand(input.shape[1],hiddenlayernodes)
 weights2   = np.random.rand(hiddenlayernodes,1)
 Answers=VotingData[0:TrainingSize,-1]
 output= np.zeros((VotingData.shape))
-layer1 = expit(np.dot(input, weights1))
-output = expit(np.dot(layer1, weights2))
-d_weights2 = np.dot((2*(Answers - output.T) * (output.T*(1-output.T))), layer1)
+layer1 = expit(np.matmul(input, weights1))
+output = expit(np.matmul(layer1, weights2))
+print((2*(Answers - output.T)).shape,(output.T*(1-output.T)).shape,layer1.shape,weights2.shape)
+np.matmul((2*(Answers - output.T)), (output.T*(1-output.T)))
+# d_weights2 = np.matmul(np.matmul(((2*(Answers - output.T)), (output.T*(1-output.T)))), layer1)
+print(weights2,d_weights2)
 dC_da=np.dot(weights2, 2*(Answers - output.T) * ((output.T*(1-output.T))) )* (layer1.T*(1-layer1.T))
 d_weights1 = np.dot(input.T, dC_da.T)
 
@@ -27,5 +31,5 @@ y=VotingData[0:,-1]
 output= np.zeros((1,51))
 layer1 = expit(np.dot(input, weights1))
 output = expit(np.dot(layer1, weights2))
-print(y-output.T)
-print(output)
+# print(y-output.T)
+# print(output)
