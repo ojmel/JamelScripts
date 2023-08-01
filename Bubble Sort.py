@@ -11,4 +11,3 @@ def bubble_sort(list_of_nums):
                 list_of_nums[index]=reverse[0]
                 list_of_nums[index+1] = reverse[1]
     print(list_of_nums)
-for 
