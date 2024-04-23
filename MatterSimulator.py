@@ -8,8 +8,28 @@ import kdtree
 #TODO make molecular dynamics
 # make pool game
 # make slider and simulation gas, liquid, solid by temperature
-pygame.init()
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GRAY = (200, 200, 200)
+
+# Pygame window setup
 width, height = 880, 625
+# Slider parameters
+slider_bg_width = width / 4
+slider_bg_height = slider_bg_width / 4
+slider_bg_x = (width - slider_bg_width)
+slider_bg_y = 0
+slider_bg_color = WHITE
+
+slider_width = slider_bg_width / 15
+slider_height = slider_bg_height / 2
+slider_x = slider_bg_x+slider_width
+slider_y = slider_bg_height //2 - slider_height//2
+slider_color = BLACK
+
+slider_pressed = False
+pygame.init()
+
 screen_size=(width, height)
 screen = pygame.display.set_mode(screen_size)
 pygame.display.set_caption("Draggable Turtle")
@@ -92,7 +112,8 @@ class Ball:
             # flipping and potentially lowering velocity when hitting the side walls
             if self.pos[0] >= self.upper_boundaries[0] or self.pos[0] <= self.lower_boundaries[0]:
                 self.velocity[0] *= -self.collision_damp
-            # keeping ball from experiencing gravity when it has no velocity and is on the floor by turning the addition of a gravity vector off with energy attribute
+            # keeping ball from experiencing gravity when it has no velocity and is on the floor by turning the
+            # addition of a gravity vector off with energy attribute
             if self.pos[1] >= self.upper_boundaries[1] and abs(self.velocity[1]) <= self.gravity[1]:
                 self.energy = False
                 self.velocity[1] = 0
@@ -115,6 +136,15 @@ def make_balls(num_of_balls, radius_range, collision_damp, screen_size,gravity=0
                           (0, gravity), (randint(0, screen_size[0]), randint(0, screen_size[1]))))
     return balls
 
+def line_color_gradient(rgb1,rgb2,x_bounds, y_bounds):
+    rgb1=(0,0,0)
+    rgb2=(255,255,255)
+    x_range=range(x_bounds[1]-x_bounds[0])
+
+    line_segments=[]
+    for x in x_range:
+        line_segments.append(pygame.draw.rect(screen, (), (slider_x, slider_y, slider_width, slider_height)))
+
 
 balls = make_balls(10, (5,80), 1, (width, height))
 ball_tree=kdtree.kdtree((0,width),(0,height),balls,10)
@@ -126,33 +156,37 @@ while True:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:  # Left mouse button
-                for ball in balls:
-                    # creates bounding box to detect mouse click on ball
-                    turtle_rect = pygame.Rect(ball.pos[0] - ball.diameter / 2, ball.pos[1] - ball.diameter / 2,
-                                              ball.diameter, ball.diameter)
-                    if turtle_rect.collidepoint(event.pos):
-                        # switches an attribute so that the ball will follow the mouse while held down
-                        ball.dragging = True
+            if slider_bg_x <= event.pos[0] <= slider_bg_x +slider_bg_width and slider_bg_y <= event.pos[1] <= slider_bg_y + slider_bg_height:
+                slider_pressed = True
         elif event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 1:
-                for ball in balls:
-                    # ball is not subject to gravity again
-                    ball.dragging = False
+            slider_pressed = False
+        print(slider_pressed)
 
-    screen.fill((255, 255, 255))
+    if slider_pressed:
+        x,_ = pygame.mouse.get_pos()
+        # Constrain the slider's y-coordinate within its range
+        slider_x = np.clip(x,slider_bg_x+slider_width,slider_bg_x +slider_bg_width - slider_width*2)
+
+    screen.fill(BLACK)
+
+    # Draw slider background
+    pygame.draw.rect(screen, slider_bg_color, (slider_bg_x, slider_bg_y, slider_bg_width, slider_bg_height))
+
+    # Draw slider knob
+    pygame.draw.rect(screen, slider_color, (slider_x, slider_y, slider_width, slider_height))
+
     # draws a space partition tree to be used every frame
-    ball_tree = kdtree.kdtree((0, width), (0, height), balls, 10)
-    ball_tree.sort_objects()
-
-    for ball in balls:
-        ball.check_collision(ball_tree.create_quadrant_search(ball.radius*4,ball))
-        ball.previous_pos = ball.pos
-        pygame.draw.circle(screen, ball.color, ball.pos, ball.radius)
+    # ball_tree = kdtree.kdtree((0, width), (0, height), balls, 10)
+    # ball_tree.sort_objects()
+    #
+    # for ball in balls:
+    #     ball.check_collision(ball_tree.create_quadrant_search(ball.radius*4,ball))
+    #     ball.previous_pos = ball.pos
+    #     pygame.draw.circle(screen, ball.color, ball.pos, ball.radius)
     # for quadrant in ball_tree.master_list:
     #     quadrant.draw_boundaries(screen,pygame)
     # clears quadrant master list for memory
-    ball_tree.master_list.clear()
+    # ball_tree.master_list.clear()
     # Update the display
     pygame.display.flip()
 
