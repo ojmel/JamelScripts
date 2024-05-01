@@ -5,4 +5,7 @@ tcga=pd.read_csv('tcga_hpv_feature_matrix.csv')
 # square and sum
 #components of eigenvector for pc1 is loading score
 #average ofsum of squares is eigenvalue or variation
-#pc2 is perpendicular to pc1
+#pc2 is perpendicular to
+tcga=tcga.drop(columns=['patient','Unnamed: 0','hpv_status'])
+print(tcga)
+print(tcga @ tcga.transpose())
