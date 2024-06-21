@@ -5,17 +5,20 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-jam_cred='token.json'
-virg_cred='virg_token.json'
+# go to google cloud console and download client secret rename it credentials.json then run
+jam_cred = 'token.json'
+virg_cred = 'virg_token.json'
 # If modifying these scopes, delete the file token.json.
-SCOPES = ['https://mail.google.com/','https://www.googleapis.com/auth/drive']
-user_token=virg_cred
+SCOPES = ['https://mail.google.com/', 'https://www.googleapis.com/auth/drive',
+          "https://www.googleapis.com/auth/youtube.force-ssl"]
+user_token = jam_cred
 if os.path.exists(user_token):
     CREDS = Credentials.from_authorized_user_file(user_token, SCOPES)
-GMAIL_SERVICE = build("gmail", "v1", credentials=CREDS)
-GDRIVE_SERVICE=build("drive", "v3", credentials=CREDS)
+
 MAXIMUM = 500
-def main():
+
+
+def authenticate():
     """Shows basic usage of the Gmail API.
   Lists the user's Gmail labels.
   """
@@ -37,12 +40,12 @@ def main():
         # Save the credentials for the next run
         with open(user_token, "w") as token:
             token.write(creds.to_json())
-main()
 
-def search_emails(query, labels=None):
+
+def search_emails(query, gmail_service, labels=None):
     email_messages = []
     next_page_token = None
-    message_response = GMAIL_SERVICE.users().messages().list(
+    message_response = gmail_service.users().messages().list(
         userId='me',
         labelIds=labels,
         includeSpamTrash=True,
@@ -53,7 +56,7 @@ def search_emails(query, labels=None):
     next_page_token = message_response.get('nextPageToken')
 
     while next_page_token:
-        message_response = GMAIL_SERVICE.users().messages().list(
+        message_response = gmail_service.users().messages().list(
             userId='me',
             labelIds=labels,
             q=query,
@@ -67,15 +70,18 @@ def search_emails(query, labels=None):
         time.sleep(0.5)
     return email_messages
 
-def delete_emails(email_results):
+
+def delete_emails(email_results, gmail_service):
     count = 0
     for email_result in email_results:
         count += 1
         print(count)
-        GMAIL_SERVICE.users().messages().delete(
+        gmail_service.users().messages().delete(
             userId='me',
             id=email_result['id']
         ).execute()
+
+
 def find_and_delete(queries):
     for query in queries:
         email_results = search_emails(query)
@@ -84,13 +90,11 @@ def find_and_delete(queries):
             delete_emails(email_results)
         else:
             print('all gone')
-keywords=['gbs','plus']
-queries = [f"older_than:2m AND {x} -from:kasson@gmail.com" for x in keywords]
-find_and_delete(queries)
 
-def list_gdrive_file_size():
+
+def list_gdrive_file_size(gdrive_service):
     results = (
-        GDRIVE_SERVICE.files()
+        gdrive_service.files()
         .list(pageSize=500, fields="nextPageToken, files(size, name,id)")
         .execute()
     )
@@ -101,5 +105,69 @@ def list_gdrive_file_size():
         return
     print("Files:")
     for item in items:
-        if 'size' in item and int(item['size'])/1000000>1:
-            print(f"{item['name']} {int(item['size'])/1000000}M")
+        if 'size' in item and int(item['size']) / 1000000 > 1:
+            print(f"{item['name']} {int(item['size']) / 1000000}M")
+
+def delete_video_from_playlist(youtube, playlist_item_id):
+    try:
+        youtube.playlistItems().delete(id=playlist_item_id).execute()
+        print(f"Deleted playlist item: {playlist_item_id}")
+    except Exception as e:
+        print(e)
+def empty_playlist(youtube, playlist_title):
+    request = youtube.playlistItems().list(
+        part="id,snippet",
+        maxResults=50,
+        playlistId=get_playlist_id(youtube,playlist_title)
+    )
+    response = request.execute()
+
+    for item in response["items"]:
+        delete_video_from_playlist(youtube, item['id'])
+
+    # print("Video not found in playlist")
+def list_playlist_vids(youtube, playlist_id):
+    request = youtube.playlistItems().list(
+        part="id,snippet",
+        maxResults=50,
+        playlistId=playlist_id
+    )
+    response = request.execute()
+    # return response['items']
+    return tuple(f"https://www.youtube.com/watch?v={item['snippet']['resourceId']['videoId']}" for item in response['items'])
+def get_playlist_id(youtube,playlist_title):
+    request = youtube.playlists().list(
+        part="snippet,contentDetails",
+        mine=True,
+        maxResults=25
+    )
+    response = request.execute()
+    for item in response["items"]:
+        if item['snippet']['title']==playlist_title:
+            return item['id']
+
+def get_playlist_url(youtube,playlist_title):
+    request = youtube.playlists().list(
+        part="snippet,contentDetails",
+        mine=True,
+        maxResults=25
+    )
+    response = request.execute()
+    for item in response["items"]:
+        if item['snippet']['title'] == playlist_title:
+            return f"https://youtube.com/playlist?list={item['id']}"
+
+def main():
+    authenticate()
+    GMAIL_SERVICE = build("gmail", "v1", credentials=CREDS)
+    GDRIVE_SERVICE = build("drive", "v3", credentials=CREDS)
+    YOUTUBE = build("youtube", "v3", credentials=CREDS)
+
+    return [GMAIL_SERVICE,GDRIVE_SERVICE,YOUTUBE]
+    # keywords = ['gbs', 'plus']
+    # queries = [f"older_than:2m AND {x} -from:kasson@gmail.com" for x in keywords]
+    # find_and_delete(queries)
+
+
+if __name__ == '__main__':
+    main()
