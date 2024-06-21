@@ -28,11 +28,18 @@ DOWNLOAD_PLAYLIST='Blick'
 COM_PATH = r"C:\Youtube"
 PHONE_PATH="/storage/emulated/0/Youtube"
 
+def progress_function(stream, chunk, bytes_remaining):
+    total_size = stream.filesize
+    bytes_downloaded = total_size - bytes_remaining
+    percentage_of_completion = bytes_downloaded / total_size * 100
+    print(f'Download Progress: {percentage_of_completion:.2f}%')
 
+def complete_function(stream, file_path):
+    print(f'Download Complete! File saved to {file_path}')
 def download_video(link:str):
     try:
         # object creation using YouTube
-        yt = pytube.YouTube(link)
+        yt = pytube.YouTube(link,on_progress_callback=progress_function,on_complete_callback=complete_function)
         mp4_streams = yt.streams.filter(file_extension='mp4', type='video', progressive=True).order_by(
             'resolution').desc()
         mp4_streams=[stream for stream in mp4_streams if (stream.filesize/1_000_000_000)<=1]
