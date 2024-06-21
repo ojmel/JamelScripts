@@ -53,7 +53,7 @@ if __name__ == '__main__':
     playlist_url=gmail.get_playlist_url(youtube,DOWNLOAD_PLAYLIST)
     download_playlist(playlist_url)
     return_check=0
-    for file in [os.path.join(COM_PATH,file) for file in os.listdir(COM_PATH)]:
-        return_check+=transfer_file_to_device(file,PHONE_PATH)
-    if return_check==0:
-        gmail.empty_playlist(youtube, DOWNLOAD_PLAYLIST)
+    # for file in [os.path.join(COM_PATH,file) for file in os.listdir(COM_PATH)]:
+        # return_check+=transfer_file_to_device(file,PHONE_PATH,False)
+    # if return_check==0:
+    #     gmail.empty_playlist(youtube, DOWNLOAD_PLAYLIST)
