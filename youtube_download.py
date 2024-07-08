@@ -2,7 +2,6 @@ import pytube
 import subprocess
 import os
 import concurrent.futures
-import multiprocessing
 import gmail
 # download tools from here https://developer.android.com/tools/releases/platform-tools
 # then windows+x > system > advanced system > Environment variables > system vairables> edit PATH to include platformtoolslatest\platformtools pth
