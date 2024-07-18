@@ -7,6 +7,7 @@ from numpy import mean
 from MLB.mlb_database import insert_game, create_db_connection, logon_dict, get_table_column
 
 
+
 def get_game_ids(date):
     schedule = statsapi.schedule(start_date=date, end_date=date)
     game_ids = [game['game_id'] for game in schedule]
