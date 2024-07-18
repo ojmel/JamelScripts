@@ -6,9 +6,6 @@ import mlb_pred_v2
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-from sklearn import metrics
-from sklearn.metrics import classification_report
-import matplotlib.pyplot as plt
 
 #i can combine regression and NN
 MLB_MODEL=r'C:\Users\jamel\PycharmProjects\JamelScripts\MLB\mlb_predictor.pkl'

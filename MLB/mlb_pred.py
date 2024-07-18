@@ -9,7 +9,7 @@ import statsapi
 from concurrent.futures import ThreadPoolExecutor
 from enum import Enum
 import mlb_database
-
+#pip install html-to-json
 
 class Team(Enum):
     away = 0
