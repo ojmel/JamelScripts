@@ -1,10 +1,22 @@
 from yahoofinancials import YahooFinancials as yl
 import yfinance as yf
 import pandas as pd
-SoI=open('StocksofInterest','r').readlines()
-# print(SoI[0]+SoI[1])
-# print(yl(SoI[0:2]).get_stock_earnings_data())
-# print(yf.Ticker('SMTC').earnings_dates['EPS Estimate'])
-# SoI=[yf.Ticker(x) for x in SoI[0:2]]
-# print(type(yf.Ticker('STRR').calendar))
-yf.Ticker('STRR').calendar.to_csv('STRRearnings.csv')
+def finance_vs_MC(ticker:str):
+
+    ticker=yf.Ticker(ticker)
+    revenue=ticker.financials.loc['Total Revenue'][0]
+    income=ticker.financials.loc['Net Income'][0]
+    assets=ticker.balance_sheet.loc['Total Assets'][0]
+    liabilities=ticker.balance_sheet.loc['Total Liabilities Net Minority Interest'][0]
+    market_cap=ticker.fast_info['marketCap']
+    # formula
+    # AnnualRevenue+(Assets-Liabilities)
+    revenue_value=revenue+(assets-liabilities)
+    # formula
+    # AnnualIncome+(Assets-Liabilities)
+    income_value = income + (assets - liabilities)
+    return revenue_value/market_cap,income_value/market_cap
+if __name__=='__main__':
+    potentials=('ROCK','LEN','CCS','GRBK','HZO','NX','HOLI')
+    for tick in potentials:
+        print(tick,finance_vs_MC(tick))
