@@ -8,6 +8,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="yt 2.0">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Stock Algo.py" beforeDir="false" afterPath="$PROJECT_DIR$/Stock Algo.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,7 +102,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-5b207ade9991-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.17890.14" />
+        <option value="bundled-python-sdk-0509580d9d50-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.14494.241" />
       </set>
     </attachedChunks>
   </component>
@@ -135,6 +136,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="yt 2.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="yt 2.0" />
+    <MESSAGE value="yt" />
+    <option name="LAST_COMMIT_MESSAGE" value="yt" />
   </component>
 </project>
