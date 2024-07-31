@@ -3,7 +3,7 @@ from mysql.connector import Error
 import pandas as pd
 from json import load
 # pip install mysql-connector-python
-CREDENTIALS_JSON=r'C:\Users\jamel\PycharmProjects\JamelScripts\sql.json'
+CREDENTIALS_JSON=r'sql.json'
 with open(CREDENTIALS_JSON, 'rb') as jfile:
     logon_dict: dict = load(jfile)
 def create_server_connection(host_name, user_name, user_password):
