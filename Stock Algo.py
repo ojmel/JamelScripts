@@ -95,7 +95,7 @@ class TabbedWindow(QTabWidget):
             }
         """)
 
-        self.addTab(tab, title)
+        self.addTab(tab, title)f
         # widget.returnPressed.connect(self.return_pressed)
 
     def create_submission_tab(self):
