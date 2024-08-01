@@ -76,37 +76,81 @@ def get_previous_moves():
 class TabbedWindow(QTabWidget):
     def __init__(self, window_title:str, shape: tuple[int] = (800, 800)):
         super().__init__()
-        self.button = None
-        self.line_edit = None
+        self.button = QPushButton('Submit')
+        self.line_edit=QLineEdit()
         self.setWindowTitle(window_title)
         self.setGeometry(0, 0, *shape)
         self.setTabsClosable(True)
         self.tabCloseRequested.connect(self.close_tab)
-        # self.setCentralWidget(self.tab_widget)
-    def create_tab(self,layout,title:str='poop',):
+        self.create_submission_tab()
+        self.show()
+
+    def create_tab(self,layout,title:str='poop'):
         tab = QWidget()
         tab.setLayout(layout)
+        print('here')
+        tab.setStyleSheet("""
+            QWidget {
+                background-color: #87CEEB;  /* Light sky blue */
+            }
+        """)
+
         self.addTab(tab, title)
         # widget.returnPressed.connect(self.return_pressed)
+
     def create_submission_tab(self):
         tab_layout = QVBoxLayout()
-        label=QLabel('Ticker of Interest')
-        label.setFixedSize(200,200)
-        # label.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding)
-        # label.setAlignment(Qt.AlignHCenter)
+        tab_layout.setAlignment(Qt.AlignCenter)
+        tab_layout.setContentsMargins(0, 0, 0, 0)
+        tab_layout.setSpacing(0)
 
-        tab_layout.addWidget(label)
+
+        label=QLabel('Ticker of Interest')
         label.adjustSize()
-        self.line_edit=QLineEdit()
+        tab_layout.addWidget(label, alignment=Qt.AlignHCenter)
+
+
         self.line_edit.setPlaceholderText('Enter Ticker')
-        tab_layout.addWidget(self.line_edit)
-        self.button = QPushButton('Submit')
-        tab_layout.addWidget(self.button)
+        self.line_edit.setStyleSheet("""
+                    QLineEdit {
+                        background-color: #FFFFFF;  /* White background for full opacity */
+                        border: 1px solid #CCCCCC;  /* Light gray border */
+                        padding: 5px;               /* Padding inside the line edit */
+                    }
+                """)
+        tab_layout.addWidget(self.line_edit, alignment=Qt.AlignHCenter)
+
+
+        self.button.clicked.connect(self.create_ticker_tab)
+        tab_layout.addWidget(self.button, alignment=Qt.AlignHCenter)
+
         self.create_tab(tab_layout)
+
     def close_tab(self, index):
         self.removeTab(index)
 
+    def create_ticker_tab(self):
 
+        tab_layout = QVBoxLayout()
+        tab_layout.setAlignment(Qt.AlignCenter)
+        tab_layout.setContentsMargins(0, 0, 0, 0)
+        tab_layout.setSpacing(0)
+        print(1)
+        try:
+            rev,inc=finance_vs_MC(self.line_edit.text())
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+        # self.line_edit.clear()
+        # print(22)
+        # label = QLabel(f'{rev}:{inc}')
+        # label.adjustSize()
+        # tab_layout.addWidget(label, alignment=Qt.AlignHCenter)
+        # self.create_tab(tab_layout,'soup')
+
+
+# live_price = yf.Ticker('SPY').history(period='1d', interval='1m')
+    # print(live_price)
 if __name__ == '__main__':
     # potentials=('ROCK','LEN','CCS','GRBK','HZO','NX','HOLI')
     # for tick in potentials:
@@ -115,10 +159,9 @@ if __name__ == '__main__':
     # print(spy_prices[spy_prices['PercentChange']<-0.015])
     # print(spy_prices.loc[133,'PercentChange'])
     # print(predict_spy_movement())
-
+    # tab_layout.addWidget(self.button, alignment=Qt.AlignHCenter | Qt.AlignTop)
     app = QApplication(sys.argv)
     main_window = TabbedWindow('TickerSifter')
-    main_window.create_submission_tab()
-    main_window.show()
+
     sys.exit(app.exec_())
 
