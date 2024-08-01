@@ -30,10 +30,6 @@ def finance_vs_MC(ticker: str):
     return revenue_value / market_cap, income_value / market_cap
 
 
-def _close_tab(self, notebook, tab_id):
-    notebook.forget(tab_id)
-
-
 def load_lr_model():
     return joblib.load(SPY_MODEL)
 
@@ -95,7 +91,7 @@ class TabbedWindow(QTabWidget):
             }
         """)
 
-        self.addTab(tab, title)f
+        self.addTab(tab, title)
         # widget.returnPressed.connect(self.return_pressed)
 
     def create_submission_tab(self):
