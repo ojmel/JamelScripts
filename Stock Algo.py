@@ -1,4 +1,5 @@
 import sys
+import pyqtgraph as pg
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, \
     QSizePolicy
@@ -8,18 +9,24 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import joblib
 from datetime import datetime, timedelta
+#TODO exception handling for wrong tickers
+#TODO making text expand with window size
 
 #live_price = stock.history(period='1d', interval='1m')
 DEFAULT_INPUT = 'AAPL'
 SPY_MODEL = r'C:\Users\jamel\PycharmProjects\JamelScripts\spy_predictor.pkl'
-
+# Profitable?, bargraph income, revenue, debt to asset, scores and market cap
 
 def finance_vs_MC(ticker: str):
     ticker = yf.Ticker(ticker)
-    revenue = ticker.financials.loc['Total Revenue'][0]
-    income = ticker.financials.loc['Net Income'][0]
-    assets = ticker.balance_sheet.loc['Total Assets'][0]
-    liabilities = ticker.balance_sheet.loc['Total Liabilities Net Minority Interest'][0]
+    financials=ticker.financials
+    balance=ticker.balance_sheet
+    if not financials:
+        return
+    revenue = financials.loc['Total Revenue'][0]
+    income = financials.loc['Net Income'][0]
+    assets = balance.loc['Total Assets'][0]
+    liabilities = balance.loc['Total Liabilities Net Minority Interest'][0]
     market_cap = ticker.fast_info['marketCap']
     # formula
     # AnnualRevenue+(Assets-Liabilities)
@@ -84,7 +91,6 @@ class TabbedWindow(QTabWidget):
     def create_tab(self,layout,title:str='poop'):
         tab = QWidget()
         tab.setLayout(layout)
-        print('here')
         tab.setStyleSheet("""
             QWidget {
                 background-color: #87CEEB;  /* Light sky blue */
@@ -92,7 +98,6 @@ class TabbedWindow(QTabWidget):
         """)
 
         self.addTab(tab, title)
-        # widget.returnPressed.connect(self.return_pressed)
 
     def create_submission_tab(self):
         tab_layout = QVBoxLayout()
@@ -105,7 +110,7 @@ class TabbedWindow(QTabWidget):
         label.adjustSize()
         tab_layout.addWidget(label, alignment=Qt.AlignHCenter)
 
-
+        self.line_edit.textChanged.connect(self.to_upper)
         self.line_edit.setPlaceholderText('Enter Ticker')
         self.line_edit.setStyleSheet("""
                     QLineEdit {
@@ -116,8 +121,8 @@ class TabbedWindow(QTabWidget):
                 """)
         tab_layout.addWidget(self.line_edit, alignment=Qt.AlignHCenter)
 
-
         self.button.clicked.connect(self.create_ticker_tab)
+        self.line_edit.returnPressed.connect(self.create_ticker_tab)
         tab_layout.addWidget(self.button, alignment=Qt.AlignHCenter)
 
         self.create_tab(tab_layout)
@@ -126,28 +131,38 @@ class TabbedWindow(QTabWidget):
         self.removeTab(index)
 
     def create_ticker_tab(self):
+        if self.line_edit.text():
+            tab_layout = QVBoxLayout()
+            tab_layout.setAlignment(Qt.AlignCenter)
+            tab_layout.setContentsMargins(0, 0, 0, 0)
+            tab_layout.setSpacing(0)
+            try:
+                rev,inc=finance_vs_MC(self.line_edit.text())
+                plot_graph = pg.PlotWidget()
+                plot_graph.plot([rev],[inc])
+                label = QLabel(f'{rev}:{inc}')
+                label.adjustSize()
+                tab_layout.addWidget(label, alignment=Qt.AlignHCenter)
+                self.create_tab(tab_layout,self.line_edit.text() )
+                self.line_edit.clear()
+            except Exception as e:
+                print(f"An error occurred: {e}")
+        else:
+            print('error')
 
-        tab_layout = QVBoxLayout()
-        tab_layout.setAlignment(Qt.AlignCenter)
-        tab_layout.setContentsMargins(0, 0, 0, 0)
-        tab_layout.setSpacing(0)
-        print(1)
-        try:
-            rev,inc=finance_vs_MC(self.line_edit.text())
-        except Exception as e:
-            print(f"An error occurred: {e}")
+    def to_upper(self, text):
+        self.line_edit.blockSignals(True)
+        self.line_edit.setText(text.upper())
+        self.line_edit.blockSignals(False)
 
-        # self.line_edit.clear()
-        # print(22)
-        # label = QLabel(f'{rev}:{inc}')
-        # label.adjustSize()
-        # tab_layout.addWidget(label, alignment=Qt.AlignHCenter)
-        # self.create_tab(tab_layout,'soup')
+def run_app():
+    app = QApplication(sys.argv)
+    main_window=TabbedWindow('TickerSifter')
+    sys.exit(app.exec_())
 
-
-# live_price = yf.Ticker('SPY').history(period='1d', interval='1m')
-    # print(live_price)
 if __name__ == '__main__':
+    # run_app()
+    print(yf.Ticker('SPY').financials)
     # potentials=('ROCK','LEN','CCS','GRBK','HZO','NX','HOLI')
     # for tick in potentials:
     #     print(tick,finance_vs_MC(tick))
@@ -155,9 +170,5 @@ if __name__ == '__main__':
     # print(spy_prices[spy_prices['PercentChange']<-0.015])
     # print(spy_prices.loc[133,'PercentChange'])
     # print(predict_spy_movement())
-    # tab_layout.addWidget(self.button, alignment=Qt.AlignHCenter | Qt.AlignTop)
-    app = QApplication(sys.argv)
-    main_window = TabbedWindow('TickerSifter')
 
-    sys.exit(app.exec_())
 

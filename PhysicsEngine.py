@@ -117,7 +117,7 @@ def make_balls(num_of_balls, radius_range, collision_damp, screen_size,gravity=0
 
 
 balls = make_balls(10, (5,80), 1, (width, height))
-ball_tree=kdtree.kdtree((0,width),(0,height),balls,10)
+ball_tree= kdtree.kdtree((0, width), (0, height), balls, 10)
 ball_tree.sort_objects()ad
 # Main game loop
 while True:

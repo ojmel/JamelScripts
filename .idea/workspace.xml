@@ -8,14 +8,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="yt 2.0">
-      <change afterPath="$PROJECT_DIR$/Indicator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MLB/ml_pred_v3.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChimeraNetwork.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Popular vote backend - Sheet1.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Popular vote backend - Sheet1.tsv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Popular vote backend.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bubble Sort.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/Bubble Sort.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EdabitScratch.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/EdabitScratch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Finding least squares.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/Finding least squares.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LavaGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/LavaGame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MLB/mlb_pred_v2.py" beforeDir="false" afterPath="$PROJECT_DIR$/MLB/mlb_pred_v2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatterSimulator.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatterSimulator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhysicsEngine.py" beforeDir="false" afterPath="$PROJECT_DIR$/PhysicsEngine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spatial_Index.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/Spatial_Index.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Stock Algo.py" beforeDir="false" afterPath="$PROJECT_DIR$/Stock Algo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Weed Neural Network.py" beforeDir="false" afterPath="$PROJECT_DIR$/NeuralNetwork/Weed Neural Network.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kdtree.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/kdtree.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +60,7 @@
   &quot;keyToString&quot;: {
     &quot;Python.Indicator.executor&quot;: &quot;Run&quot;,
     &quot;Python.Stock Algo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ml_pred_v3.executor&quot;: &quot;Run&quot;,
     &quot;Python.mlb_LR.executor&quot;: &quot;Run&quot;,
     &quot;Python.mlb_ML.executor&quot;: &quot;Run&quot;,
     &quot;Python.mlb_database.executor&quot;: &quot;Run&quot;,
@@ -73,8 +78,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\NeuralNetwork" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\MLB" />
+      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\Learnin'" />
+      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\NeuralNetwork" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts" />
     </key>
   </component>

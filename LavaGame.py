@@ -2,7 +2,6 @@ import pygame
 import numpy as np
 from kdtree import check_num_in_range,kdtree
 import sys
-from random import randint
 
 pygame.init()
 
