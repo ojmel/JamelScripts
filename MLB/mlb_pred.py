@@ -1,7 +1,6 @@
 import re
 from datetime import datetime, timedelta
 from types import NoneType
-
 import requests
 from bs4 import BeautifulSoup
 import html_to_json
