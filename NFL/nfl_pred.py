@@ -30,7 +30,7 @@ class Side(Enum):
 side = Side.defense
 stat_type = StatType.passing
 year = 2023
-week=1
+week=2
 with open('team_dict.json') as json_file:
     team_dict = json.load(json_file)
 
@@ -116,12 +116,17 @@ def match_up_stats(team1,team2):
 
     print(f'\n{team1} pass:{team1_pass_pot} rush:{team1_rush_pot} pts_pot:{team1_pt_pot} pts:{team1_pts} total:{team1_total} \n'
           f'{team2} pass:{team2_pass_pot} rush:{team2_rush_pot} pts_pot:{team2_pt_pot} pts:{team2_pts} total:{team2_total}')
-#
+    return {'team':team1, 'pass':team1_pass_pot, 'rush':team1_rush_pot, 'pts_pot':team1_pt_pot, 'pts':team1_pts, 'total':team1_total,'opp':team2},\
+    {'team':team2, 'pass':team2_pass_pot, 'rush':team2_rush_pot, 'pts_pot':team2_pt_pot, 'pts':team2_pts, 'total':team2_total,'opp':team1}
 if __name__=='__main__':
+    team_potential=pd.DataFrame()
     for index,game in schedule[schedule['week']==week].iterrows():
         home=team_dict[game['home_team']]
         away=team_dict[game['away_team']]
-        match_up_stats(home,away)
+        home_dict,away_dict=match_up_stats(home,away)
+        team_potential=team_potential._append(home_dict,ignore_index=True)
+        team_potential = team_potential._append(away_dict,ignore_index=True)
+    team_potential.to_csv('nfl_poten_2.csv')
     # team_dict = nfl.import_team_desc().set_index('team_abbr')['team_name'].to_dict()
     # with open("team_dict.json", "w") as outfile:
     #     json.dump(team_dict, outfile)
