@@ -1,18 +1,16 @@
 import re
-from concurrent.futures import ThreadPoolExecutor,ProcessPoolExecutor
 import statsapi
 import mlbstatsapi
-import html_to_json
 import pandas as pd
 import requests
-import json
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from numpy import mean, median
-from MLB.mlb_database import insert_game, create_db_connection, logon_dict, get_table_column
-from mlb_pred_v2 import get_game_ids
 
-mlb=mlbstatsapi.Mlb()
+
+def get_url_soup(url):
+    if (response := requests.get(url)).status_code == 200:
+        return BeautifulSoup(response.content, 'html.parser')
 def team_stats(game_id):
     game_data = statsapi.boxscore_data(game_id)
     home_dict={'name':game_data['teamInfo']['home']['teamName']}
@@ -75,7 +73,6 @@ def get_pitching_lastxgames(pitcher_id,hit_rank:pd.DataFrame,num_of_games=5):
         aggregate_stats['score'] = 0
     return aggregate_stats
 # game.__getattribute__('ishome') game_data.gamedata.teams.away.name
-schedule = mlb.get_scheduled_games_by_date(start_date=today, end_date=today)
 # # Loop through the games to find starting pitchers
 
 def get_hit_rank_position(hit_rank:pd.DataFrame,team:str,category='SO'):
@@ -132,21 +129,6 @@ def get_hitting_ranking():
         data_table=pd.read_csv('hit_rank.csv',index_col='TEAM')
         return data_table
 
-# def run_potential(game_id):
-#     hit_rank = get_hitting_ranking()
-#
-#     game_data = mlb.get_game(game_id)
-#     away_name=game_data.gamedata.teams.away.name
-#     home_name=game_data.gamedata.teams.home.name
-#
-#     home_run = hit_rank.loc[home_name, 'R']
-#     away_run = hit_rank.loc[away_name, 'R']
-#     home_er = pitch_rank.loc[home_name, 'ER']
-#     away_er = pitch_rank.loc[away_name, 'ER']
-#     away_potential = away_run + home_er
-#     home_potential = home_run + away_er
-#
-#     return home_name, home_potential, away_name,  away_potential
 
 def pitcher_table(make_run_table=True):
     table=pd.DataFrame()
@@ -185,4 +167,7 @@ def pitcher_table(make_run_table=True):
     run_table.to_csv('run_pot.csv')
     table.to_csv('todays_pitchers.csv')
     return table
-pitcher_table()
+if __name__=='_main__':
+    mlb = mlbstatsapi.Mlb()
+    schedule = mlb.get_scheduled_games_by_date(start_date=today, end_date=today)
+    pitcher_table()

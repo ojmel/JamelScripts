@@ -3,9 +3,7 @@ from mysql.connector import Error
 import pandas as pd
 from json import load
 # pip install mysql-connector-python
-CREDENTIALS_JSON=r'sql.json'
-with open(CREDENTIALS_JSON, 'rb') as jfile:
-    logon_dict: dict = load(jfile)
+
 def create_server_connection(host_name, user_name, user_password):
     connection = None
     try:
@@ -87,5 +85,8 @@ def insert_game(table,connection,*args):
     execute_query(connection,query)
 
 if __name__=='__main__':
+    CREDENTIALS_JSON = r'sql.json'
+    with open(CREDENTIALS_JSON, 'rb') as jfile:
+        logon_dict: dict = load(jfile)
     sql_connect=create_db_connection(*logon_dict.values(),'mlb')
     create_database(sql_connect,create_games_table)
