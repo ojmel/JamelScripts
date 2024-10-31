@@ -7,7 +7,7 @@ import html_to_json
 import statsapi
 from concurrent.futures import ThreadPoolExecutor
 from enum import Enum
-import mlb_database
+import MLB.mlb_database
 #pip install html-to-json
 
 class Team(Enum):
