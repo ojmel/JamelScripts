@@ -7,13 +7,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="yt 2.0">
-      <change afterPath="$PROJECT_DIR$/CBB/cbb_stuff.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CFB/cfb.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NBA/nba_scores.py" afterDir="false" />
+    <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="before moving to class data structure">
+      <change afterPath="$PROJECT_DIR$/CBB/cbb_espn_conf.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ScraperScripts.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/parent_aln" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFB/test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MLB/mlb_pred.py" beforeDir="false" afterPath="$PROJECT_DIR$/MLB/mlb_pred.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CBB/cbb_stuff.py" beforeDir="false" afterPath="$PROJECT_DIR$/CBB/cbb_stuff.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CFB/cfb.py" beforeDir="false" afterPath="$PROJECT_DIR$/CFB/cfb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MLB/ml_pred_v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/MLB/ml_pred_v3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/nba_scores.py" beforeDir="false" afterPath="$PROJECT_DIR$/NBA/nba_scores.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NFL/nfl_pred.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFL/nfl_pred.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,6 +56,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Python.Indicator.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ScraperScripts.executor&quot;: &quot;Run&quot;,
     &quot;Python.Stock Algo.executor&quot;: &quot;Run&quot;,
     &quot;Python.cbb_stuff.executor&quot;: &quot;Run&quot;,
     &quot;Python.cfb.executor&quot;: &quot;Run&quot;,
@@ -82,11 +85,11 @@
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\NFL" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\CBB\stats_html" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\CFB" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\MLB" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\Learnin'" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\NeuralNetwork" />
-      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -177,7 +180,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729261343209</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="before moving to class data structure">
+      <option name="closed" value="true" />
+      <created>1730398394345</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1730398394345</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -194,6 +205,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="yt" />
     <MESSAGE value="yt 2.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="yt 2.0" />
+    <MESSAGE value="before moving to class data structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="before moving to class data structure" />
   </component>
 </project>

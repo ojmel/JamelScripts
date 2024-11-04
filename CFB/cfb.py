@@ -6,10 +6,12 @@ import pandas as pd
 import cfbd
 from cfbd.rest import ApiException
 from collections import defaultdict
-from MLB.ml_pred_v3 import get_url_soup
 from pandasgui import show
 import difflib
 from functools import reduce
+
+from ScraperScripts import get_url_soup
+
 
 class Side(Enum):
     offense = 0

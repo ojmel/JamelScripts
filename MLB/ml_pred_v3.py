@@ -2,15 +2,12 @@ import re
 import statsapi
 import mlbstatsapi
 import pandas as pd
-import requests
-from bs4 import BeautifulSoup
+
 from datetime import datetime, timedelta
 from numpy import mean, median
 
 
-def get_url_soup(url):
-    if (response := requests.get(url)).status_code == 200:
-        return BeautifulSoup(response.content, 'html.parser')
+
 def team_stats(game_id):
     game_data = statsapi.boxscore_data(game_id)
     home_dict={'name':game_data['teamInfo']['home']['teamName']}
