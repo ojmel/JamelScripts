@@ -1,12 +1,9 @@
-#Could buildnew data from rosster instead of relying on 2023 import_schedules()
 import re
 from enum import Enum
 import html_to_json
 import pandas as pd
-import requests
 import json
 import nfl_data_py as nfl
-from bs4 import BeautifulSoup
 from pandasgui import show
 schedule=pd.read_csv('2024_schedule.csv')
 class StatType(Enum):
@@ -92,6 +89,5 @@ if __name__=='__main__':
         team_potential.append(home_dict)
         team_potential.append(away_dict)
     team_potential=pd.DataFrame(team_potential)
-    show(team_potential)
     team_potential.to_csv(f'nfl_poten_{week}.csv')
 

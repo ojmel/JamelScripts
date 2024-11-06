@@ -145,7 +145,7 @@ def get_baseball_season_dates(year: int):
         dates.add(start.strftime("%Y-%m-%d"))
         # increment start date by timedelta
         start += delta
-    sql_connect = mlb_database.create_db_connection(*mlb_database.logon_dict.values(), 'mlb')
+    sql_connect = mlb_database.create_db_connection(*mlb_database.LOGON_DICT.values(), 'mlb')
     table_dates = set(
         date[0].strftime("%Y-%m-%d") for date in mlb_database.get_table_column(sql_connect, 'games', 'date'))
     dates = dates.difference(table_dates)

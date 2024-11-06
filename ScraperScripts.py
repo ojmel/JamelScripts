@@ -1,13 +1,17 @@
 import difflib
 import json
 import os.path
+import pickle
 import time
+import ast
+from functools import reduce
 
 from selenium import webdriver
 import requests
 from bs4 import BeautifulSoup
 
-
+def subtract_all(series):
+    return reduce(lambda x, y: x - y, series)
 def get_url_soup(url):
     if (response := requests.get(url)).status_code == 200:
         return BeautifulSoup(response.content, 'html.parser')
@@ -21,9 +25,11 @@ def download_page(url, html_file):
     with open(html_file, "w", encoding="utf-8") as file:
         file.write(html)
     return html
-def download_multipages(html_url_dict:dict[str,str]):
+
+
+def download_multipages(html_url_dict: dict[str, str]):
     driver = webdriver.Edge()
-    for html_file,url in html_url_dict.items():
+    for html_file, url in html_url_dict.items():
         if not os.path.exists(html_file):
             driver.get(url)
             time.sleep(2)
@@ -60,5 +66,23 @@ def step_thru_parents(soup: BeautifulSoup, text_to_find):
         print(parent)
         input("Press Enter to continue...")
 
-def word_match(word,choices,cutoff=0.5):
-    return next(iter(difflib.get_close_matches(word, choices, n=1, cutoff=cutoff)),None)
+
+def word_match(word, choices, cutoff=0.5):
+    return next(iter(difflib.get_close_matches(word, choices, n=1, cutoff=cutoff)), None)
+
+
+def clear_html(directory):
+    os.system(f'rm {os.path.join(directory, "*.html")}')
+
+
+def pickle_it(obj, file):
+    with open(file, 'wb') as file:
+        pickle.dump(obj, file)
+
+
+def unpickle_it(file):
+    with open(file, 'rb') as obj:
+        return pickle.load(obj)
+
+def navigable_str_to_obj(obj):
+    return json.loads(str(obj))

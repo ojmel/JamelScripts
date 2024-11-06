@@ -7,6 +7,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import ScraperScripts
 import numpy as np
+from pandasgui import show
 
 class Pages(Enum):
     Conf = "confpage.html"
@@ -46,6 +47,7 @@ class StatsManager:
 STATS = StatsManager().get_total_stats('2024')
 OPP_STATS = StatsManager().get_total_stats('2024', 'def')
 
+
 class MatchManager:
     class Match:
         def __init__(self, matchup_soup: BeautifulSoup):
@@ -56,29 +58,34 @@ class MatchManager:
             self.away_name = self.get_names(away)
             self.home = ScraperScripts.word_match(self.home_name, STATS.index, 0.7)
             self.away = ScraperScripts.word_match(self.away_name, STATS.index, 0.7)
-            self.match_table = pd.DataFrame(columns=[self.home_name, self.away_name], index=stats_of_interest+['TOT'])
-            self.match_sum=pd.DataFrame(columns=[self.home_name, self.away_name], index=stats_of_interest+['TOT']).fillna(0)
+            self.match_table = pd.DataFrame(columns=[self.home_name, self.away_name], index=stats_of_interest + ['TOT'])
+            self.match_sum = pd.DataFrame(columns=[self.home_name, self.away_name],
+                                          index=stats_of_interest + ['TOT']).fillna(0)
             self.parse_matchup()
 
         def get_names(self, team_soup):
             name = team_soup.find('span', class_="YahooSans Fw(700)! Fz(14px)!").text + ' ' + team_soup.find('div',
                                                                                                              class_="Fw(n) Fz(12px)").text
             return re.sub(r'\s*\(.*?\)\s*', ' ', name)
+
         def get_stat_diff(self):
-            self.match_table.loc['TOT', self.home_name] =0
+            self.match_table.loc['TOT', self.home_name] = 0
             self.match_table.loc['TOT', self.away_name] = 0
             for stat in stats_of_interest:
-                self.match_sum.loc[stat, self.home_name]=STATS.loc[self.home, stat] - OPP_STATS.loc[self.away, stat]
-                self.match_table.loc['TOT', self.home_name]+=self.match_sum.loc[stat, self.home_name]
+                self.match_sum.loc[stat, self.home_name] = STATS.loc[self.home, stat] - OPP_STATS.loc[self.away, stat]
+                self.match_table.loc['TOT', self.home_name] += self.match_sum.loc[stat, self.home_name]
                 self.match_sum.loc['TOT', self.home_name] += self.match_sum.loc[stat, self.home_name]
                 self.match_sum.loc[stat, self.away_name] = STATS.loc[self.away, stat] - OPP_STATS.loc[self.home, stat]
                 self.match_table.loc['TOT', self.away_name] += self.match_sum.loc[stat, self.away_name]
                 self.match_sum.loc['TOT', self.away_name] += self.match_sum.loc[stat, self.away_name]
+
         def parse_matchup(self):
             if self.home and self.away:
                 for stat in stats_of_interest:
-                    self.match_table.loc[stat, self.home_name] = (STATS.loc[self.home, stat], OPP_STATS.loc[self.away, stat])
-                    self.match_table.loc[stat, self.away_name] = (STATS.loc[self.away, stat], OPP_STATS.loc[self.home, stat])
+                    self.match_table.loc[stat, self.home_name] = (
+                    STATS.loc[self.home, stat], OPP_STATS.loc[self.away, stat])
+                    self.match_table.loc[stat, self.away_name] = (
+                    STATS.loc[self.away, stat], OPP_STATS.loc[self.home, stat])
                 self.get_stat_diff()
             else:
                 del self.match_table
@@ -88,7 +95,7 @@ class MatchManager:
         self.matchups = []
 
     def get_matchups(self, date: datetime.today()):
-        schedule_html = 'todays_games.html'
+        schedule_html = f'{date.strftime("%Y-%m-%d")}.html'
         if not os.path.exists(schedule_html):
             ScraperScripts.download_page(
                 fr'https://sports.yahoo.com/college-basketball/scoreboard/?confId=all&schedState=4&dateRange={date.strftime("%Y-%m-%d")}',
@@ -96,13 +103,13 @@ class MatchManager:
         match_soups = ScraperScripts.load_html_file(schedule_html).find_all('ul', class_="Mb(3px)")
         self.matchups = [MatchManager.Match(match) for match in match_soups]
         for match in self.matchups:
-            print(getattr(match,'match_table',None))
+            print(getattr(match, 'match_table', None))
+        show(pd.concat(getattr(match, 'match_sum').T for match in self.matchups if hasattr(match, 'match_sum')))
         # if CONF_DICT.get(home) and CONF_DICT.get(away):
 
 
-MatchManager().get_matchups(datetime(year=2024, day=6, month=11))
-# te=pd.read_html('test')
-# print(te)
+MatchManager().get_matchups(datetime.today())
+
 # def get_conf_dict():
 #     json_file = 'cbb_conf_dict.json'
 #     if not os.path.exists(json_file):

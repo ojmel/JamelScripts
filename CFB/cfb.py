@@ -1,16 +1,13 @@
 import json
 import os.path
-import pickle
 from enum import Enum
 import pandas as pd
 import cfbd
 from cfbd.rest import ApiException
-from collections import defaultdict
 from pandasgui import show
-import difflib
-from functools import reduce
+import ScraperScripts
 
-from ScraperScripts import get_url_soup
+STATS_OF_INTEREST = ['PasY/G', 'RusY/G', 'Pts/G']
 
 
 class Side(Enum):
@@ -18,108 +15,87 @@ class Side(Enum):
     defense = 1
 
 
-def subtract_all(series):
-    return reduce(lambda x, y: x - y, series)
 
-
-def create_game_table(off_team, def_team, team_table: pd.DataFrame, off_table, def_table):
-    team_table.loc['pass', off_team] = (off_table.loc[off_team, 'PasY/G'], def_table.loc[def_team, 'PassYds/G'])
-    team_table.loc['rush', off_team] = (off_table.loc[off_team, 'RusY/G'], def_table.loc[def_team, 'RushYds/G'])
-    team_table.loc['pts', off_team] = (off_table.loc[off_team, 'Pts/G'], def_table.loc[def_team, 'Pts/G'])
-    team_table.loc['total', off_team] = subtract_all(team_table.loc['pass', off_team]) + subtract_all(
-        team_table.loc['rush', off_team]) + subtract_all(team_table.loc['pts', off_team])
-    return team_table
-
+conf_offense_dict={}
+conf_defense_dict={}
 
 def get_conference_stats(off_def: Side, conference):
-    div, conf_id = conf_dict[conference]
-    stats = get_url_soup(
-        rf'https://sports.yahoo.com/ncaaf/stats/team/?selectedTable={off_def.value}&leagueStructure=ncaaf.struct.div.{div}.conf.{conf_id}')
-    columns = [column.text for column in stats.find('thead').findAll('th')]
-    data_table = pd.DataFrame(columns=columns)
-    for team in stats.find('tbody').findAll('tr'):
-        new_row = []
-        for index, data in enumerate(team.findAll('td')):
-            if index == 0:
-                team_name: str = data.find('a', class_="C(#333)").text
-                new_row.append(team_name)
-                continue
+    div, conf_id = CONF_DICT[conference]
+
+    url=rf'http://sports.yahoo.com/ncaaf/stats/team/?selectedTable={off_def.value}&leagueStructure=ncaaf.struct.div.{div}.conf.{conf_id}'
+    print(pd.read_html(url)[-1])
+    conf_stats = pd.read_html(url)[-1].set_index('Team')
+    conf_stats.rename(columns={'PassYds/G': 'PasY/G', 'RushYds/G': 'RusY/G'}, inplace=True)
+    for stat in STATS_OF_INTEREST:
+        conf_stats[stat] = conf_stats[stat].rank(pct=True, ascending=(off_def.name == 'offense')).round(2)
+    globals()[f'conf_{off_def.name}_dict'][conference]=conf_stats
+    return conf_stats
+
+
+class MatchUpManager:
+    """This is a manager that gets and scores intra-conference CFB games"""
+    class MatchUp:
+        def __init__(self, home_name, away_name, conference):
+            if conference in conf_offense_dict.keys():
+                off_table=conf_offense_dict.get(conference)
+                def_table = conf_defense_dict.get(conference)
             else:
-                new_row.append(data.text)
-        data_table = data_table._append({column: value for column, value in zip(columns, new_row)}, ignore_index=True)
-    data_table = data_table.set_index('Team')
-    if off_def.value:
-        data_table['Pts/G'] = data_table['Pts/G'].rank(pct=True, ascending=False).round(2)
-        data_table['PassYds/G'] = data_table['PassYds/G'].rank(pct=True, ascending=False).round(2)
-        data_table['RushYds/G'] = data_table['RushYds/G'].rank(pct=True, ascending=False).round(2)
-    else:
-        data_table['Pts/G'] = data_table['Pts/G'].rank(pct=True, ascending=True).round(2)
-        data_table['PasY/G'] = data_table['PasY/G'].rank(pct=True, ascending=True).round(2)
-        data_table['RusY/G'] = data_table['RusY/G'].rank(pct=True, ascending=True).round(2)
-    return data_table
+                off_table=get_conference_stats(Side.offense, conference)
+                def_table=get_conference_stats(Side.defense, conference)
+            self.off_table=off_table
+            self.def_table=def_table
+            self.home = ScraperScripts.word_match(home_name, self.off_table.index.to_list(), 0.5)
+            self.away = ScraperScripts.word_match(away_name, self.off_table.index.to_list(), 0.5)
+            self.game_table = pd.DataFrame(columns=[self.home, self.away], index=STATS_OF_INTEREST + ['total'])
+            self.match_sum = pd.DataFrame(columns=[self.home, self.away],
+                                          index=STATS_OF_INTEREST + ['total'])
+        def score_match(self):
+            def score_team(off_team, def_team):
+                for stat in STATS_OF_INTEREST:
+                    self.game_table.loc[stat, off_team] = (
+                    self.off_table.loc[off_team, stat], self.def_table.loc[def_team, stat])
+                    self.match_sum.loc[stat,off_team]=subtract_all(self.game_table.loc[stat,off_team])
+                self.game_table.loc['total', off_team]=self.match_sum.loc['total', off_team] = sum(
+                    (subtract_all(self.game_table.loc[stat, off_team]) for stat in STATS_OF_INTEREST))
+            score_team(self.home, self.away)
+            score_team(self.away, self.home)
+            print(self.game_table)
+            return self.game_table
 
-
-if __name__ == '__main__':
-    week = 10
-
-    with open('smtp.json', 'rb') as jfile:
-        logon_dict: dict = json.load(jfile)
-    with open('conferences.json', 'rb') as jfile:
-        conf_dict: dict = json.load(jfile)
-    configuration = cfbd.Configuration()
-    configuration.api_key['Authorization'] = logon_dict['cfb']
-    configuration.api_key_prefix['Authorization'] = 'Bearer'
-    api_instance = cfbd.BettingApi(cfbd.ApiClient(configuration))
-
-    list_of_game_info = []
-    if os.path.exists('data.pkl'):
-        game_stats = pd.DataFrame(columns=['team', 'pass', 'rush', 'pts', 'total'])
-        with open('data.pkl', 'rb') as file:  # Open a file in binary read mode
-            loaded_data = pickle.load(file)  # Deserialize the object from file
-        for game in loaded_data:
-            print(game)
-            for column in game.columns:
-                team = difflib.get_close_matches(column, game.columns, n=3, cutoff=0.6)[0]
-                game_stats = game_stats._append({'team': team, 'pass': subtract_all(game.loc['pass', team]),
-                                                 'rush': subtract_all(game.loc['rush', team]),
-                                                 'pts': subtract_all(game.loc['pts', team]),
-                                                 'total': game.loc['total', team]}, ignore_index=True)
-        show(game_stats)
-        exit()
-    try:
-        stats_dict = defaultdict(dict)
+    def __init__(self, week):
+        self.week = week
         api_response = api_instance.get_lines(year=2024, week=week)
         games = [game_info for game_info in api_response if
                  game_info.away_conference == game_info.home_conference and game_info.lines]
-        games = [{'home': game.home_team, 'away': game.away_team, 'conf': game.away_conference} for game in games]
+        self.games = [{'home': game.home_team, 'away': game.away_team, 'conf': game.away_conference} for game in games]
+        self.matchups = []
+        self.save_file=f'{self.week}.pkl'
 
-        for game_info in games:
-            if not stats_dict.get(game_info['conf']):
-                stats_dict[game_info['conf']]['off'] = get_conference_stats(Side.offense, game_info['conf'])
-                stats_dict[game_info['conf']]['def'] = get_conference_stats(Side.defense, game_info['conf'])
-            offense: pd.DataFrame = stats_dict[game_info['conf']]['off']
-            defense: pd.DataFrame = stats_dict[game_info['conf']]['def']
-            if game_info['home'] not in offense.index:
-                closest_matches = difflib.get_close_matches(game_info['home'], offense.index.to_list(), n=3, cutoff=0.5)
-                home = closest_matches[0]
-            else:
-                home = game_info['home']
+    def create_MatchUps(self):
+        self.matchups=[MatchUpManager.MatchUp(match['home'], match['away'], match['conf']) for match in self.games]
+        for match in self.matchups:
+            match.score_match()
+        ScraperScripts.pickle_it(self.matchups,self.save_file)
 
-            if game_info['away'] not in offense.index:
-                closest_matches = difflib.get_close_matches(game_info['away'], offense.index.to_list(), n=3, cutoff=0.5)
-                away = closest_matches[0]
-            else:
-                away = game_info['away']
+    def show_totals(self):
+        if os.path.exists(self.save_file):
+            matchups=ScraperScripts.unpickle_it(self.save_file)
+            for match in matchups:
+                print(match.game_table)
+        else:
+            matchups=self.create_MatchUps()
+        show(pd.concat(tuple(getattr(match, 'match_sum').T for match in matchups)))
 
-            game_table = pd.DataFrame(columns=[home, away], index=['pass', 'rush', 'pts', 'total'])
-            game_table = create_game_table(home, away, game_table, offense, defense)
-            game_table = create_game_table(away, home, game_table, offense, defense)
 
-            list_of_game_info.append(game_table)
-            print(game_table)
+if __name__ == '__main__':
+    with open('smtp.json', 'rb') as jfile:
+        LOGON_DICT: dict = json.load(jfile)
+    with open('conferences.json', 'rb') as jfile:
+        CONF_DICT: dict = json.load(jfile)
+    configuration = cfbd.Configuration()
+    configuration.api_key['Authorization'] = LOGON_DICT['cfb']
+    configuration.api_key_prefix['Authorization'] = 'Bearer'
+    api_instance = cfbd.BettingApi(cfbd.ApiClient(configuration))
 
-        with open('data.pkl', 'wb') as file:
-            pickle.dump(list_of_game_info, file)
+    MatchUpManager(11).show_totals()
 
-    except ApiException as e:
-        print("Exception when calling StatsApi->get_team_season_stats: %s\n" % e)

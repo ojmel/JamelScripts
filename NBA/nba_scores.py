@@ -1,17 +1,14 @@
-import difflib
-import json
-import math
-import os.path
+import json,math,os.path,re,ScraperScripts
 from enum import Enum
 import pandas as pd
 from nba_api.stats.endpoints import scoreboardv2
 from datetime import datetime, timedelta
 from nba_api.stats.library.parameters import SeasonTypeAllStar, MeasureTypeDetailed, PerModeSimple
 from nba_api.stats.endpoints import teamdashboardbygeneralsplits, leaguedashteamstats, playerdashboardbygeneralsplits, \
-    teamplayerdashboard
+    teamplayerdashboard,leaguedashplayerstats
 from pandasgui import show
-from ScraperScripts import get_url_soup
-from CFB.cfb import subtract_all
+import numpy as np
+from ScraperScripts import subtract_all
 
 with open(r'C:\Users\jamel\PycharmProjects\JamelScripts\CFB\smtp.json', 'rb') as jfile:
     logon_dict: dict = json.load(jfile)
@@ -23,8 +20,6 @@ class Stats(Enum):
     REB = 'rebounds'
     AST = 'assists'
     FG3M = 'threes'
-    STL = 'steals'
-    BLK = 'blocks'
 
 
 stats_of_interest = [stat.name for stat in Stats]
@@ -57,6 +52,7 @@ class MatchUp:
             self.stat_diff.loc[stat, away] = STATS.loc[away_id, stat] - OPP_STATS.loc[home_id, f'OPP_{stat}']
         self.stat_diff.loc['OPP', away] = home
         self.stat_diff.loc['ID', away] = str(away_id)
+
     def create_matchup_table(self):
         self.score_matchup()
         self.info_table.loc['TOT', self.home_name] = self.stat_diff.loc['TOT', self.home_name] = subtract_all(
@@ -100,7 +96,7 @@ class StatManager:
         opp_stats = pd.read_csv(opp_stats_file, index_col='TEAM_ID')
         return stats, opp_stats
 
-    def get_todays_games(self, date: datetime.date=datetime.today()):
+    def get_todays_games(self, date: datetime.date = datetime.today()):
         matchups: list[pd.DataFrame] = []
         games: pd.DataFrame = scoreboardv2.ScoreboardV2(game_date=date).get_data_frames()[0]
         for row, game in games.iterrows():
@@ -108,6 +104,7 @@ class StatManager:
             print(match_up)
             matchups.append(single_stat)
         return matchups
+
     def get_total_stats(self, show_stats=False):
         total_stats = pd.DataFrame(columns=['Team'] + stats_of_interest + ['TOT', 'OPP'])
         matchups = self.get_todays_games(datetime.today())
@@ -120,12 +117,16 @@ class StatManager:
             show(total_stats)
         return total_stats
 
+    def get_player_stats_per_team(self, team_id):
+        return teamplayerdashboard.TeamPlayerDashboard(team_id,
+                                                       per_mode_detailed=PerModeSimple.per_game).get_data_frames()[1]
+
 
 def get_gameodds_ids():
     today = datetime.today()
     tomorrow = (today + timedelta(days=1))
     h2h_url = f'https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?apiKey={KEY}&regions=us&commenceTimeFrom={today.strftime("%Y-%m-%d")}T12%3A00%3A00Z&commenceTimeTo={tomorrow.strftime("%Y-%m-%d")}T12%3A00%3A00Z&markets=spreads,h2h&bookmakers=draftkings'
-    response = get_url_soup(h2h_url)
+    response = ScraperScripts.get_url_soup(h2h_url)
     games_dict = json.loads(response.contents[0])
     bet_id_dict = {}
     for game in games_dict:
@@ -134,72 +135,56 @@ def get_gameodds_ids():
     return bet_id_dict
 
 
+stat_man = StatManager()
+STATS, OPP_STATS = stat_man.team_stats_to_csv()
+TOT_STATS = stat_man.get_total_stats().set_index('Team')
+
+
 class OddsManager:
     def __init__(self):
-        self.game_odd_ids = get_gameodds_ids()
+        self.player_odds=pd.DataFrame(columns=['PLAYER','LINE','ACTUAL', 'DIFF',"STAT","MIN","TEAMODDS",'TEAM'])
+        self.viable_players:pd.DataFrame
+        self.get_all_players()
+    def get_player_odds(self, stat: Stats):
+        html = f'{stat.value}.html'
+        ScraperScripts.load_html_file(html,
+                                      r'https://sportsbook.draftkings.com/leagues/basketball/nba?category=player-{0}&subcategory={0}-o%2Fu'.format(
+                                          stat.value))
+        stat_df = pd.concat(pd.read_html(html)).drop(columns='UNDER')
+        stat_df['PLAYER'] = stat_df['PLAYER'].apply(lambda player: re.sub(r'New!.*', '', player))
+        stat_df['OVER'] = stat_df['OVER'].apply(
+            lambda line: math.ceil(float(re.match(r'O\xa0(.+)[+−]', line).group(1))))
+        stat_df.set_index('PLAYER', inplace=True)
+        stat_df.rename(columns={'OVER': "LINE"}, inplace=True)
+        odds=[]
+        for player,player_odd in stat_df.iterrows():
+            if player in self.viable_players.index:
+                line=player_odd['LINE']
+                actual=self.viable_players.loc[player,stat.name]
+                diff=actual-line
+                team=TOT_STATS[TOT_STATS['ID']==str(self.viable_players.loc[player,'TEAM_ID'])].index[0]
+                print(team)
+                odds.append({'PLAYER':player,'LINE':line,'ACTUAL':actual, 'DIFF':diff,"STAT":stat.name,"MIN":self.viable_players.loc[player,'MIN'],"TEAMODDS":TOT_STATS.loc[team,stat.name],'TEAM':team})
+        return pd.DataFrame(odds)
 
-    def get_player_stats_per_team(self,team_id):
-        return teamplayerdashboard.TeamPlayerDashboard(team_id,
-                                                       per_mode_detailed=PerModeSimple.per_game).get_data_frames()[
-            1]
+    def get_all_players(self):
+        self.viable_players=leaguedashplayerstats.LeagueDashPlayerStats(measure_type_detailed_defense=MeasureTypeDetailed.default,season='2024-25',per_mode_detailed=PerModeSimple.per_game).get_data_frames()[0].set_index('PLAYER_NAME').query('MIN >=26')
+        return self.viable_players
 
-    def get_player_odds(self,stat: Stats, team_name):
-        bet_name = difflib.get_close_matches(team_name, self.game_odd_ids.keys(), n=3, cutoff=0.7)[0]
-        team_name=difflib.get_close_matches(team_name, TOT_STATS['Team'], n=3, cutoff=0.7)[0]
-        bet_id = self.game_odd_ids[bet_name]
-        player_url = f'https://api.the-odds-api.com/v4/sports/basketball_nba/events/{bet_id}/odds?apiKey={KEY}&regions=us&markets=player_{stat.value}&bookmakers=fanduel'
-        team_id = TOT_STATS.loc[TOT_STATS['Team'] == team_name, 'ID'].values[0]
-        player_stats: pd.DataFrame = self.get_player_stats_per_team(team_id)
-        response = get_url_soup(player_url)
-        stat_dicts = []
-        odds_list: list[dict] = json.loads(response.contents[0])['bookmakers']
-        if odds_list:
-            odds_list=odds_list[0]['markets'][0]['outcomes']
-            for player_dict in odds_list:
-                player_name = player_dict['description']
-                if player_dict.get('name') == 'Over' and (
-                        real_stat := player_stats.loc[player_stats['PLAYER_NAME'] == player_name, stat.name].values):
-                    line=math.ceil(player_dict['point'])
-                    stat_dicts.append(
-                        {'name': player_name, 'line':line , 'actual': real_stat[0],'diff':real_stat[0]-line,'stat': stat.name,
-                         'odds': player_dict['price'],
-                         'mins': player_stats.loc[player_stats['PLAYER_NAME'] == player_name, 'MIN'].values[0],
-                         'team_odds': TOT_STATS.loc[TOT_STATS['Team'] == team_name, stat.name].values[0],
-                         'team': team_name})
-        return pd.DataFrame(stat_dicts)
-
-    def get_top_performers(self):
-        stat_dfs = []
-        for stat in Stats:
-            top_team = TOT_STATS.loc[TOT_STATS[stat.name].idxmax(), 'Team']
-            stat_dfs.append(self.get_player_odds(stat, top_team))
-        stats_df = pd.concat(stat_dfs,ignore_index=True)
-        show(stats_df)
-
-    def get_team_lines(self,team_name):
-        stat_dfs=[]
-        for stat in Stats:
-            stat_dfs.append(self.get_player_odds(stat,team_name))
-        stats_df = pd.concat(stat_dfs,ignore_index=True)
-        return stats_df
-
-    def get_all_lines(self,save=''):
-        stat_dfs = []
-        for team in self.game_odd_ids:
-            stat_dfs.append(self.get_team_lines(team))
+    def get_all_lines(self, save=''):
+        stat_dfs = [self.get_player_odds(stat) for stat in Stats]
         stats_df = pd.concat(stat_dfs,ignore_index=True)
         if save:
             stats_df.to_csv(save)
         return stats_df
 
-
-STATS, OPP_STATS = StatManager().team_stats_to_csv()
-TOT_STATS = StatManager().get_total_stats()
+odd_man=OddsManager()
 if __name__ == '__main__':
-    # get_top_performers(get_total_stats())
-    show(TOT_STATS)
-    # OddsManager().get_all_lines('todays_lines.csv')
-    show(OddsManager().get_all_lines())
+    lines_file=f'{datetime.today().strftime("%d-%m")}_lines.csv'
+    if not os.path.exists(lines_file):
+        ScraperScripts.clear_html(r'C:\Users\jamel\PycharmProjects\JamelScripts\NBA')
+    show(odd_man.get_all_lines(lines_file))
+    # show(TOT_STATS)
 
 # {'name': 'Over', 'description': 'Damian Lillard', 'price': 2.14, 'point': 7.5}
 # print()Index(['TEAM_ID', 'TEAM_NAME', 'GP', 'W', 'L', 'W_PCT', 'MIN', 'FGM', 'FGA',
