@@ -54,9 +54,9 @@ class MatchUpManager:
                 for stat in STATS_OF_INTEREST:
                     self.game_table.loc[stat, off_team] = (
                     self.off_table.loc[off_team, stat], self.def_table.loc[def_team, stat])
-                    self.match_sum.loc[stat,off_team]=subtract_all(self.game_table.loc[stat,off_team])
+                    self.match_sum.loc[stat,off_team]=ScraperScripts.subtract_all(self.game_table.loc[stat,off_team])
                 self.game_table.loc['total', off_team]=self.match_sum.loc['total', off_team] = sum(
-                    (subtract_all(self.game_table.loc[stat, off_team]) for stat in STATS_OF_INTEREST))
+                    (ScraperScripts.subtract_all(self.game_table.loc[stat, off_team]) for stat in STATS_OF_INTEREST))
             score_team(self.home, self.away)
             score_team(self.away, self.home)
             print(self.game_table)

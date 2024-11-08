@@ -153,7 +153,12 @@ class OddsManager:
         return stats_df
 
 
-odd_man = OddsManager()
+# odd_man = OddsManager()
 if __name__ == '__main__':
-    show(odd_man.get_all_lines(f'{today}lines.csv'))
-    # MatchUpManager().show_totals()
+    lines_file=f'{today}.pkl'
+    if not os.path.exists(lines_file):
+        ScraperScripts.clear_html(r'C:\Users\jamel\PycharmProjects\JamelScripts\NHL\stats')
+        ScraperScripts.clear_html(r'C:\Users\jamel\PycharmProjects\JamelScripts\NHL\teams')
+    MatchUpManager().show_totals()
+    # show(odd_man.get_all_lines(lines_file))
+

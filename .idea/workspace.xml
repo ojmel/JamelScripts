@@ -8,16 +8,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="after moving to class data structure">
-      <change afterPath="$PROJECT_DIR$/NHL/nhl.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NHL/teams.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/JamelScripts.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/JamelScripts.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CBB/cbb_stuff.py" beforeDir="false" afterPath="$PROJECT_DIR$/CBB/cbb_stuff.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CBB/cbb_espn_conf.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CBB/cbb_stuff.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/CFB/cfb.py" beforeDir="false" afterPath="$PROJECT_DIR$/CFB/cfb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MLB/mlb_pred.py" beforeDir="false" afterPath="$PROJECT_DIR$/MLB/mlb_pred.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NBA/nba_scores.py" beforeDir="false" afterPath="$PROJECT_DIR$/NBA/nba_scores.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_pred.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFL/nfl_pred.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NHL/nhl.py" beforeDir="false" afterPath="$PROJECT_DIR$/NHL/nhl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCHEMA-RASPP/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/SCHEMA-RASPP/LICENSE" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScraperScripts.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScraperScripts.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,6 +31,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -68,6 +66,7 @@
     &quot;Python.mlb_database.executor&quot;: &quot;Run&quot;,
     &quot;Python.mlb_pred.executor&quot;: &quot;Run&quot;,
     &quot;Python.mlb_pred_v2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.naomi.executor&quot;: &quot;Run&quot;,
     &quot;Python.nba_scores.executor&quot;: &quot;Run&quot;,
     &quot;Python.nfl_pred.executor&quot;: &quot;Run&quot;,
     &quot;Python.nhl.executor&quot;: &quot;Run&quot;,
@@ -200,7 +199,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730684655138</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="after moving to class data structure">
+      <option name="closed" value="true" />
+      <created>1730864904995</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1730864904995</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -218,6 +225,7 @@
     <MESSAGE value="yt" />
     <MESSAGE value="yt 2.0" />
     <MESSAGE value="before moving to class data structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="before moving to class data structure" />
+    <MESSAGE value="after moving to class data structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="after moving to class data structure" />
   </component>
 </project>

@@ -163,12 +163,11 @@ class OddsManager:
                 actual=self.viable_players.loc[player,stat.name]
                 diff=actual-line
                 team=TOT_STATS[TOT_STATS['ID']==str(self.viable_players.loc[player,'TEAM_ID'])].index[0]
-                print(team)
                 odds.append({'PLAYER':player,'LINE':line,'ACTUAL':actual, 'DIFF':diff,"STAT":stat.name,"MIN":self.viable_players.loc[player,'MIN'],"TEAMODDS":TOT_STATS.loc[team,stat.name],'TEAM':team})
         return pd.DataFrame(odds)
 
     def get_all_players(self):
-        self.viable_players=leaguedashplayerstats.LeagueDashPlayerStats(measure_type_detailed_defense=MeasureTypeDetailed.default,season='2024-25',per_mode_detailed=PerModeSimple.per_game).get_data_frames()[0].set_index('PLAYER_NAME').query('MIN >=26')
+        self.viable_players=leaguedashplayerstats.LeagueDashPlayerStats(measure_type_detailed_defense=MeasureTypeDetailed.default,season='2024-25',per_mode_detailed=PerModeSimple.per_game).get_data_frames()[0].set_index('PLAYER_NAME')
         return self.viable_players
 
     def get_all_lines(self, save=''):

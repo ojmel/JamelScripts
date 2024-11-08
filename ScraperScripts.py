@@ -5,6 +5,7 @@ import pickle
 import time
 import ast
 from functools import reduce
+from pathlib import Path
 
 from selenium import webdriver
 import requests
@@ -72,8 +73,8 @@ def word_match(word, choices, cutoff=0.5):
 
 
 def clear_html(directory):
-    os.system(f'rm {os.path.join(directory, "*.html")}')
-
+    for file in (file for file in Path(directory).iterdir() if file.name.endswith('.html')):
+        Path.unlink(file)
 
 def pickle_it(obj, file):
     with open(file, 'wb') as file:
