@@ -8,14 +8,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="after moving to class data structure">
+      <change afterPath="$PROJECT_DIR$/scratch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/JamelScripts.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/JamelScripts.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CBB/cbb_espn_conf.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CBB/cbb_stuff.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CFB/cfb.py" beforeDir="false" afterPath="$PROJECT_DIR$/CFB/cfb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LavaGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/LavaGame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MD.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/MD.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MLB/scratch.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatterSimulator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/MatterSimulator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NBA/nba_scores.py" beforeDir="false" afterPath="$PROJECT_DIR$/NBA/nba_scores.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NHL/nhl.py" beforeDir="false" afterPath="$PROJECT_DIR$/NHL/nhl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SCHEMA-RASPP/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/SCHEMA-RASPP/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NFL/nfl_pred.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFL/nfl_pred.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PCA.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/PCA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PhysicsEngine.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/PhysicsEngine.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScraperScripts.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScraperScripts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gmail.py" beforeDir="false" afterPath="$PROJECT_DIR$/gmail.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/youtube_download.py" beforeDir="false" afterPath="$PROJECT_DIR$/youtube_download.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +52,9 @@
     &quot;accountId&quot;: &quot;06c91305-869e-4d68-85cc-bdb4c6db4b3b&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -60,6 +70,7 @@
     &quot;Python.Stock Algo.executor&quot;: &quot;Run&quot;,
     &quot;Python.cbb_stuff.executor&quot;: &quot;Run&quot;,
     &quot;Python.cfb.executor&quot;: &quot;Run&quot;,
+    &quot;Python.gmail.executor&quot;: &quot;Run&quot;,
     &quot;Python.ml_pred_v3.executor&quot;: &quot;Run&quot;,
     &quot;Python.mlb_LR.executor&quot;: &quot;Run&quot;,
     &quot;Python.mlb_ML.executor&quot;: &quot;Run&quot;,
@@ -73,6 +84,7 @@
     &quot;Python.opensource.executor&quot;: &quot;Run&quot;,
     &quot;Python.scores.executor&quot;: &quot;Run&quot;,
     &quot;Python.scratch.executor&quot;: &quot;Run&quot;,
+    &quot;Python.server.executor&quot;: &quot;Run&quot;,
     &quot;Python.test.executor&quot;: &quot;Run&quot;,
     &quot;Python.youtube_download.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -88,17 +100,17 @@
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\NFL" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\CBB\stats_html" />
-      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\CFB" />
-      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\MLB" />
+      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts" />
+      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\online" />
+      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\NHL" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\Learnin'" />
-      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\NeuralNetwork" />
+      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\CBB\stats_html" />
     </key>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-0509580d9d50-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.14494.241" />
+        <option value="bundled-python-sdk-5b207ade9991-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.17890.14" />
       </set>
     </attachedChunks>
   </component>

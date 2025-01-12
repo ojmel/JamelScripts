@@ -10,11 +10,6 @@ from pandasgui import show
 import numpy as np
 from ScraperScripts import subtract_all
 
-with open(r'C:\Users\jamel\PycharmProjects\JamelScripts\CFB\smtp.json', 'rb') as jfile:
-    logon_dict: dict = json.load(jfile)
-    KEY = logon_dict['odds']
-
-
 class Stats(Enum):
     PTS = 'points'
     REB = 'rebounds'
@@ -183,7 +178,7 @@ if __name__ == '__main__':
     if not os.path.exists(lines_file):
         ScraperScripts.clear_html(r'C:\Users\jamel\PycharmProjects\JamelScripts\NBA')
     show(odd_man.get_all_lines(lines_file))
-    # show(TOT_STATS)
+    show(TOT_STATS)
 
 # {'name': 'Over', 'description': 'Damian Lillard', 'price': 2.14, 'point': 7.5}
 # print()Index(['TEAM_ID', 'TEAM_NAME', 'GP', 'W', 'L', 'W_PCT', 'MIN', 'FGM', 'FGA',

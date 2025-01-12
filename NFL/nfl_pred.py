@@ -1,9 +1,7 @@
-import re
 from enum import Enum
 import html_to_json
 import pandas as pd
 import json
-import nfl_data_py as nfl
 from pandasgui import show
 schedule=pd.read_csv('2024_schedule.csv')
 class StatType(Enum):
@@ -79,7 +77,7 @@ def match_up_stats(team1,team2):
 
 
 if __name__=='__main__':
-    week = 10
+    week = 16
     year = 2024
     team_potential=[]
     for index,game in schedule[schedule['week']==week].iterrows():

@@ -1,4 +1,4 @@
-import pytube
+import pytubefix
 import subprocess
 import os
 import concurrent.futures
@@ -38,11 +38,11 @@ def complete_function(stream, file_path):
 def download_video(link:str):
     try:
         # object creation using YouTube
-        yt = pytube.YouTube(link,on_progress_callback=progress_function,on_complete_callback=complete_function)
+        yt = pytubefix.YouTube(link,on_progress_callback=progress_function,on_complete_callback=complete_function)
         mp4_streams = yt.streams.filter(file_extension='mp4', type='video', progressive=True).order_by(
             'resolution').desc()
         mp4_streams=[stream for stream in mp4_streams if (stream.filesize/1_000_000_000)<=1]
-        d_video: pytube.streams.Stream = mp4_streams[0]
+        d_video: pytubefix.streams.Stream = mp4_streams[0]
         d_video.download(output_path=COM_PATH)
     except Exception as e:
         # to handle exception
@@ -53,7 +53,7 @@ def download_multiple(videos_you_want):
         executor.map(download_video, videos_you_want)
 
 def download_playlist(playlist_url):
-    download_multiple(pytube.Playlist(playlist_url))
+    download_multiple(pytubefix.Playlist(playlist_url))
 
 if __name__ == '__main__':
     playlist_url=gmail.get_playlist_url(youtube,DOWNLOAD_PLAYLIST)
