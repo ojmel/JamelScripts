@@ -1,0 +1,132 @@
+<!-- File path: index.html (project root folder) -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draftology</title>
+    <style>
+        h1 {
+            color: green;
+        }
+
+        .container {
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Draftology</h1>
+    <div class="container">
+        <input type="text" id="messageInput">
+        <button onclick="sendMessage()">Send</button>
+        <div id="output"></div>
+    </div>
+
+      <script>
+        function vibratePhone() {
+          // Check if the Vibration API is supported
+          if (navigator.vibrate) {
+            // Vibrate for 500 milliseconds
+            navigator.vibrate(500);
+          } else {
+            // alert("Vibration API is not supported on this device or browser.");
+            return
+          }
+        }
+      </script>
+    <script>
+        const serverUrl = 'ws://192.168.1.7:5555';
+        let socket;
+        let reconnectInterval = 1000; // Time in milliseconds between reconnection attempts
+        function sendMessage() {
+            const messageInput = document
+                .getElementById('messageInput');
+            const message = messageInput.value;
+            socket.send(message);
+            messageInput.value = '';
+            };
+
+        function connectWebSocket() {
+            socket = new WebSocket(serverUrl);
+
+
+            socket.onopen = () => {
+                console.log("Connected to WebSocket");
+                alert('You are Connected to Draftology');
+            };
+
+            socket.onmessage = (event) => {
+                const outputDiv = document
+                .getElementById('output')
+                outputDiv.innerHTML += `<p><b>"${event.data}"</b></p>`;
+                if (compareStrings(event.data, "You're Up")) {
+                   vibratePhone() 
+                }
+                
+            };
+
+            socket.onclose = (event) => {
+                console.log("WebSocket closed:", event.reason);
+                document.getElementById("status").innerText = "Disconnected. Reconnecting...";
+                setTimeout(connectWebSocket, reconnectInterval);
+            };
+
+            socket.onerror = (error) => {
+                console.error("WebSocket error:", error);
+            };
+        }
+        connectWebSocket();
+    </script>
+<!--    <script>-->
+<!--        // Create a WebSocket instance-->
+<!--        // and connect to the server-->
+       <!-- const socket = new WebSocket('ws://192.168.1.7:5555'); -->
+
+<!--        // Event listener for when -->
+<!--        //the WebSocket connection is opened-->
+<!--        socket.onopen = function (event) {-->
+<!--            // Alert the user that they are -->
+<!--            // connected to the WebSocket server-->
+<!--            alert('You are Connected to Draftology');-->
+<!--        };-->
+
+<!--        // Event listener for when a message-->
+<!--        //  is received from the server-->
+<!--        socket.onmessage = function (event) {-->
+<!--            const outputDiv = document-->
+<!--                .getElementById('output');-->
+<!--                vibratePhone()-->
+<!--            outputDiv-->
+<!--                .innerHTML += `<p><b>"${event.data}"</b></p>`;-->
+<!--        };-->
+
+<!--        // Event listener for when the -->
+<!--        // WebSocket connection is closed-->
+<!--        socket.onclose = function (event) {-->
+<!--            // Log a message when disconnected-->
+<!--            //  from the WebSocket server-->
+<!--            alert('You Disconnected');-->
+<!--        };-->
+
+<!--        // Function to send a message-->
+<!--        //  to the WebSocket server-->
+<!--        function sendMessage() {-->
+<!--            // Get the message input element-->
+<!--            const messageInput = document-->
+<!--                .getElementById('messageInput');-->
+<!--            // Get the value of-->
+<!--            // the message input-->
+<!--            const message = messageInput.value;-->
+<!--            // Send the message to -->
+<!--            // the WebSocket server-->
+<!--            socket.send(message);-->
+<!--            // Clear the message input-->
+<!--            messageInput.value = '';-->
+<!--        }-->
+<!--    </script>-->
+</body>
+
+</html>

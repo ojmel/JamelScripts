@@ -7,22 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="after moving to class data structure">
-      <change afterPath="$PROJECT_DIR$/scratch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/JamelScripts.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/JamelScripts.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="before server restructure">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LavaGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/LavaGame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MD.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/MD.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MLB/scratch.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatterSimulator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/MatterSimulator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NBA/nba_scores.py" beforeDir="false" afterPath="$PROJECT_DIR$/NBA/nba_scores.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_pred.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFL/nfl_pred.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PCA.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/PCA.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PhysicsEngine.py" beforeDir="false" afterPath="$PROJECT_DIR$/Learnin'/PhysicsEngine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScraperScripts.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScraperScripts.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gmail.py" beforeDir="false" afterPath="$PROJECT_DIR$/gmail.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/youtube_download.py" beforeDir="false" afterPath="$PROJECT_DIR$/youtube_download.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/online/Untitled-1.html" beforeDir="false" afterPath="$PROJECT_DIR$/online/Draft.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,7 +207,23 @@
       <option name="project" value="LOCAL" />
       <updated>1730864904995</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="after moving to class data structure">
+      <option name="closed" value="true" />
+      <created>1736677254549</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1736677254549</updated>
+    </task>
+    <task id="LOCAL-00014" summary="before server restructure">
+      <option name="closed" value="true" />
+      <created>1736677285129</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1736677285129</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -238,6 +242,7 @@
     <MESSAGE value="yt 2.0" />
     <MESSAGE value="before moving to class data structure" />
     <MESSAGE value="after moving to class data structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="after moving to class data structure" />
+    <MESSAGE value="before server restructure" />
+    <option name="LAST_COMMIT_MESSAGE" value="before server restructure" />
   </component>
 </project>
