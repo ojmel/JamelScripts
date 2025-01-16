@@ -38,7 +38,7 @@
         }
       </script>
     <script>
-        const serverUrl = 'ws://192.168.1.7:5555';
+        const serverUrl = 'ws://10.0.0.10:5555';
         let socket;
         let reconnectInterval = 1000; // Time in milliseconds between reconnection attempts
         function sendMessage() {
@@ -60,10 +60,10 @@
 
             socket.onmessage = (event) => {
                 const outputDiv = document
-                .getElementById('output')
+                .getElementById('output');
                 outputDiv.innerHTML += `<p><b>"${event.data}"</b></p>`;
-                if (compareStrings(event.data, "You're Up")) {
-                   vibratePhone() 
+                if (event.data === "You're Up") {
+                   vibratePhone();
                 }
                 
             };

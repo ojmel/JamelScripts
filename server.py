@@ -137,9 +137,9 @@ def get_ipv4():
 
 
 async def main():
-    # http_thread = threading.Thread(target=start_http_server, daemon=True)
-    # http_thread.start()
-    # print(f'Server up {HOST}:5555')
+    http_thread = threading.Thread(target=start_http_server, daemon=True)
+    http_thread.start()
+    print(f'Server up {HOST}:5555')
     async with websockets.serve(handler.parse_socket, HOST, 5555, ping_interval=None):
         await asyncio.get_running_loop().create_future()  # run forever
 
