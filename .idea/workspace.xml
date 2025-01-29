@@ -9,7 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="before server restructure">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/online/Untitled-1.html" beforeDir="false" afterPath="$PROJECT_DIR$/online/Draft.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/online/Draft.html" beforeDir="false" afterPath="$PROJECT_DIR$/online/Draft.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scratch.py" beforeDir="false" afterPath="$PROJECT_DIR$/scratch.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

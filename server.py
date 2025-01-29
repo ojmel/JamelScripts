@@ -32,10 +32,13 @@ class Player:
 
 class PlayerHandler:
     players: dict[str, Player] = {}
+    host_player = None
     godot_server = None
     max_answers = 3
     answers = []
+    game_state='gamestate???Enter Your Name'
     tourney_ready = None
+    draft_done=None
 
     async def parse_socket(self, websocket):
         async for message in websocket:
@@ -45,31 +48,54 @@ class PlayerHandler:
                 if HOST == addr:
                     await self.manage_godot(message, websocket)
                 elif HOST != addr:
-                    await self.manage_player(message, websocket)
+                    if message.lower().startswith('host'):
+                        await self.manage_host(message, websocket)
+                    else:
+                        await self.manage_player(message, websocket)
                 else:
                     print('something might be wrong')
                     await websocket.send(f"Not right now")
 
     async def add_player(self, player_name, websocket):
         self.players[websocket.remote_address[0]] = Player(player_name, websocket)
-        await self.godot_server.send(f'player:{player_name}')
+        await self.godot_server.send(f'player|{player_name}')
         print(f'{player_name} added')
         await websocket.send(f"Got it, you're {player_name}.")
 
-    async def manage_player(self, message, websocket):
+    async def manage_host(self, message:str, websocket):
+        if not self.host_player:
+            self.host_player = websocket
+            await self.host_player.send("confirmhost")
+
+        elif self.host_player and websocket.remote_address[0]==self.host_player.remote_address[0]:
+            if self.host_player != websocket:
+                self.host_player = websocket
+                await self.host_player.send("confirmhost")
+            if len(message.split('|')) == 2 and self.godot_server:
+                await self.godot_server.send(message)
+
+    async def manage_player(self, message:str, websocket):
         addr = websocket.remote_address[0]
-        print(addr)
-        if self.godot_server and addr not in self.players.keys():
+        if message == 'gamestate???':
+            await websocket.send(self.game_state)
+
+        elif self.godot_server and addr not in self.players.keys():
             await self.add_player(message, websocket)
+
         elif addr in self.players.keys() and self.tourney_ready:
             player = self.players[addr]
-            similar = ScraperScripts.word_match(message, self.answers, cutoff=0.8)
-            if not similar:
-                print('sent message to godot')
-                await self.godot_server.send(f'{player.player_name}:{message}')
+            if message.startswith('vote~~'):
+                if self.draft_done:
+                    await self.godot_server.send(f"{player.player_name}~~{message.removeprefix('vote~~')}")
+
             else:
-                print('too similar')
-                await websocket.send(f'Too much like {similar}')
+                similar = ScraperScripts.word_match(message, self.answers, cutoff=0.8)
+                if not similar:
+                    print('sent message to godot')
+                    await self.godot_server.send(f'{player.player_name}|{message}')
+                else:
+                    print('too similar')
+                    await websocket.send(f'Too much like {similar}')
             if player.websocket != websocket:
                 player.websocket = websocket
 
@@ -77,22 +103,29 @@ class PlayerHandler:
         if not self.godot_server:
             self.godot_server = websocket
             print(f'Connected to Godot')
+
         elif self.godot_server:
             if self.godot_server != websocket:
                 self.godot_server = websocket
 
             if message == 'ready':
                 self.tourney_ready = True
+                self.game_state="gamestate???We're Drafting"
                 print('Tourney Ready')
-                # for player in self.players.values():
-                #     await player.websocket.send(f'Lets Play')
-
+                for player in self.players.values():
+                    await player.websocket.send(self.game_state)
+            elif message=='done':
+                self.draft_done = True
+                self.game_state = "gamestate???Vote Left or Right"
+                print('Vote Ready')
+                for player in self.players.values():
+                    await player.websocket.send(self.game_state)
             elif message.startswith('next'):
                 _, player_name = message.split('%')
                 player = self.find_player_by_name(player_name)
                 await player.websocket.send("You're Up")
-            elif len(message.split(':')) == 2:
-                name, pick = message.split(':')
+            elif len(message.split('|')) == 2:
+                name, pick = message.split('|')
                 player = self.find_player_by_name(name)
                 print('someone drafted')
                 self.answers.append(pick)
@@ -119,8 +152,13 @@ def start_http_server():
     with TCPServer((HOST, HTTP_PORT), MyHandler) as httpd:
         os.chdir("online")
         print(f"Serving HTTP on {HOST}:{HTTP_PORT}")
-        httpd.serve_forever()
-        print('Its Over')
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            print("Server shutting down...")
+            httpd.server_close()
+        # httpd.serve_forever()
+        # print('Its Over')
 
 
 def get_ipv4():
@@ -137,8 +175,8 @@ def get_ipv4():
 
 
 async def main():
-    http_thread = threading.Thread(target=start_http_server, daemon=True)
-    http_thread.start()
+    # http_thread = threading.Thread(target=start_http_server, daemon=True)
+    # http_thread.start()
     print(f'Server up {HOST}:5555')
     async with websockets.serve(handler.parse_socket, HOST, 5555, ping_interval=None):
         await asyncio.get_running_loop().create_future()  # run forever
