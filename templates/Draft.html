@@ -1,0 +1,381 @@
+<!-- File path: index.html (project root folder) -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draftology</title>
+    <style>
+        :root {
+            --text: rgb(65, 32, 250);
+            --bg: rgb(175, 195, 255);
+        }
+
+        .queue {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            list-style-type: none;
+            padding-top: 0%;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .queue li {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: var(--text);
+            font-size: 40px;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            list-style-type: none;
+        }
+
+        li button {
+            height: 30px;
+            border-radius: 15px;
+            width: 70px;
+            font-size: 20px;
+
+        }
+
+        h1 {
+            font-size: 40px;
+        }
+
+        h2 {
+            font-size: 30px;
+            color: var(--text);
+        }
+
+        h3 {
+            font-size: 30px;
+            color: var(--text);
+        }
+
+        .container {
+            color: var(--text);
+            padding: 20px;
+        }
+
+        .container input {
+            width: 70%;
+            height: 75px;
+            font-size: 25px;
+            border-radius: 15px;
+        }
+
+        .container li {
+            font-size: 30px;
+        }
+
+        button {
+            background-color: var(--text);
+            color: var(--bg);
+            height: 60px;
+            border-radius: 15px;
+            width: 60px;
+            font-size: 20px;
+
+        }
+
+        .transition-button {
+            position: fixed;
+            top: 15px;
+            right: 5px;
+            height: 25px;
+            border-radius: 15px;
+            width: 120px;
+            font-size: 18px;
+        }
+
+        .button-row button:active {
+            opacity: 0.9;
+            background-color: #ff5900;
+        }
+
+        .button-row {
+            justify-content: center;
+            /* Align buttons horizontally */
+            gap: 10px;
+            bottom: 20px;
+        }
+    </style>
+</head>
+
+<body style="background-color: var(--bg); text-align: center;">
+    <div id="main-page" class="container" style="display: block;">
+        <h1>Draftology</h1>
+        <h2 id="header">Enter Your Name</h2>
+        <div class="container" style="height: 25%;">
+            <input type="text" id="messageInput">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+
+        <div class="button-row" id="vote-button" style="display: flex;">
+            <button onclick="voteLeft()" style="width: 120px; font-size: 40px;">Left</button>
+            <button onclick="voteRight()" style="width: 120px; font-size: 40px;">Right</button>
+        </div>
+        <div id="output" style="font-size: 25px; color: var(--text);"></div>
+        <div class="button-row" id="host" style="display: none; position: fixed; gap: 25px; right: 5px;">
+            <button onclick="start()">Start</button>
+            <button onclick="leftWon()">Left</button>
+            <button onclick="rightWon()">Right</button>
+            <button onclick="nextMatch()">Next</button>
+        </div>
+        <button class="transition-button" style="left: 5px;" onclick="showQueuePage()">Queue</button>
+        <button class="transition-button" onclick="showInstructions()">Instructions</button>
+    </div>
+
+    <div id="instructionsPage" class="container" style="display: none;">
+        <h1>Instructions</h1>
+        <p style="font-size: 30px;">Here you will learn the study of the draft</p>
+        <ol>
+            <li>We will be picking a topic (ex: Best Actors, Musicians, literally anything)</li>
+            <li>First you enter your name. Make sure its on the tv. (Only do this once)</li>
+            <li>When you're notified its your turn to draft. Enter your 1st pick. (One at a time)</li>
+            <li>When you press the top left Queue button, you can enter your ideas to be drafted later.</li>
+            <li>When its time to vote press left or right to send in your vote.</li>
+            <li>Thanks for playing.</li>
+        </ol>
+        <button class="transition-button" style="left: 5px;" onclick="showQueuePage()">Queue</button>
+        <button class="transition-button" onclick="showMainPage()">Main Page</button>
+    </div>
+
+    <div id="queuePage" class="container" style="display: none;">
+        <button class="transition-button" style="left: 5px;" onclick="showMainPage()">Main Page</button>
+        <button class="transition-button" onclick="showInstructions()">Instructions</button>
+        <h1>Draft Queue</h1>
+        <div class="container" style="display: flex; flex-direction: row; align-items: center; gap: 10px;">
+            <input type="text" id="queueInput">
+            <button onclick="addDraftItem(document.getElementById('queueInput').value)"
+                style="width: 70px; height: 50px;">Queue</button>
+        </div>
+        <!-- <p style="font-size: 30px;">You can drag and order your queue</p> -->
+        <ul id="queue" class="queue"></ul>
+
+    </div>
+    <script>
+        const inputField = document.getElementById("messageInput");
+        const main = document.getElementById("main-page");
+        const instruction = document.getElementById("instructionsPage");
+        const queue = document.getElementById("queuePage");
+        function getIndex(element) {
+            return [...element.parentNode.children].indexOf(element);
+        }
+        inputField.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                sendMessage();
+                inputField.blur();
+            }
+        });
+        let draggedItem = null;
+        function start() {
+            socket.send("host|start");
+        }
+
+        function saveList() {
+            let listItems = [];
+            document.querySelectorAll("#queue li").forEach(li => {
+                listItems.push({ text: li.querySelector("span").textContent });
+            });
+            localStorage.setItem("listItems", JSON.stringify(listItems));
+        }
+
+        function loadList() {
+            let storedList = JSON.parse(localStorage.getItem("listItems"));
+            if (storedList) {
+                storedList.forEach(item => {
+
+                    addDraftItem(item.text);
+                });
+            }
+        }
+        function addDraftItem(draftPick) {
+            const queueInput = document
+                .getElementById('queueInput');
+
+            if (draftPick) {
+                
+                let ul = document.getElementById("queue");
+                let newItem = document.createElement("li");
+                let textNode = document.createElement("span");
+                textNode.textContent = draftPick;
+                queueInput.value = '';
+
+                let deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+                deleteButton.onclick = function () { clickDelete(deleteButton); };
+
+                let draftButton = document.createElement("button");
+                draftButton.textContent = "Draft";
+                draftButton.onclick = function () { draftClick(draftButton); };
+                // makeDraggable(newItem)
+                newItem.appendChild(draftButton);
+                newItem.appendChild(textNode);
+                newItem.appendChild(deleteButton);
+                ul.appendChild(newItem);
+                saveList();
+                queueInput.focus();
+            }
+        }
+
+        function clickDelete(button) {
+            button.parentElement.remove();
+            saveList();
+        }
+        function draftClick(button) {
+            inputField.value = button.parentNode.querySelector('span').textContent;
+            sendMessage();
+        }
+        function makeDraggable(item) {
+            item.draggable = true;
+            item.addEventListener("touchstart", function (e) {
+                draggedItem = this;
+                this.style.opacity = "0.5";
+                this.style.color = "rgb(255, 255, 255)";
+            });
+            item.addEventListener("touchend", function () {
+                this.style.color = "rgb(65, 32, 250)";
+                this.style.opacity = "1"; // Reset opacity after drop
+            });
+            item.addEventListener("touchmove", function (e) {
+                e.preventDefault();
+                let touch = e.touches[0];
+                let dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+                let draggedIndex = getIndex(draggedItem);
+                let targetIndex = getIndex(dropTarget);
+                if (dropTarget && dropTarget.parentNode === this.parentNode) {
+                    if (draggedIndex > targetIndex) {
+                        this.parentNode.insertBefore(draggedItem, dropTarget);
+                    } else {
+                        this.parentNode.insertBefore(draggedItem, dropTarget.nextElementSibling);
+                    }
+                }
+            })
+            item.querySelectorAll("button").forEach(button => {
+                button.addEventListener("touchstart", function (e) {
+                    e.stopImmediatePropagation(); // Stops touch event from affecting drag
+                });
+            });
+        };
+        function vibratePhone() {
+            // Check if the Vibration API is supported
+            if (navigator.vibrate) {
+                // Vibrate for 500 milliseconds
+                navigator.vibrate(500);
+            }
+        };
+
+        function sendMessage() {
+            socket.send(inputField.value);
+            inputField.value = '';
+        };
+
+        function makeHost() {
+            vibratePhone();
+            document.getElementById('host').style.display = 'flex';
+        };
+
+        function nextMatch() {
+            socket.send("host|next");
+        };
+
+        function leftWon() {
+            socket.send("host|left");
+        };
+
+        function rightWon() {
+            socket.send("host|right");
+        };
+        function voteLeft() {
+            socket.send("vote~~left");
+        };
+
+        function voteRight() {
+            socket.send("vote~~right");
+        };
+        function showInstructions() {
+            main.style.display = 'none';
+            instruction.style.display = 'block';
+            queue.style.display = 'none';
+        };
+        // Function to show the main page
+        function showMainPage() {
+            main.style.display = 'block';
+            instruction.style.display = 'none';
+            queue.style.display = 'none';
+        };
+        function showQueuePage() {
+            main.style.display = 'none';
+            instruction.style.display = 'none';
+            queue.style.display = 'block';
+        };
+        var serverUrl = '{{ addr }}';
+        let socket;
+        let reconnectInterval = 1000; // Time in milliseconds between reconnection attempts
+
+        function connectWebSocket() {
+            socket = new WebSocket(serverUrl);
+
+            socket.onopen = () => {
+                console.log("Connected to WebSocket");
+                alert('You are Connected to Draftology');
+                socket.send('gamestate???')
+            };
+
+            socket.onmessage = (event) => {
+                switch (true) {
+                    case event.data === "You're Up":
+                        alert("You're Up");
+                        break;
+                    case event.data === "confirmhost":
+                        makeHost();
+                        break;
+                    case event.data.startsWith('Too'):
+                        alert(event.data)
+                        break;
+                    case event.data.includes("gamestate???"):
+                        switch (event.data.split('???')[1]) {
+                            case 'wait':
+                                document.getElementById('header').innerText = 'Enter Your Name'
+                                localStorage.clear()
+                                break;
+                            case 'draft':
+                                document.getElementById('header').innerText = "We're Drafting"
+                                break;
+                            case 'vote':
+                                document.getElementById('header').innerText = 'Vote Left or Right'
+                                localStorage.clear()
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        const outputDiv = document
+                            .getElementById('output');
+                        outputDiv.innerHTML += `<p><b>"${event.data}"</b></p>`;
+                        break;
+                }
+            }
+
+            socket.onclose = (event) => {
+                console.log("WebSocket closed:", event.reason);
+                document.getElementById("header").innerText = "Disconnected";
+                connectWebSocket();
+            };
+
+            socket.onerror = (error) => {
+                console.error("WebSocket error:", error);
+            };
+        }
+        connectWebSocket();
+        window.onload = loadList();
+    </script>
+
+</body>
+
+</html>

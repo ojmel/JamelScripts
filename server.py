@@ -11,10 +11,9 @@ from socketserver import TCPServer
 
 import ScraperScripts
 
-HOST = "192.168.1.12"
 
 
-#cd online
+#cd templates
 #python -m http.server 5554
 #http://192.168.1.12:5554
 #Use qr code https://qr.io/ for web address
@@ -36,7 +35,7 @@ class PlayerHandler:
     godot_server = None
     max_answers = 3
     answers = []
-    game_state='gamestate???Enter Your Name'
+    game_state='gamestate???wait'
     tourney_ready = None
     draft_done=None
 
@@ -80,7 +79,10 @@ class PlayerHandler:
             await websocket.send(self.game_state)
 
         elif self.godot_server and addr not in self.players.keys():
-            await self.add_player(message, websocket)
+            if message not in [player.player_name for player in self.players.values()]:
+                await self.add_player(message, websocket)
+            else:
+                await websocket.send(f'Too much like another player')
 
         elif addr in self.players.keys() and self.tourney_ready:
             player = self.players[addr]
@@ -110,13 +112,13 @@ class PlayerHandler:
 
             if message == 'ready':
                 self.tourney_ready = True
-                self.game_state="gamestate???We're Drafting"
+                self.game_state="gamestate???draft"
                 print('Tourney Ready')
                 for player in self.players.values():
                     await player.websocket.send(self.game_state)
             elif message=='done':
                 self.draft_done = True
-                self.game_state = "gamestate???Vote Left or Right"
+                self.game_state = "gamestate???vote"
                 print('Vote Ready')
                 for player in self.players.values():
                     await player.websocket.send(self.game_state)
@@ -150,7 +152,7 @@ class MyHandler(SimpleHTTPRequestHandler):
 
 def start_http_server():
     with TCPServer((HOST, HTTP_PORT), MyHandler) as httpd:
-        os.chdir("online")
+        os.chdir("templates")
         print(f"Serving HTTP on {HOST}:{HTTP_PORT}")
         try:
             httpd.serve_forever()
