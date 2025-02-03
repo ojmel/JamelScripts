@@ -109,22 +109,22 @@
 <body style="background-color: var(--bg); text-align: center;">
     <div id="main-page" class="container" style="display: block;">
         <h1>Draftology</h1>
-        <h2 id="header">Enter Your Name</h2>
+        <h2 id="header">Disconnected</h2>
         <div class="container" style="height: 25%;">
             <input type="text" id="messageInput">
             <button onclick="sendMessage()">Send</button>
         </div>
 
         <div class="button-row" id="vote-button" style="display: flex;">
-            <button onclick="voteLeft()" style="width: 120px; font-size: 40px;">Left</button>
-            <button onclick="voteRight()" style="width: 120px; font-size: 40px;">Right</button>
+            <button onclick="vote('left')" style="width: 120px; font-size: 40px;">Left</button>
+            <button onclick="vote('right')" style="width: 120px; font-size: 40px;">Right</button>
         </div>
         <div id="output" style="font-size: 25px; color: var(--text);"></div>
         <div class="button-row" id="host" style="display: none; position: fixed; gap: 25px; right: 5px;">
-            <button onclick="start()">Start</button>
-            <button onclick="leftWon()">Left</button>
-            <button onclick="rightWon()">Right</button>
-            <button onclick="nextMatch()">Next</button>
+            <button onclick="hostCommand('start')">Start</button>
+            <button onclick="hostCommand('left')">Left</button>
+            <button onclick="hostCommand('right')">Right</button>
+            <button onclick="hostCommand('next')">Next</button>
         </div>
         <button class="transition-button" style="left: 5px;" onclick="showQueuePage()">Queue</button>
         <button class="transition-button" onclick="showInstructions()">Instructions</button>
@@ -158,7 +158,9 @@
         <ul id="queue" class="queue"></ul>
 
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
+        let in_game = false
         const inputField = document.getElementById("messageInput");
         const main = document.getElementById("main-page");
         const instruction = document.getElementById("instructionsPage");
@@ -199,7 +201,7 @@
                 .getElementById('queueInput');
 
             if (draftPick) {
-                
+
                 let ul = document.getElementById("queue");
                 let newItem = document.createElement("li");
                 let textNode = document.createElement("span");
@@ -227,9 +229,10 @@
             button.parentElement.remove();
             saveList();
         }
+
         function draftClick(button) {
-            inputField.value = button.parentNode.querySelector('span').textContent;
-            sendMessage();
+            let pick = button.parentNode.querySelector('span').textContent;
+            socket.emit('draft_pick', { pick: pick });
         }
         function makeDraggable(item) {
             item.draggable = true;
@@ -271,32 +274,43 @@
         };
 
         function sendMessage() {
-            socket.send(inputField.value);
+            if (inputField.value === '2908') {
+                socket.emit('host', 'make_host');
+            }
+            else if (in_game) {
+                socket.emit('draft_pick', { pick: inputField.value });
+            }
+            else {
+                socket.emit('new_player', { name: inputField.value });
+            }
             inputField.value = '';
         };
 
+        function deleteByName(pick) {
+            let spans = document.getElementById("queue").querySelectorAll("li span");
+            
+            for (let span of spans) {
+                if (span.textContent === pick) {
+                    span.parentElement.remove();
+                    saveList();
+                    break;  // Stops loop after removing the first match
+                }
+            }
+        }
+        function addtoDash(text) {
+            const outputDiv = document
+                .getElementById('output');
+            outputDiv.innerHTML += `<p><b>"${text}"</b></p>`;
+        }
         function makeHost() {
             vibratePhone();
             document.getElementById('host').style.display = 'flex';
         };
-
-        function nextMatch() {
-            socket.send("host|next");
-        };
-
-        function leftWon() {
-            socket.send("host|left");
-        };
-
-        function rightWon() {
-            socket.send("host|right");
-        };
-        function voteLeft() {
-            socket.send("vote~~left");
-        };
-
-        function voteRight() {
-            socket.send("vote~~right");
+        function hostCommand(command) {
+            socket.emit('host', command);
+        }
+        function vote(vote) {
+            socket.emit('vote', { vote: vote });
         };
         function showInstructions() {
             main.style.display = 'none';
@@ -314,63 +328,60 @@
             instruction.style.display = 'none';
             queue.style.display = 'block';
         };
-        var serverUrl = '{{ addr }}';
-        let socket;
+
+        var socket = io('/player');
         let reconnectInterval = 1000; // Time in milliseconds between reconnection attempts
 
         function connectWebSocket() {
-            socket = new WebSocket(serverUrl);
-
-            socket.onopen = () => {
-                console.log("Connected to WebSocket");
-                alert('You are Connected to Draftology');
-                socket.send('gamestate???')
-            };
-
-            socket.onmessage = (event) => {
-                switch (true) {
-                    case event.data === "You're Up":
-                        alert("You're Up");
+            // socket.on('connect', function () {
+            //     pass
+            // });
+            socket.on('game_state', function (state) {
+                switch (state.state) {
+                    case 'wait':
+                        document.getElementById('header').innerText = 'Enter Your Name'
+                        localStorage.clear()
                         break;
-                    case event.data === "confirmhost":
-                        makeHost();
+                    case 'draft':
+                        document.getElementById('header').innerText = "We're Drafting"
                         break;
-                    case event.data.startsWith('Too'):
-                        alert(event.data)
-                        break;
-                    case event.data.includes("gamestate???"):
-                        switch (event.data.split('???')[1]) {
-                            case 'wait':
-                                document.getElementById('header').innerText = 'Enter Your Name'
-                                localStorage.clear()
-                                break;
-                            case 'draft':
-                                document.getElementById('header').innerText = "We're Drafting"
-                                break;
-                            case 'vote':
-                                document.getElementById('header').innerText = 'Vote Left or Right'
-                                localStorage.clear()
-                            default:
-                                break;
-                        }
-                        break;
+                    case 'vote':
+                        document.getElementById('header').innerText = 'Vote Left or Right'
+                        localStorage.clear()
                     default:
-                        const outputDiv = document
-                            .getElementById('output');
-                        outputDiv.innerHTML += `<p><b>"${event.data}"</b></p>`;
                         break;
                 }
-            }
+                in_game = state.in_game
+            });
+            socket.on('too_similar', function (message) {
+                alert(message)
+            });
+            socket.on('notify_player', function (message) {
+                switch (message.action) {
+                    case 'confirm_player':
+                        let notification = "Got it, you're {message['name']}.".replace("{message['name']}", message.name)
+                        addtoDash(notification)
+                        break;
+                    case 'next':
+                        alert("You're Up");
+                        break;
+                    case 'confirm_pick':
+                        let pick = "You drafted {message['pick']}.".replace("{message['pick']}", message.pick)
+                        addtoDash(pick)
+                        
+                        deleteByName(message.pick)
+                        break;
+                    case 'confirm_host':
+                        makeHost()
+                        break;
+                    default:
+                        break;
+                }
+            });
+            socket.on('disconnect', function (message) {
+                document.getElementById('header').innerText = 'Disconnected'
+            });
 
-            socket.onclose = (event) => {
-                console.log("WebSocket closed:", event.reason);
-                document.getElementById("header").innerText = "Disconnected";
-                connectWebSocket();
-            };
-
-            socket.onerror = (error) => {
-                console.error("WebSocket error:", error);
-            };
         }
         connectWebSocket();
         window.onload = loadList();

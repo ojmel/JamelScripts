@@ -8,12 +8,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="after server restructure">
-      <change afterPath="$PROJECT_DIR$/server_flask.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/Draft.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/online/Draft.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server_flask.py" beforeDir="false" afterPath="$PROJECT_DIR$/server_flask.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Draft.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Draft.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +81,7 @@
     "git-widget-placeholder": "master",
     "last_opened_file_path": "C:/Users/jamel/PycharmProjects/JamelScripts/pd_bug",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+    "settings.editor.selected.configurable": "terminal"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -235,7 +232,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738131089064</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="after server restructure">
+      <option name="closed" value="true" />
+      <created>1738355259499</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1738355259500</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -255,6 +260,7 @@
     <MESSAGE value="before moving to class data structure" />
     <MESSAGE value="after moving to class data structure" />
     <MESSAGE value="before server restructure" />
-    <option name="LAST_COMMIT_MESSAGE" value="before server restructure" />
+    <MESSAGE value="after server restructure" />
+    <option name="LAST_COMMIT_MESSAGE" value="after server restructure" />
   </component>
 </project>
