@@ -17,10 +17,10 @@ class Stats(Enum):
     P = 'points'
     A = 'assists'
 
-
+# print(ScraperScripts.navigable_str_to_obj(ScraperScripts.get_url_soup('https://api-web.nhle.com/v1/schedule/2024-11-08'))['gameWeek'][0]['games'])
 player_stats = ['A', 'P', 'S']
 team_ids = ScraperScripts.load_json('teams.json')
-today = datetime.today().strftime("%m-%d")
+today = datetime.today().strftime("%Y-%m-%d")
 
 
 class StatsManager:
@@ -68,13 +68,12 @@ class MatchUpManager:
 
     def create_MatchUps(self):
         games = ScraperScripts.navigable_str_to_obj(
-            ScraperScripts.get_url_soup('http://sports.core.api.espn.com/v2/sports/hockey/leagues/nhl/events').contents[
-                0])['items']
-        game_urls = [game['$ref'] for game in games]
+            ScraperScripts.get_url_soup(f'https://api-web.nhle.com/v1/schedule/{today}'))['gameWeek'][0]['games']
+        game_urls=[f'https://api-web.nhle.com/v1/gamecenter/{game["id"]}/boxscore' for game in games]
         for url in game_urls:
-            away, home = ScraperScripts.navigable_str_to_obj(ScraperScripts.get_url_soup(url).contents[0])[
-                "name"].split(
-                ' at ')
+            game = ScraperScripts.navigable_str_to_obj(ScraperScripts.get_url_soup(url))
+            home=f'{game["homeTeam"]["placeName"]["default"]} {game["homeTeam"]["name"]["default"]}'
+            away=f'{game["awayTeam"]["placeName"]["default"]} {game["awayTeam"]["name"]["default"]}'
             self.teams.append(home)
             self.teams.append(away)
             self.matchups.append(MatchUpManager.MatchUp(home, away))
@@ -154,11 +153,11 @@ class OddsManager:
 
 
 # odd_man = OddsManager()
-if __name__ == '__main__':
-    lines_file=f'{today}.pkl'
-    if not os.path.exists(lines_file):
-        ScraperScripts.clear_html(r'C:\Users\jamel\PycharmProjects\JamelScripts\NHL\stats')
-        ScraperScripts.clear_html(r'C:\Users\jamel\PycharmProjects\JamelScripts\NHL\teams')
-    MatchUpManager().show_totals()
+# if __name__ == '__main__':
+#     lines_file=f'{today}.pkl'
+#     if not os.path.exists(lines_file):
+#         ScraperScripts.clear_html(r'C:\Users\jamel\PycharmProjects\JamelScripts\NHL\stats')
+#         ScraperScripts.clear_html(r'C:\Users\jamel\PycharmProjects\JamelScripts\NHL\teams')
+#     MatchUpManager().show_totals()
     # show(odd_man.get_all_lines(lines_file))
 

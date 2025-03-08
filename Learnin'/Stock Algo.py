@@ -158,6 +158,7 @@ class TabbedWindow(QTabWidget):
 def run_app():
     app = QApplication(sys.argv)
     main_window=TabbedWindow('TickerSifter')
+
     sys.exit(app.exec_())
 
 if __name__ == '__main__':

@@ -6,7 +6,6 @@ import time
 import ast
 from functools import reduce
 from pathlib import Path
-
 from selenium import webdriver
 import requests
 from bs4 import BeautifulSoup

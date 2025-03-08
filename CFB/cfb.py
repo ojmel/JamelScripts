@@ -23,7 +23,6 @@ def get_conference_stats(off_def: Side, conference):
     div, conf_id = CONF_DICT[conference]
 
     url=rf'http://sports.yahoo.com/ncaaf/stats/team/?selectedTable={off_def.value}&leagueStructure=ncaaf.struct.div.{div}.conf.{conf_id}'
-    print(pd.read_html(url)[-1])
     conf_stats = pd.read_html(url)[-1].set_index('Team')
     conf_stats.rename(columns={'PassYds/G': 'PasY/G', 'RushYds/G': 'RusY/G'}, inplace=True)
     for stat in STATS_OF_INTEREST:
@@ -97,5 +96,5 @@ if __name__ == '__main__':
     configuration.api_key_prefix['Authorization'] = 'Bearer'
     api_instance = cfbd.BettingApi(cfbd.ApiClient(configuration))
 
-    MatchUpManager(11).show_totals()
+    MatchUpManager(12).show_totals()
 
