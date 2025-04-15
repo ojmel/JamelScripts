@@ -17,12 +17,12 @@ def get_url_soup(url):
         return BeautifulSoup(response.content, 'html.parser')
 
 
-def download_page(url, html_file):
+def download_page(url, new_html_file):
     driver = webdriver.Edge()
     driver.get(url)
     time.sleep(2)
     html = driver.page_source
-    with open(html_file, "w", encoding="utf-8") as file:
+    with open(new_html_file, "w", encoding="utf-8") as file:
         file.write(html)
     return html
 
@@ -56,7 +56,6 @@ def create_json(obj: dict, json_file):
 def load_json(json_file):
     with open(json_file, 'rb') as jfile:
         return json.load(jfile)
-
 
 def step_thru_parents(soup: BeautifulSoup, text_to_find):
     child = soup.find(string=text_to_find)

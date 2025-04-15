@@ -1,0 +1,75 @@
+,PLAYER,LINE,ACTUAL,DIFF,STAT,MIN,TEAMODDS,TEAM
+0,Giannis Antetokounmpo,31,31.0,0.0,PTS,35.2,0.18,Milwaukee Bucks
+1,Lauri Markkanen,21,18.0,-3.0,PTS,28.4,-0.2,Utah Jazz
+2,Anthony Edwards,27,27.3,0.3000000000000007,PTS,37.1,0.15,Minnesota Timberwolves
+3,Julius Randle,21,21.4,0.3999999999999986,PTS,33.1,0.15,Minnesota Timberwolves
+4,Coby White,19,19.0,0.0,PTS,33.2,-0.29,Chicago Bulls
+5,Zach LaVine,19,22.7,3.6999999999999993,PTS,34.7,-0.29,Chicago Bulls
+6,Rudy Gobert,13,10.4,-2.5999999999999996,PTS,32.7,0.15,Minnesota Timberwolves
+7,Josh Giddey,13,14.1,1.0999999999999996,PTS,29.0,-0.29,Chicago Bulls
+8,Donte DiVincenzo,11,10.4,-0.5999999999999996,PTS,27.0,0.15,Minnesota Timberwolves
+9,Jaden McDaniels,10,8.6,-1.4000000000000004,PTS,27.2,0.15,Minnesota Timberwolves
+10,Patrick Williams,10,8.0,-2.0,PTS,27.4,-0.29,Chicago Bulls
+11,Mike Conley,9,7.9,-1.0999999999999996,PTS,23.7,0.15,Minnesota Timberwolves
+12,Victor Wembanyama,24,18.4,-5.600000000000001,PTS,30.6,-0.5,San Antonio Spurs
+13,Anfernee Simons,22,19.5,-2.5,PTS,34.1,-0.6299999999999999,Portland Trail Blazers
+14,Jerami Grant,18,18.3,0.3000000000000007,PTS,33.5,-0.6299999999999999,Portland Trail Blazers
+15,Deandre Ayton,16,14.4,-1.5999999999999996,PTS,31.6,-0.6299999999999999,Portland Trail Blazers
+16,Harrison Barnes,12,9.5,-2.5,PTS,29.2,-0.5,San Antonio Spurs
+17,Julian Champagnie,12,10.6,-1.4000000000000004,PTS,27.6,-0.5,San Antonio Spurs
+18,Chris Paul,12,11.8,-0.1999999999999993,PTS,28.6,-0.5,San Antonio Spurs
+19,Deni Avdija,11,10.1,-0.9000000000000004,PTS,27.3,-0.6299999999999999,Portland Trail Blazers
+20,Toumani Camara,10,9.8,-0.1999999999999993,PTS,30.6,-0.6299999999999999,Portland Trail Blazers
+21,Giannis Antetokounmpo,12,12.3,0.3000000000000007,REB,35.2,0.38,Milwaukee Bucks
+22,Lauri Markkanen,7,7.3,0.2999999999999998,REB,28.4,0.5,Utah Jazz
+23,Rudy Gobert,12,10.0,-2.0,REB,32.7,0.03,Minnesota Timberwolves
+24,Julius Randle,8,6.4,-1.5999999999999996,REB,33.1,0.03,Minnesota Timberwolves
+25,Josh Giddey,6,6.6,0.5999999999999996,REB,29.0,0.21999999999999997,Chicago Bulls
+26,Anthony Edwards,6,5.6,-0.40000000000000036,REB,37.1,0.03,Minnesota Timberwolves
+27,Zach LaVine,5,5.5,0.5,REB,34.7,0.21999999999999997,Chicago Bulls
+28,Patrick Williams,4,5.4,1.4000000000000004,REB,27.4,0.21999999999999997,Chicago Bulls
+29,Coby White,4,3.9,-0.10000000000000009,REB,33.2,0.21999999999999997,Chicago Bulls
+30,Donte DiVincenzo,4,3.3,-0.7000000000000002,REB,27.0,0.03,Minnesota Timberwolves
+31,Jaden McDaniels,3,2.4,-0.6000000000000001,REB,27.2,0.03,Minnesota Timberwolves
+32,Mike Conley,3,3.0,0.0,REB,23.7,0.03,Minnesota Timberwolves
+33,Victor Wembanyama,12,9.8,-2.1999999999999993,REB,30.6,0.58,San Antonio Spurs
+34,Deandre Ayton,12,11.5,-0.5,REB,31.6,-0.07000000000000006,Portland Trail Blazers
+35,Deni Avdija,7,6.0,-1.0,REB,27.3,-0.07000000000000006,Portland Trail Blazers
+36,Toumani Camara,5,4.5,-0.5,REB,30.6,-0.07000000000000006,Portland Trail Blazers
+37,Julian Champagnie,5,5.1,0.09999999999999964,REB,27.6,0.58,San Antonio Spurs
+38,Chris Paul,5,4.0,-1.0,REB,28.6,0.58,San Antonio Spurs
+39,Harrison Barnes,4,3.3,-0.7000000000000002,REB,29.2,0.58,San Antonio Spurs
+40,Jerami Grant,4,4.6,0.5999999999999996,REB,33.5,-0.07000000000000006,Portland Trail Blazers
+41,Anfernee Simons,4,2.6,-1.4,REB,34.1,-0.07000000000000006,Portland Trail Blazers
+42,Giannis Antetokounmpo,7,6.3,-0.7000000000000002,AST,35.2,0.03,Milwaukee Bucks
+43,Josh Giddey,6,6.3,0.2999999999999998,AST,29.0,0.20000000000000007,Chicago Bulls
+44,Julius Randle,5,4.7,-0.2999999999999998,AST,33.1,0.43000000000000005,Minnesota Timberwolves
+45,Mike Conley,5,4.3,-0.7000000000000002,AST,23.7,0.43000000000000005,Minnesota Timberwolves
+46,Anthony Edwards,5,3.0,-2.0,AST,37.1,0.43000000000000005,Minnesota Timberwolves
+47,Coby White,4,4.6,0.5999999999999996,AST,33.2,0.20000000000000007,Chicago Bulls
+48,Zach LaVine,4,2.7,-1.2999999999999998,AST,34.7,0.20000000000000007,Chicago Bulls
+49,Donte DiVincenzo,4,3.4,-0.6000000000000001,AST,27.0,0.43000000000000005,Minnesota Timberwolves
+50,Anfernee Simons,6,5.1,-0.9000000000000004,AST,34.1,-0.8,Portland Trail Blazers
+51,Victor Wembanyama,4,2.8,-1.2000000000000002,AST,30.6,0.2,San Antonio Spurs
+52,Deni Avdija,3,2.9,-0.10000000000000009,AST,27.3,-0.8,Portland Trail Blazers
+53,Jerami Grant,3,2.1,-0.8999999999999999,AST,33.5,-0.8,Portland Trail Blazers
+54,Toumani Camara,3,2.6,-0.3999999999999999,AST,30.6,-0.8,Portland Trail Blazers
+55,Julian Champagnie,3,1.6,-1.4,AST,27.6,0.2,San Antonio Spurs
+56,Lauri Markkanen,3,2.3,-0.7000000000000002,FG3M,28.4,0.0,Utah Jazz
+57,Anthony Edwards,4,5.1,1.0999999999999996,FG3M,37.1,0.26,Minnesota Timberwolves
+58,Coby White,3,3.5,0.5,FG3M,33.2,-0.13,Chicago Bulls
+59,Zach LaVine,3,3.7,0.7000000000000002,FG3M,34.7,-0.13,Chicago Bulls
+60,Donte DiVincenzo,3,2.3,-0.7000000000000002,FG3M,27.0,0.26,Minnesota Timberwolves
+61,Mike Conley,2,1.7,-0.30000000000000004,FG3M,23.7,0.26,Minnesota Timberwolves
+62,Patrick Williams,2,1.6,-0.3999999999999999,FG3M,27.4,-0.13,Chicago Bulls
+63,Julius Randle,2,1.9,-0.10000000000000009,FG3M,33.1,0.26,Minnesota Timberwolves
+64,Jaden McDaniels,2,0.9,-1.1,FG3M,27.2,0.26,Minnesota Timberwolves
+65,Josh Giddey,1,1.5,0.5,FG3M,29.0,-0.13,Chicago Bulls
+66,Anfernee Simons,4,2.6,-1.4,FG3M,34.1,-0.15000000000000002,Portland Trail Blazers
+67,Julian Champagnie,3,2.1,-0.8999999999999999,FG3M,27.6,-0.04000000000000001,San Antonio Spurs
+68,Victor Wembanyama,3,1.5,-1.5,FG3M,30.6,-0.04000000000000001,San Antonio Spurs
+69,Jerami Grant,3,2.8,-0.20000000000000018,FG3M,33.5,-0.15000000000000002,Portland Trail Blazers
+70,Chris Paul,2,2.4,0.3999999999999999,FG3M,28.6,-0.04000000000000001,San Antonio Spurs
+71,Harrison Barnes,2,1.0,-1.0,FG3M,29.2,-0.04000000000000001,San Antonio Spurs
+72,Toumani Camara,2,1.6,-0.3999999999999999,FG3M,30.6,-0.15000000000000002,Portland Trail Blazers
+73,Deni Avdija,1,0.6,-0.4,FG3M,27.3,-0.15000000000000002,Portland Trail Blazers

@@ -7,12 +7,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="after server restructure">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scratch.py" beforeDir="false" afterPath="$PROJECT_DIR$/scratch.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server_flask.py" beforeDir="false" afterPath="$PROJECT_DIR$/server_flask.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Draft.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Draft.html" afterDir="false" />
+=======
+    <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="after moving to class data structure">
+      <change afterPath="$PROJECT_DIR$/Jamar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScraperScripts.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScraperScripts.py" afterDir="false" />
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +61,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< Updated upstream
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Python.Indicator.executor&quot;: &quot;Run&quot;,
@@ -84,6 +93,38 @@
     &quot;last_opened_file_path&quot;: &quot;C:/Users/jamel/PycharmProjects/JamelScripts/pd_bug&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.Indicator.executor": "Run",
+    "Python.Jamar.executor": "Run",
+    "Python.ScraperScripts.executor": "Run",
+    "Python.Stock Algo.executor": "Run",
+    "Python.cbb_stuff.executor": "Run",
+    "Python.cfb.executor": "Run",
+    "Python.ml_pred_v3.executor": "Run",
+    "Python.mlb_LR.executor": "Run",
+    "Python.mlb_ML.executor": "Run",
+    "Python.mlb_database.executor": "Run",
+    "Python.mlb_pred.executor": "Run",
+    "Python.mlb_pred_v2.executor": "Run",
+    "Python.naomi.executor": "Run",
+    "Python.nba_scores.executor": "Run",
+    "Python.nfl_pred.executor": "Run",
+    "Python.nhl.executor": "Run",
+    "Python.opensource.executor": "Run",
+    "Python.prost.executor": "Run",
+    "Python.scores.executor": "Run",
+    "Python.scratch.executor": "Run",
+    "Python.test.executor": "Run",
+    "Python.youtube_download.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/jamel/PycharmProjects/JamelScripts",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+>>>>>>> Stashed changes
   }
 }]]></component>
   <component name="RecentsManager">
@@ -219,6 +260,7 @@
       <option name="project" value="LOCAL" />
       <updated>1736677254549</updated>
     </task>
+<<<<<<< Updated upstream
     <task id="LOCAL-00014" summary="before server restructure">
       <option name="closed" value="true" />
       <created>1736677285129</created>
@@ -252,6 +294,17 @@
       <updated>1738604669710</updated>
     </task>
     <option name="localTasksCounter" value="18" />
+=======
+    <task id="LOCAL-00014" summary="after moving to class data structure">
+      <option name="closed" value="true" />
+      <created>1741459343550</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1741459343550</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
+>>>>>>> Stashed changes
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

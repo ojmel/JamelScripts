@@ -1,0 +1,29 @@
+,team,pass,rush,pts_pot,pts,total,opp
+0,Seattle,15,-22,-1,23.0,-8,San Francisco
+1,San Francisco,6,24,17,26.0,47,Seattle
+2,Chicago,10,-13,19,27.2,16,Jacksonville
+3,Jacksonville,-12,-9,-17,17.8,-38,Chicago
+4,Baltimore,15,21,18,26.85,54,Washington
+5,Washington,16,-4,22,27.25,34,Baltimore
+6,Green Bay,7,27,18,27.1,52,Arizona
+7,Arizona,0,1,-8,21.2,-7,Green Bay
+8,New England,-27,1,-16,18.15,-42,Houston
+9,Houston,22,5,7,23.8,34,New England
+10,New Orleans,6,-2,13,25.65,17,Tampa Bay
+11,Tampa Bay,20,12,20,27.1,52,New Orleans
+12,Philadelphia,-3,15,2,22.35,14,Cleveland
+13,Cleveland,-7,-12,-16,19.1,-35,Philadelphia
+14,Tennessee,-6,16,-3,21.2,7,Indianapolis
+15,Indianapolis,-16,-8,-3,22.6,-27,Tennessee
+16,Denver,-19,-17,-24,15.95,-60,L.A. Chargers
+17,L.A. Chargers,-25,4,-22,17.1,-43,Denver
+18,Las Vegas,2,-27,-25,16.25,-50,Pittsburgh
+19,Pittsburgh,-19,15,8,23.95,4,Las Vegas
+20,Carolina,-18,3,-12,19.85,-27,Atlanta
+21,Atlanta,15,9,21,29.299999999999997,45,Carolina
+22,Dallas,24,-29,-11,19.6,-16,Detroit
+23,Detroit,11,22,29,29.1,62,Dallas
+24,N.Y. Giants,-8,4,-3,20.65,-7,Cincinnati
+25,Cincinnati,6,-11,0,23.2,-5,N.Y. Giants
+26,N.Y. Jets,4,-7,-13,19.9,-16,Buffalo
+27,Buffalo,-24,6,0,22.75,-18,N.Y. Jets
