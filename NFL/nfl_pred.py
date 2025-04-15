@@ -1,4 +1,3 @@
-import re
 from enum import Enum
 import html_to_json
 import pandas as pd
@@ -76,17 +75,20 @@ def match_up_stats(team1,team2):
     print(team1_stats,'\n',team2_stats)
     return team1_stats,team2_stats
 
-def weekly_match_up(week:int,csv_file):
-    team_potential=[]
-    for index,game in schedule[schedule['week']==week].iterrows():
-        home=team_dict[game['home_team']]
-        away=team_dict[game['away_team']]
-        home_dict,away_dict=match_up_stats(home,away)
-        team_potential.append(home_dict)
-        team_potential.append(away_dict)
-    team_potential=pd.DataFrame(team_potential)
-    team_potential.to_csv(csv_file)
-    return team_potential
+
+# if __name__=='__main__':
+#     week = 16
+#     year = 2024
+#     team_potential=[]
+#     for index,game in schedule[schedule['week']==week].iterrows():
+#         home=team_dict[game['home_team']]
+#         away=team_dict[game['away_team']]
+#         home_dict,away_dict=match_up_stats(home,away)
+#         team_potential.append(home_dict)
+#         team_potential.append(away_dict)
+#     team_potential=pd.DataFrame(team_potential)
+#     team_potential.to_csv(csv_file)
+#     return team_potential
 
 if __name__=='__main__':
     week = 15

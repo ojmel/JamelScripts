@@ -1,0 +1,29 @@
+,name,team,runs,R_rank,SO,SO_rank,HIP,IP,score,side,opp,opp_SO(1),opp_R(30)
+0,Jameson Taillon,Chicago Cubs,2.2,15.0,4.6,18.0,0.9933774834437086,6.04,8.454569536423842,home,Washington Nationals,5,5
+1,Trevor Williams,Washington Nationals,1.6,21.0,5.0,17.0,0.8230452674897119,4.86,8.543127572016461,away,Chicago Cubs,9,29
+2,Nick Martinez,Cincinnati Reds,2.2,19.0,4.4,17.0,0.9505703422053232,5.26,7.568745247148289,home,Pittsburgh Pirates,18,15
+3,Mitch Keller,Pittsburgh Pirates,2.6,8.0,6.8,9.0,1.2455516014234875,5.62,9.181565836298933,away,Cincinnati Reds,24,13
+4,Tyler Alexander,Tampa Bay Rays,3.4,23.0,2.0,14.0,1.2195121951219514,4.1,1.9536585365853654,home,Toronto Blue Jays,1,18
+5,José Berríos,Toronto Blue Jays,1.4,9.0,5.4,17.0,0.753012048192771,6.640000000000001,10.985783132530122,away,Tampa Bay Rays,28,3
+6,Corbin Burnes,Baltimore Orioles,3.2,19.0,4.0,6.0,1.0638297872340425,5.64,6.235744680851065,home,Detroit Tigers,27,22
+7,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,home,Minnesota Twins,14,2
+8,David Festa,Minnesota Twins,2.6,9.0,5.4,22.0,0.7009345794392524,4.279999999999999,7.8575700934579435,away,Boston Red Sox,25,1
+9,David Peterson,New York Mets,2.0,20.0,5.0,3.0,0.9554140127388535,6.28,9.369171974522294,home,Philadelphia Phillies,20,23
+10,Cristopher Sánchez,Philadelphia Phillies,2.0,21.0,6.8,17.0,0.9615384615384615,6.24,11.116923076923076,away,New York Mets,16,26
+11,Valente Bellozo,Miami Marlins,3.6,12.0,2.4,9.0,1.2295081967213115,4.88,2.853770491803278,home,Atlanta Braves,17,21
+12,Charlie Morton,Atlanta Braves,1.8,13.0,6.8,20.0,0.9057971014492753,5.5200000000000005,10.689565217391305,away,Miami Marlins,11,17
+13,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,home,Seattle Mariners,19,24
+14,George Kirby,Seattle Mariners,3.0,11.0,4.2,21.0,1.094890510948905,5.4799999999999995,6.395328467153284,away,Texas Rangers,7,11
+15,Justin Verlander,Houston Astros,4.2,13.0,2.8,22.0,1.5765765765765767,4.4399999999999995,0.6183783783783774,home,Los Angeles Angels,22,6
+16,Tyler Anderson,Los Angeles Angels,3.4,18.0,3.8,7.0,1.2,5.0,4.720000000000001,away,Houston Astros,4,19
+17,Michael Wacha,Kansas City Royals,2.0,8.0,6.0,14.0,0.8620689655172414,5.8,10.075862068965519,home,San Francisco Giants,21,10
+18,Mason Black,San Francisco Giants,3.2,17.0,3.6,11.0,1.6304347826086958,3.6799999999999997,2.0626086956521723,away,Kansas City Royals,10,7
+19,Colin Rea,Milwaukee Brewers,4.0,13.0,3.2,21.0,1.4705882352941175,4.08,1.3976470588235301,home,Arizona Diamondbacks,3,28
+20,Zac Gallen,Arizona Diamondbacks,1.6,11.0,7.6,21.0,0.37037037037037035,5.4,12.407407407407408,away,Milwaukee Brewers,26,25
+21,Kyle Gibson,St. Louis Cardinals,3.0,20.0,4.6,15.0,0.9090909090909091,5.5,7.372727272727273,home,Cleveland Guardians,13,8
+22,Ben Lively,Cleveland Guardians,2.6,7.0,2.8,10.0,1.1737089201877935,4.26,4.008356807511737,away,St. Louis Cardinals,8,9
+23,Joe Musgrove,San Diego Padres,1.8,10.0,7.0,21.0,0.5154639175257731,5.82,11.892164948453608,home,Chicago White Sox,6,0
+24,Garrett Crochet,Chicago White Sox,1.6,11.0,3.8,21.0,1.1450381679389312,2.62,4.58793893129771,away,San Diego Padres,0,20
+25,J.T. Ginn,Oakland Athletics,2.6,22.0,4.0,24.0,1.1792452830188678,4.24,5.173962264150944,home,New York Yankees,15,16
+26,Gerrit Cole,New York Yankees,2.6,8.0,5.4,9.0,0.7380073800738007,5.42,8.901180811808118,away,Oakland Athletics,23,14
+27,Kyle Freeland,Colorado Rockies,2.2,21.0,4.0,15.0,0.9933774834437086,6.04,7.85456953642384,away,Los Angeles Dodgers,2,27

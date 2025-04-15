@@ -1,0 +1,101 @@
+,PLAYER,LINE,ACTUAL,DIFF,STAT,MIN,TEAMODDS,TEAM
+0,Joel Embiid,26,20.3,-5.699999999999999,PTS,29.3,-0.46,Philadelphia 76ers
+1,Tyrese Maxey,26,25.1,-0.8999999999999986,PTS,36.9,-0.46,Philadelphia 76ers
+2,Miles Bridges,22,16.4,-5.600000000000001,PTS,29.7,-0.6,Charlotte Hornets
+3,Paul George,20,17.1,-2.8999999999999986,PTS,31.5,-0.46,Philadelphia 76ers
+4,Kelly Oubre Jr.,13,13.1,0.09999999999999964,PTS,31.9,-0.46,Philadelphia 76ers
+5,Nick Richards,11,11.1,0.09999999999999964,PTS,24.0,-0.6,Charlotte Hornets
+6,Josh Green,10,7.6,-2.4000000000000004,PTS,27.7,-0.6,Charlotte Hornets
+7,Giannis Antetokounmpo,32,32.7,0.7000000000000028,PTS,35.2,-0.09999999999999998,Milwaukee Bucks
+8,Donovan Mitchell,23,23.3,0.3000000000000007,PTS,31.9,0.33999999999999997,Cleveland Cavaliers
+9,Darius Garland,21,20.3,-0.6999999999999993,PTS,30.2,0.33999999999999997,Cleveland Cavaliers
+10,Evan Mobley,17,18.4,1.3999999999999986,PTS,30.3,0.33999999999999997,Cleveland Cavaliers
+11,Bobby Portis,13,13.1,0.09999999999999964,PTS,24.1,-0.09999999999999998,Milwaukee Bucks
+12,Jarrett Allen,13,13.6,0.5999999999999996,PTS,29.7,0.33999999999999997,Cleveland Cavaliers
+13,Brook Lopez,12,11.2,-0.8000000000000007,PTS,32.7,-0.09999999999999998,Milwaukee Bucks
+14,Caris LeVert,11,12.3,1.3000000000000007,PTS,24.4,0.33999999999999997,Cleveland Cavaliers
+15,Georges Niang,9,8.8,-0.1999999999999993,PTS,20.8,0.33999999999999997,Cleveland Cavaliers
+16,Taurean Prince,7,7.8,0.7999999999999998,PTS,26.5,-0.09999999999999998,Milwaukee Bucks
+17,Andre Jackson Jr.,5,3.7,-1.2999999999999998,PTS,18.0,-0.09999999999999998,Milwaukee Bucks
+18,Shai Gilgeous-Alexander,28,30.5,2.5,PTS,34.5,-0.13,Oklahoma City Thunder
+19,Tyler Herro,23,24.1,1.1000000000000014,PTS,34.9,-0.5,Miami Heat
+20,Jalen Williams,21,21.3,0.3000000000000007,PTS,32.2,-0.13,Oklahoma City Thunder
+21,Jimmy Butler,20,19.4,-0.6000000000000014,PTS,32.6,-0.5,Miami Heat
+22,Bam Adebayo,16,16.2,0.1999999999999993,PTS,35.0,-0.5,Miami Heat
+23,Isaiah Hartenstein,11,12.5,1.5,PTS,30.3,-0.13,Oklahoma City Thunder
+24,Duncan Robinson,11,11.1,0.09999999999999964,PTS,22.6,-0.5,Miami Heat
+25,Terry Rozier,11,11.7,0.6999999999999993,PTS,28.7,-0.5,Miami Heat
+26,Luguentz Dort,10,9.9,-0.09999999999999964,PTS,29.3,-0.13,Oklahoma City Thunder
+27,Cason Wallace,8,6.8,-1.2000000000000002,PTS,26.5,-0.13,Oklahoma City Thunder
+28,Jaime Jaquez Jr.,7,8.8,1.8000000000000007,PTS,21.0,-0.5,Miami Heat
+29,Isaiah Joe,7,8.8,1.8000000000000007,PTS,21.2,-0.13,Oklahoma City Thunder
+30,Haywood Highsmith,6,7.1,1.0999999999999996,PTS,24.8,-0.5,Miami Heat
+31,Alex Caruso,6,5.8,-0.20000000000000018,PTS,19.9,-0.13,Oklahoma City Thunder
+32,Joel Embiid,10,7.7,-2.3,REB,29.3,-0.67,Philadelphia 76ers
+33,Nick Richards,8,9.1,1.0999999999999996,REB,24.0,0.17000000000000004,Charlotte Hornets
+34,Miles Bridges,7,6.8,-0.20000000000000018,REB,29.7,0.17000000000000004,Charlotte Hornets
+35,Kelly Oubre Jr.,7,5.8,-1.2000000000000002,REB,31.9,-0.67,Philadelphia 76ers
+36,Paul George,6,5.3,-0.7000000000000002,REB,31.5,-0.67,Philadelphia 76ers
+37,Tyrese Maxey,4,3.7,-0.2999999999999998,REB,36.9,-0.67,Philadelphia 76ers
+38,Giannis Antetokounmpo,12,11.5,-0.5,REB,35.2,-0.47,Milwaukee Bucks
+39,Jarrett Allen,11,10.3,-0.6999999999999993,REB,29.7,0.09999999999999998,Cleveland Cavaliers
+40,Evan Mobley,9,8.9,-0.09999999999999964,REB,30.3,0.09999999999999998,Cleveland Cavaliers
+41,Bobby Portis,8,7.7,-0.2999999999999998,REB,24.1,-0.47,Milwaukee Bucks
+42,Brook Lopez,5,4.9,-0.09999999999999964,REB,32.7,-0.47,Milwaukee Bucks
+43,Donovan Mitchell,5,4.7,-0.2999999999999998,REB,31.9,0.09999999999999998,Cleveland Cavaliers
+44,Georges Niang,4,4.1,0.09999999999999964,REB,20.8,0.09999999999999998,Cleveland Cavaliers
+45,Andre Jackson Jr.,4,3.1,-0.8999999999999999,REB,18.0,-0.47,Milwaukee Bucks
+46,Taurean Prince,4,4.2,0.20000000000000018,REB,26.5,-0.47,Milwaukee Bucks
+47,Caris LeVert,3,2.9,-0.10000000000000009,REB,24.4,0.09999999999999998,Cleveland Cavaliers
+48,Darius Garland,3,2.4,-0.6000000000000001,REB,30.2,0.09999999999999998,Cleveland Cavaliers
+49,Isaiah Hartenstein,12,12.3,0.3000000000000007,REB,30.3,0.24,Oklahoma City Thunder
+50,Bam Adebayo,12,10.3,-1.6999999999999993,REB,35.0,0.46,Miami Heat
+51,Jimmy Butler,7,6.1,-0.9000000000000004,REB,32.6,0.46,Miami Heat
+52,Jalen Williams,6,5.9,-0.09999999999999964,REB,32.2,0.24,Oklahoma City Thunder
+53,Tyler Herro,6,5.3,-0.7000000000000002,REB,34.9,0.46,Miami Heat
+54,Shai Gilgeous-Alexander,6,5.4,-0.5999999999999996,REB,34.5,0.24,Oklahoma City Thunder
+55,Luguentz Dort,4,4.8,0.7999999999999998,REB,29.3,0.24,Oklahoma City Thunder
+56,Terry Rozier,4,3.9,-0.10000000000000009,REB,28.7,0.46,Miami Heat
+57,Haywood Highsmith,3,3.0,0.0,REB,24.8,0.46,Miami Heat
+58,Cason Wallace,3,3.6,0.6000000000000001,REB,26.5,0.24,Oklahoma City Thunder
+59,Duncan Robinson,3,2.2,-0.7999999999999998,REB,22.6,0.46,Miami Heat
+60,Tyrese Maxey,6,5.0,-1.0,AST,36.9,-0.49,Philadelphia 76ers
+61,Paul George,6,5.1,-0.9000000000000004,AST,31.5,-0.49,Philadelphia 76ers
+62,Joel Embiid,5,3.8,-1.2000000000000002,AST,29.3,-0.49,Philadelphia 76ers
+63,Miles Bridges,4,3.1,-0.8999999999999999,AST,29.7,-0.33999999999999997,Charlotte Hornets
+64,Giannis Antetokounmpo,8,6.1,-1.9000000000000004,AST,35.2,-0.49,Milwaukee Bucks
+65,Darius Garland,7,6.5,-0.5,AST,30.2,0.0,Cleveland Cavaliers
+66,Donovan Mitchell,5,4.5,-0.5,AST,31.9,0.0,Cleveland Cavaliers
+67,Caris LeVert,4,4.2,0.20000000000000018,AST,24.4,0.0,Cleveland Cavaliers
+68,Evan Mobley,3,2.6,-0.3999999999999999,AST,30.3,0.0,Cleveland Cavaliers
+69,Shai Gilgeous-Alexander,6,6.3,0.2999999999999998,AST,34.5,0.06,Oklahoma City Thunder
+70,Jimmy Butler,5,5.0,0.0,AST,32.6,-0.30000000000000004,Miami Heat
+71,Jalen Williams,5,5.1,0.09999999999999964,AST,32.2,0.06,Oklahoma City Thunder
+72,Bam Adebayo,5,5.1,0.09999999999999964,AST,35.0,-0.30000000000000004,Miami Heat
+73,Tyler Herro,5,4.8,-0.20000000000000018,AST,34.9,-0.30000000000000004,Miami Heat
+74,Isaiah Hartenstein,4,4.1,0.09999999999999964,AST,30.3,0.06,Oklahoma City Thunder
+75,Tyrese Maxey,4,2.9,-1.1,FG3M,36.9,-0.07999999999999999,Philadelphia 76ers
+76,Paul George,3,2.3,-0.7000000000000002,FG3M,31.5,-0.07999999999999999,Philadelphia 76ers
+77,Miles Bridges,3,1.9,-1.1,FG3M,29.7,0.019999999999999907,Charlotte Hornets
+78,Josh Green,2,1.5,-0.5,FG3M,27.7,0.019999999999999907,Charlotte Hornets
+79,Kelly Oubre Jr.,2,1.3,-0.7,FG3M,31.9,-0.07999999999999999,Philadelphia 76ers
+80,Joel Embiid,2,0.7,-1.3,FG3M,29.3,-0.07999999999999999,Philadelphia 76ers
+81,Donovan Mitchell,4,3.7,-0.2999999999999998,FG3M,31.9,0.4600000000000001,Cleveland Cavaliers
+82,Darius Garland,3,2.8,-0.20000000000000018,FG3M,30.2,0.4600000000000001,Cleveland Cavaliers
+83,Brook Lopez,2,1.8,-0.19999999999999996,FG3M,32.7,0.20000000000000007,Milwaukee Bucks
+84,Georges Niang,2,1.7,-0.30000000000000004,FG3M,20.8,0.4600000000000001,Cleveland Cavaliers
+85,Taurean Prince,2,1.9,-0.10000000000000009,FG3M,26.5,0.20000000000000007,Milwaukee Bucks
+86,Caris LeVert,2,1.9,-0.10000000000000009,FG3M,24.4,0.4600000000000001,Cleveland Cavaliers
+87,Bobby Portis,2,1.2,-0.8,FG3M,24.1,0.20000000000000007,Milwaukee Bucks
+88,Evan Mobley,1,0.9,-0.09999999999999998,FG3M,30.3,0.4600000000000001,Cleveland Cavaliers
+89,Tyler Herro,4,4.2,0.20000000000000018,FG3M,34.9,-0.17000000000000004,Miami Heat
+90,Duncan Robinson,3,2.5,-0.5,FG3M,22.6,-0.17000000000000004,Miami Heat
+91,Shai Gilgeous-Alexander,3,2.1,-0.8999999999999999,FG3M,34.5,0.22999999999999998,Oklahoma City Thunder
+92,Jalen Williams,3,2.0,-1.0,FG3M,32.2,0.22999999999999998,Oklahoma City Thunder
+93,Luguentz Dort,3,2.2,-0.7999999999999998,FG3M,29.3,0.22999999999999998,Oklahoma City Thunder
+94,Terry Rozier,2,1.9,-0.10000000000000009,FG3M,28.7,-0.17000000000000004,Miami Heat
+95,Cason Wallace,2,1.0,-1.0,FG3M,26.5,0.22999999999999998,Oklahoma City Thunder
+96,Haywood Highsmith,2,1.3,-0.7,FG3M,24.8,-0.17000000000000004,Miami Heat
+97,Alex Caruso,1,0.9,-0.09999999999999998,FG3M,19.9,0.22999999999999998,Oklahoma City Thunder
+98,Bam Adebayo,1,1.0,0.0,FG3M,35.0,-0.17000000000000004,Miami Heat
+99,Jimmy Butler,1,0.5,-0.5,FG3M,32.6,-0.17000000000000004,Miami Heat

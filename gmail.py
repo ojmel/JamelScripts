@@ -6,6 +6,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 # go to google cloud console and download client secret rename it credentials.json then run
+# delete this if you lose authentication
 jam_cred = 'token.json'
 virg_cred = 'virg_token.json'
 # If modifying these scopes, delete the file token.json.
@@ -19,9 +20,6 @@ MAXIMUM = 500
 
 
 def authenticate():
-    """Shows basic usage of the Gmail API.
-  Lists the user's Gmail labels.
-  """
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -38,6 +36,7 @@ def authenticate():
             )
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
+        print(1)
         with open(user_token, "w") as token:
             token.write(creds.to_json())
 
@@ -163,7 +162,7 @@ def main():
     GDRIVE_SERVICE = build("drive", "v3", credentials=CREDS)
     YOUTUBE = build("youtube", "v3", credentials=CREDS)
 
-    return [GMAIL_SERVICE,GDRIVE_SERVICE,YOUTUBE]
+    return GMAIL_SERVICE,GDRIVE_SERVICE,YOUTUBE
     # keywords = ['gbs', 'plus']
     # queries = [f"older_than:2m AND {x} -from:kasson@gmail.com" for x in keywords]
     # find_and_delete(queries)
