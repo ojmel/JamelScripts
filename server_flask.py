@@ -25,6 +25,7 @@ class PlayerHandler:
     game_state = 'wait'
     tourney_ready = None
     draft_done = None
+    topic='Topic'
 
     def check_for_player_name(self, name):
         return name in [player.name for player in self.players.values()]
@@ -64,16 +65,16 @@ class GodotServer(Namespace):
 
     def on_ready(self, message):
         print(message)
-        if message == 'draft':
+        if message == 'vote':
+            handler.draft_done = True
+            handler.game_state = message
+            print('Vote Ready')
+        else:
             handler.tourney_ready = True
             print('Tourney Ready')
-
-        elif message == 'vote':
-            handler.draft_done = True
-            print('Vote Ready')
-
-        handler.game_state = message
-        emit('game_state', {'state': handler.game_state, 'in_game': True}, broadcast=True,namespace='/player')
+            handler.game_state = 'draft'
+            handler.topic=message
+        emit('game_state', {'state': handler.game_state, 'in_game': True,'topic':handler.topic}, broadcast=True,namespace='/player')
 
     def on_notify_player(self, message):
         print(message)
@@ -81,7 +82,6 @@ class GodotServer(Namespace):
             print('someone drafted')
             handler.answers.append(message['pick'])
         emit('notify_player', message, namespace='/player', to=handler.find_player_by_name(message['name']).sid)
-
 
     def on_disconnect(self):
         print(f"godot disconnected")

@@ -1,7 +1,7 @@
 import os
 
-import pandas as pd
-from PyPDF2 import PdfReader, PdfWriter
+# import pandas as pd
+# from PyPDF2 import PdfReader, PdfWriter
 
 # Define the paths to your PDFs
 # source_pdf_path = 'source.pdf'  # PDF from which to extract the first page
@@ -31,6 +31,13 @@ from PyPDF2 import PdfReader, PdfWriter
 #
 # print(f"First page from '{source_pdf_path}' merged into '{target_pdf_path}' and saved as '{output_pdf_path}'.")
 
-a=pd.read_html('https://www.thonky.com/qr-code-tutorial/log-antilog-table')[1]
-a.dtypes()
-print({key: value for key, value in zip(a['Integer.1'], a['Exponent of ɑ.1'])})
+# a=pd.read_html('https://www.thonky.com/qr-code-tutorial/log-antilog-table')[1]
+# a.dtypes()//
+# print({key: value for key, value in zip(a['Integer.1'], a['Exponent of ɑ.1'])})
+
+import socket
+try:
+    with socket.create_connection(('73.251.37.65',5005)):
+        print(123)
+except Exception as e:
+    print('failed')

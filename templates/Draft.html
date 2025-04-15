@@ -73,6 +73,7 @@
         }
 
         button {
+            text-align: center;
             background-color: var(--text);
             color: var(--bg);
             height: 60px;
@@ -149,12 +150,12 @@
         <button class="transition-button" style="left: 5px;" onclick="showMainPage()">Main Page</button>
         <button class="transition-button" onclick="showInstructions()">Instructions</button>
         <h1>Draft Queue</h1>
+        <h2 id="header1">Disconnected</h2>
         <div class="container" style="display: flex; flex-direction: row; align-items: center; gap: 10px;">
             <input type="text" id="queueInput">
             <button onclick="addDraftItem(document.getElementById('queueInput').value)"
                 style="width: 70px; height: 50px;">Queue</button>
         </div>
-        <!-- <p style="font-size: 30px;">You can drag and order your queue</p> -->
         <ul id="queue" class="queue"></ul>
 
     </div>
@@ -340,13 +341,16 @@
                 switch (state.state) {
                     case 'wait':
                         document.getElementById('header').innerText = 'Enter Your Name'
+                        document.getElementById('header1').innerText = 'Enter Your Name'
                         localStorage.clear()
                         break;
                     case 'draft':
-                        document.getElementById('header').innerText = "We're Drafting"
+                        document.getElementById('header').innerText = "Drafting Topic".replace("Topic", state.topic)
+                        document.getElementById('header1').innerText = "Drafting Topic".replace("Topic", state.topic)
                         break;
                     case 'vote':
                         document.getElementById('header').innerText = 'Vote Left or Right'
+                        document.getElementById('header1').innerText = 'Vote Left or Right'
                         localStorage.clear()
                     default:
                         break;
@@ -380,6 +384,7 @@
             });
             socket.on('disconnect', function (message) {
                 document.getElementById('header').innerText = 'Disconnected'
+                document.getElementById('header1').innerText = 'Disconnected'
             });
 
         }
