@@ -1,12 +1,8 @@
 from concurrent.futures import ThreadPoolExecutor,ProcessPoolExecutor
-
 import statsapi
 from datetime import datetime, timedelta
 from numpy import mean
-
 from MLB.mlb_database import insert_game, create_db_connection, logon_dict, get_table_column
-
-
 
 def get_game_ids(date:str=datetime.now().strftime("%Y-%m-%d")):
     schedule = statsapi.schedule(start_date=date, end_date=date)

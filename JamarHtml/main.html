@@ -1,13 +1,14 @@
-<script type=”text/javascript” src=”/eel.js”></script>
-<form>
-    <label>
-      <input type="radio" name="gender" value="mens" checked>
-      Men's
-    </label><br>
-  
-    <label>
-      <input type="radio" name="gender" value="womens">
-      Women's
-    </label><br>
-  
-  </form>
+<body>
+  <script type="text/javascript" src="/eel.js"></script>
+
+
+<input type="text" id="productInput" placeholder="What clothing do you want?">
+<button onclick="submitName()">Submit</button>
+
+<script>
+  function submitName() {
+    const name = document.getElementById('productInput').value;
+    eel.request_item(name); // call Python function with input value
+  }
+</script>
+</body>
