@@ -1,14 +1,34 @@
 import difflib
 import json
+import math
 import os.path
 import pickle
+import re
 import time
 import ast
+from datetime import datetime
+from enum import Enum
 from functools import reduce
 from pathlib import Path
+
+import pandas as pd
 from selenium import webdriver
 import requests
 from bs4 import BeautifulSoup
+
+base_dk_url='https://sportsbook.draftkings.com/leagues/{0}?category={1}&subcategory={2}'
+
+class Sports(Enum):
+    football = 'football/nfl'
+    basketball = 'basketball/nba'
+    baseball = 'baseball/mlb'
+    FG3M = 'threes'
+
+class BaseballCategories(Enum):
+    pitchers='pitcher-props'
+
+class BaseballSubCategories(Enum):
+    SOs='strikeouts-thrown-o%2Fu'
 
 def subtract_all(series):
     return reduce(lambda x, y: x - y, series)
@@ -85,120 +105,17 @@ def unpickle_it(file):
 
 def navigable_str_to_obj(obj):
     return json.loads(str(obj))
-# connection handler failed
-# Traceback (most recent call last):
-#   File "C:\Users\jamel\PycharmProjects\Jamel\venv\Lib\site-packages\websockets\asyncio\server.py", line 373, in conn_handler
-#     await self.handler(connection)
-#   File "C:\Users\jamel\PycharmProjects\JamelScripts\server.py", line 56, in parse_socket
-#     await self.godot_server.send(f'{player.player_name}:{message}')
-#   File "C:\Users\jamel\PycharmProjects\Jamel\venv\Lib\site-packages\websockets\asyncio\connection.py", line 458, in send
-#     async with self.send_context():
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
-#     return await anext(self.gen)
-#            ^^^^^^^^^^^^^^^^^^^^^
-#   File "C:\Users\jamel\PycharmProjects\Jamel\venv\Lib\site-packages\websockets\asyncio\connection.py", line 933, in send_context
-#     raise self.protocol.close_exc from original_exc
-# websockets.exceptions.ConnectionClosedError: sent 1011 (internal error); then received 1011 (internal error)
-# connection handler failed
-# Traceback (most recent call last):
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\asyncio\windows_events.py", line 489, in finish_recv
-#     return ov.getresult()
-#            ^^^^^^^^^^^^^^
-# OSError: [WinError 64] The specified network name is no longer available
-#
-# During handling of the above exception, another exception occurred:
-#
-# Traceback (most recent call last):
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\asyncio\proactor_events.py", line 286, in _loop_reading
-#     length = fut.result()
-#              ^^^^^^^^^^^^
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\asyncio\windows_events.py", line 841, in _poll
-#     value = callback(transferred, key, ov)
-#             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\asyncio\windows_events.py", line 493, in finish_recv
-#     raise ConnectionResetError(*exc.args)
-# ConnectionResetError: [WinError 64] The specified network name is no longer available
-#
-# The above exception was the direct cause of the following exception:
-#
-# Traceback (most recent call last):
-#   File "C:\Users\jamel\PycharmProjects\Jamel\venv\Lib\site-packages\websockets\asyncio\server.py", line 373, in conn_handler
-#     await self.handler(connection)
-#   File "C:\Users\jamel\PycharmProjects\JamelScripts\server.py", line 32, in parse_socket
-#     async for message in websocket:
-#   File "C:\Users\jamel\PycharmProjects\Jamel\venv\Lib\site-packages\websockets\asyncio\connection.py", line 242, in __aiter__
-#     yield await self.recv()
-#           ^^^^^^^^^^^^^^^^^
-#   File "C:\Users\jamel\PycharmProjects\Jamel\venv\Lib\site-packages\websockets\asyncio\connection.py", line 313, in recv
-#     raise self.protocol.close_exc from self.recv_exc
-# websockets.exceptions.ConnectionClosedError: no close frame received or sent
-# connection handler failed
-# Traceback (most recent call last):
-#   File "C:\Users\jamel\PycharmProjects\Jamel\venv\Lib\site-packages\websockets\asyncio\server.py", line 373, in conn_handler
-#     await self.handler(connection)
-#   File "C:\Users\jamel\PycharmProjects\JamelScripts\server.py", line 56, in parse_socket
-#     await self.godot_server.send(f'{player.player_name}:{message}')
-#   File "C:\Users\jamel\PycharmProjects\Jamel\venv\Lib\site-packages\websockets\asyncio\connection.py", line 458, in send
-#     async with self.send_context():
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
-#     return await anext(self.gen)
-#            ^^^^^^^^^^^^^^^^^^^^^
-#   File "C:\Users\jamel\PycharmProjects\Jamel\venv\Lib\site-packages\websockets\asyncio\connection.py", line 933, in send_context
-#     raise self.protocol.close_exc from original_exc
-# websockets.exceptions.ConnectionClosedError: sent 1011 (internal error); then received 1011 (internal error)
-# connection handler failed
-# Traceback (most recent call last):
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\asyncio\windows_events.py", line 489, in finish_recv
-#     return ov.getresult()
-#            ^^^^^^^^^^^^^^
-# OSError: [WinError 64] The specified network name is no longer available
-#
-# During handling of the above exception, another exception occurred:
-#
-# Traceback (most recent call last):
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\asyncio\proactor_events.py", line 286, in _loop_reading
-#     length = fut.result()
-#              ^^^^^^^^^^^^
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\asyncio\windows_events.py", line 841, in _poll
-#     value = callback(transferred, key, ov)
-#             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\asyncio\windows_events.py", line 493, in finish_recv
-#     raise ConnectionResetError(*exc.args)
-# ConnectionResetError: [WinError 64] The specified network name is no longer available
-#
-# The above exception was the direct cause of the following exception:
-#
-# Traceback (most recent call last):
-#   File "C:\Users\jamel\PycharmProjects\Jamel\venv\Lib\site-packages\websockets\asyncio\server.py", line 373, in conn_handler
-#     await self.handler(connection)
-#   File "C:\Users\jamel\PycharmProjects\JamelScripts\server.py", line 32, in parse_socket
-#     async for message in websocket:
-#   File "C:\Users\jamel\PycharmProjects\Jamel\venv\Lib\site-packages\websockets\asyncio\connection.py", line 242, in __aiter__
-#     yield await self.recv()
-#           ^^^^^^^^^^^^^^^^^
-#   File "C:\Users\jamel\PycharmProjects\Jamel\venv\Lib\site-packages\websockets\asyncio\connection.py", line 313, in recv
-#     raise self.protocol.close_exc from self.recv_exc
-# websockets.exceptions.ConnectionClosedError: no close frame received or sent
-# Traceback (most recent call last):
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 118, in run
-#     return self._loop.run_until_complete(task)
-#            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 653, in run_until_complete
-#     return future.result()
-#            ^^^^^^^^^^^^^^^
-#   File "C:\Users\jamel\PycharmProjects\JamelScripts\server.py", line 85, in main
-#     await asyncio.get_running_loop().create_future()  # run forever
-#     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# asyncio.exceptions.CancelledError
-#
-# During handling of the above exception, another exception occurred:
-#
-# Traceback (most recent call last):
-#   File "C:\Users\jamel\PycharmProjects\JamelScripts\server.py", line 93, in <module>
-#     asyncio.run(main())
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 190, in run
-#     return runner.run(main)
-#            ^^^^^^^^^^^^^^^^
-#   File "C:\Users\jamel\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 123, in run
-#     raise KeyboardInterrupt()
-# KeyboardInterrupt
+
+def get_category_odds(sport:Sports,category:BaseballCategories,sub_category:BaseballSubCategories,date=datetime.now().strftime("%Y-%m-%d"),save_folder=''):
+    html = Path(save_folder).joinpath(date+sub_category.name+'.html')
+    if not html.exists():
+        complete_url=base_dk_url.format(sport.value,category.value,sub_category.value)
+        load_html_file(html,complete_url)
+    stat_df = pd.concat(pd.read_html(html)).drop(columns='UNDER')
+    stat_df['PLAYER'] = stat_df['PLAYER'].apply(lambda player: re.sub(r'New!.*', '', player))
+    stat_df['OVER'] = stat_df['OVER'].apply(
+        lambda line: math.ceil(float(re.match(r'O\xa0(.+)[+−]', line).group(1))))
+    stat_df.rename(columns={'OVER': "LINE","PLAYER":"name"}, inplace=True)
+    stat_df.set_index('name', inplace=True)
+    return stat_df
+
