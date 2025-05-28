@@ -8,13 +8,19 @@ import mlbstatsapi
 import pandas as pd
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
+from matplotlib import pyplot as plt
 from numpy import mean, median
 import ScraperScripts
+from unidecode import unidecode
+
 #pip install MLB-StatsAPI
 
 mlb = mlbstatsapi.Mlb()
-runs_input={'category':'R','ascending':False}
-active_columns=['team','runs','rank:Runs','opp_R(0)','LINE','SO','rank:SOs','opp_SO(0)','IP','HIP','score','side','opp']
+runs_input = {'category': 'R', 'ascending': False}
+active_columns = ['team', 'runs', 'rank:Runs', 'opp_R(0)', 'LINE', 'SO', 'rank:SOs', 'opp_SO(0)', 'IP', 'HIP', 'score',
+                  'side', 'opp']
+
+
 def team_stats(game_id):
     game_data = statsapi.boxscore_data(game_id)
     home_dict = {'name': game_data['teamInfo']['home']['teamName'], 'side': 'home'}
@@ -31,6 +37,7 @@ def team_stats(game_id):
         _dict['ER'] = pitch.splits[0].stat.__dict__['runs']
     return home_dict, away_dict
 
+
 def get_pitching_lastxgames(pitcher_id, hit_rank: pd.DataFrame, num_of_games=5):
     aggregate_stats = {}
 
@@ -40,9 +47,9 @@ def get_pitching_lastxgames(pitcher_id, hit_rank: pd.DataFrame, num_of_games=5):
                                                                                                                  group='pitching',
                                                                                                                  totalsplits=1)).__getattribute__(
         'splits')
-    aggregate_stats['name'] = games[0].player.fullname
+    aggregate_stats['name'] = unidecode(games[0].player.fullname)
     aggregate_stats[
-        'team'] = f'=HYPERLINK("https://www.mlb.com/player/{games[0].player.fullname.replace(" ", "-").lower()}-{pitcher_id}?stats=gamelogs-r-pitching-mlb&year=2025", "{games[-1].team.name}")'
+        'team'] = f'=HYPERLINK("https://www.mlb.com/player/{aggregate_stats["name"].replace(" ", "-").lower()}-{pitcher_id}?stats=gamelogs-r-pitching-mlb&year=2025", "{games[-1].team.name}")'
 
     if games.__len__() >= num_of_games:
         games = games[-num_of_games:]
@@ -50,32 +57,35 @@ def get_pitching_lastxgames(pitcher_id, hit_rank: pd.DataFrame, num_of_games=5):
         # TODO or weighted average
         # or find performance against closest rank
         # TODO increasing SO by when against top 10 and vice versa decreasing against bottom 10
-        aggregate_stats['rank:Runs'] = {get_hit_rank_position(hit_rank, game.opponent['name'], **runs_input):game.stat.runs for game in
-                                        games}
+        aggregate_stats['rank:Runs'] = {
+            get_hit_rank_position(hit_rank, game.opponent['name'], **runs_input): game.stat.runs for game in
+            games}
         aggregate_stats['SO'] = median(tuple(game.stat.strikeouts for game in games))
-        aggregate_stats['rank:SOs'] = {get_hit_rank_position(hit_rank, game.opponent['name']):game.stat.strikeouts for game in games}
+        aggregate_stats['rank:SOs'] = {get_hit_rank_position(hit_rank, game.opponent['name']): game.stat.strikeouts for
+                                       game in games}
         aggregate_stats['IP'] = median(tuple(float(game.stat.inningspitched) for game in games))
         aggregate_stats['HIP'] = median(tuple(game.stat.hits for game in games)) / aggregate_stats['IP']
         aggregate_stats['score'] = aggregate_stats['SO'] + aggregate_stats['IP'] - (
-                    aggregate_stats['HIP'] * aggregate_stats['runs'])
+                aggregate_stats['HIP'] * aggregate_stats['runs'])
     else:
-        aggregate_stats['runs'] = aggregate_stats['rank:Runs'] = np.nan
-        aggregate_stats['SO'] = aggregate_stats['rank:SOs'] = np.nan
-        aggregate_stats['HIP'] = aggregate_stats['IP'] = np.nan
-        aggregate_stats['score'] = np.nan
+        aggregate_stats['runs'] = aggregate_stats['rank:Runs'] = None
+        aggregate_stats['SO'] = aggregate_stats['rank:SOs'] = None
+        aggregate_stats['HIP'] = aggregate_stats['IP'] = None
+        aggregate_stats['score'] = None
     return aggregate_stats
 
 
 # game.__getattribute__('ishome') game_data.gamedata.teams.away.name
 # # Loop through the games to find starting pitchers
 
-def get_hit_rank_position(hit_rank: pd.DataFrame, team: str, category='SO',ascending=True):
+def get_hit_rank_position(hit_rank: pd.DataFrame, team: str, category='SO', ascending=True):
     # Runs are ascending False
-    hit_rank = hit_rank.sort_values(category,ascending=ascending)
+    hit_rank = hit_rank.sort_values(category, ascending=ascending)
     return hit_rank.index.get_loc(team)
 
 
 def get_pitch_ranking():
+    # TODO get different rankings for ome and away
     stat_url = 'https://www.mlb.com/stats/team/pitching?timeframe=-29'
     if (response := requests.get(stat_url)).status_code == 200:
         soup = BeautifulSoup(response.content, 'html.parser')
@@ -127,83 +137,110 @@ def get_hitting_ranking():
         # data_table.to_csv('hit_rank.csv')
         return data_table
 
+
 today = datetime.now().strftime("%Y-%m-%d")
 tomorrow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+
+
 def pitcher_table(same_day=True):
     hit_rank = get_hitting_ranking()
     pitch_rank = get_pitch_ranking()
-    pitchers=[]
+    pitchers = []
     run_pots = []
-    target_date= today if same_day else tomorrow
-    schedule = [game for game in mlb.get_scheduled_games_by_date(start_date=target_date, end_date=target_date) if game.status.abstractgamestate!='Live']
+    target_date = today if same_day else tomorrow
+    schedule = [game for game in mlb.get_scheduled_games_by_date(start_date=target_date, end_date=target_date) if
+                game.status.abstractgamestate != 'Live']
 
     for game in schedule:
         game_data = mlb.get_game(game.gamepk)
         away_name = game_data.gamedata.teams.away.name
         home_name = game_data.gamedata.teams.home.name
-        for side,pitcher in vars(game_data.gamedata.probablepitchers).items():
+        for side, pitcher in vars(game_data.gamedata.probablepitchers).items():
             if pitcher:
-                opp= home_name if side=='away' else away_name
+                opp = home_name if side == 'away' else away_name
                 pitcher_stats = get_pitching_lastxgames(pitcher.id, hit_rank)
                 pitcher_stats['side'] = side
                 pitcher_stats['opp'] = opp
+                # TODO average this rank with the teams rank of giving up runs??
                 pitcher_stats['opp_SO(0)'] = get_hit_rank_position(hit_rank, opp)
                 pitcher_stats['opp_R(0)'] = get_hit_rank_position(hit_rank, opp, **runs_input)
                 pitchers.append(pitcher_stats)
-    odds=ScraperScripts.get_category_odds(ScraperScripts.Sports.baseball, ScraperScripts.BaseballCategories.pitchers,
-                                           ScraperScripts.BaseballSubCategories.SOs,
-                                           save_folder=r'C:\Users\jamel\PycharmProjects\JamelScripts\MLB\Data')
-    pitcher_table=pd.DataFrame(pitchers).set_index('name')
-    pitcher_table=pd.concat([pitcher_table,odds],axis=1)
-    # pitcher_table.to_csv(f'Data\\{target_date}_todays_pitchers.csv')
-    # pitcher_table=pitcher_table[~pitcher_table.index.duplicated(keep='first')]
+    odds = ScraperScripts.get_category_odds(ScraperScripts.Sports.mlb, ScraperScripts.Categories.pitchers,
+                                            ScraperScripts.SubCategories.SOs,
+                                            save_folder=r'C:\Users\jamel\PycharmProjects\JamelScripts\MLB\Data')
+    pitcher_df = pd.DataFrame(pitchers).set_index('name')
+    pitcher_df = pd.concat([pitcher_df, odds], axis=1)
 
-    pitcher_table=pitcher_table[active_columns]
+    pitcher_df = pitcher_df[active_columns]
     for game in schedule:
-        run_pot={}
+        run_pot = {}
         game_data = mlb.get_game(game.gamepk)
         if all(vars(game_data.gamedata.probablepitchers).values()):
             run_pot['home'] = game_data.gamedata.teams.home.name
             run_pot['away'] = game_data.gamedata.teams.away.name
-            run_pot['home_pot'] = hit_rank.loc[run_pot['home'], 'R'] + mean([pitch_rank.loc[run_pot['away'], 'ER'], pitcher_table.at[game_data.gamedata.probablepitchers.away.fullname,'runs']])
-            run_pot['away_pot'] = hit_rank.loc[run_pot['away'], 'R'] + mean([pitch_rank.loc[run_pot['home'], 'ER'], pitcher_table.at[game_data.gamedata.probablepitchers.home.fullname,'runs']])
-            run_pot['diff'] = run_pot['home_pot']-run_pot['away_pot']
-            run_pot['total']=run_pot['home_pot']+run_pot['away_pot']
+            if away_pitch_er:=pitcher_df.at[unidecode(game_data.gamedata.probablepitchers.away.fullname), 'runs'] is not np.nan:
+                run_pot['home_pot'] = mean([hit_rank.loc[run_pot['home'], 'R'],pitch_rank.loc[run_pot['away'], 'ER']]+[away_pitch_er])
+            else:
+                run_pot['home_pot'] = mean([hit_rank.loc[run_pot['home'], 'R'], pitch_rank.loc[run_pot['away'], 'ER']])
+            if home_pitch_er := pitcher_df.at[unidecode(game_data.gamedata.probablepitchers.home.fullname), 'runs'] is not np.nan:
+                run_pot['away_pot'] = mean([hit_rank.loc[run_pot['away'], 'R'],pitch_rank.loc[run_pot['home'], 'ER']]+[home_pitch_er])
+            else:
+                run_pot['away_pot'] = mean([hit_rank.loc[run_pot['away'], 'R'], pitch_rank.loc[run_pot['home'], 'ER']])
+            run_pot['diff'] = run_pot['home_pot'] - run_pot['away_pot']
+            run_pot['total'] = run_pot['home_pot'] + run_pot['away_pot']
             run_pots.append(run_pot)
-    run_table=pd.DataFrame(run_pots)
+    run_table = pd.DataFrame(run_pots)
 
     with pd.ExcelWriter(f"Data\\{target_date}_scores.xlsx", engine="xlsxwriter") as writer:
-        pitcher_table.to_excel(writer, sheet_name="pitchers")
+        pitcher_df.to_excel(writer, sheet_name="pitchers")
         run_table.to_excel(writer, sheet_name="run_pot")
         worksheet = writer.sheets["pitchers"]
-        red=writer.book.add_format(({"bg_color": "red"}))
+        red = writer.book.add_format(({"bg_color": "red"}))
         green = writer.book.add_format(({"bg_color": "green"}))
         # Apply a conditional format to the required cell range.
-        for column in ['runs','HIP']:
-            excel_column=list(string.ascii_uppercase)[active_columns.index(column)+1]
-            _range=f'{excel_column}2:{excel_column}{pitcher_table[column].__len__()+1}'
-            worksheet.conditional_format(_range,{"type":"3_color_scale","min_color":"green",
-                                           "mid_color":"yellow",
-                                           "max_color":"red",
-                                           "min_value":pitcher_table[column].min(),
-            "max_value":pitcher_table[column].max()})
-        for column in [ 'opp_R(0)', 'SO', 'opp_SO(0)', 'IP','score']:
-            excel_column = list(string.ascii_uppercase)[active_columns.index(column)+1]
-            _range = f'{excel_column}2:{excel_column}{pitcher_table[column].__len__() + 1}'
+        # TODO add sparklines
+        # for index,stats in enumerate(pitcher_df['rank:Runs'].values):
+        #     if stats:
+        #         fig, ax = plt.subplots(figsize=(1, 0.4))
+        #         print(stats)
+        #         ax.plot(list(stats.keys()), list(stats.values()),linewidth=1)
+        #         ax.set_xticks([])
+        #         ax.set_yticks([])
+        #         ax.spines['top'].set_visible(False)
+        #         ax.spines['right'].set_visible(False)
+        #         ax.spines['left'].set_visible(False)
+        #         ax.spines['bottom'].set_visible(False)
+        #
+        #         # Save the plot as an image
+        #         image_path = "sparkline.png"
+        #         fig.savefig(image_path, bbox_inches='tight', transparent=True, dpi=100)
+        #
+        #         worksheet.insert_image(f"D{index+2}", image_path)
+        for column in ['runs', 'HIP']:
+            excel_column = list(string.ascii_uppercase)[active_columns.index(column) + 1]
+            _range = f'{excel_column}2:{excel_column}{pitcher_df[column].__len__() + 1}'
+            worksheet.conditional_format(_range, {"type": "3_color_scale", "min_color": "green",
+                                                  "mid_color": "yellow",
+                                                  "max_color": "red",
+                                                  "min_value": pitcher_df[column].min(),
+                                                  "max_value": pitcher_df[column].max()})
+        for column in ['opp_R(0)', 'SO', 'opp_SO(0)', 'IP', 'score']:
+            excel_column = list(string.ascii_uppercase)[active_columns.index(column) + 1]
+            _range = f'{excel_column}2:{excel_column}{pitcher_df[column].__len__() + 1}'
             worksheet.conditional_format(_range, {"type": "3_color_scale", "min_color": "red",
                                                   "mid_color": "yellow",
                                                   "max_color": "green",
-                                                  "min_value": pitcher_table[column].min(),
-                                                  "max_value": pitcher_table[column].max()})
-        excel_column = list(string.ascii_uppercase)[active_columns.index('side')+1]
-        _range = f'{excel_column}2:{excel_column}{pitcher_table["side"].__len__() + 1}'
+                                                  "min_value": pitcher_df[column].min(),
+                                                  "max_value": pitcher_df[column].max()})
+        excel_column = list(string.ascii_uppercase)[active_columns.index('side') + 1]
+        _range = f'{excel_column}2:{excel_column}{pitcher_df["side"].__len__() + 1}'
         worksheet.conditional_format(_range, {"type": "cell", "criteria": "==", "value": '"away"', "format": red})
         worksheet.conditional_format(_range, {"type": "cell", "criteria": "==", "value": '"home"', "format": green})
 
-    # run_table.to_csv(f'Data\\{target_date}_run_pot.csv')
-    return pitcher_table
+    return pitcher_df
+
 
 if __name__ == '__main__':
     pitcher_table()
-    # import os
-    # os.system(f"Data\\{today}_scores.xlsx")
+    import os
+    os.system(f"Data\\{today}_scores.xlsx")

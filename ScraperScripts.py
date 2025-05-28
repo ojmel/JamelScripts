@@ -5,7 +5,6 @@ import os.path
 import pickle
 import re
 import time
-import ast
 from datetime import datetime
 from enum import Enum
 from functools import reduce
@@ -16,22 +15,34 @@ from selenium import webdriver
 import requests
 from bs4 import BeautifulSoup
 
-base_dk_url='https://sportsbook.draftkings.com/leagues/{0}?category={1}&subcategory={2}'
+base_dk_url = 'https://sportsbook.draftkings.com/leagues/{0}?category={1}&subcategory={2}'
+
 
 class Sports(Enum):
-    football = 'football/nfl'
-    basketball = 'basketball/nba'
-    baseball = 'baseball/mlb'
-    FG3M = 'threes'
+    nfl = 'football/nfl'
+    nba = 'basketball/nba'
+    mlb = 'baseball/mlb'
+    wnba='basketball/wnba'
 
-class BaseballCategories(Enum):
-    pitchers='pitcher-props'
 
-class BaseballSubCategories(Enum):
-    SOs='strikeouts-thrown-o%2Fu'
+class Categories(Enum):
+    pitchers = 'pitcher-props'
+    PTS='player-points'
+    REB = 'player-rebounds'
+    AST = 'player-assists'
+    THREES = 'player-threes'
+
+class SubCategories(Enum):
+    SOs = 'strikeouts-thrown-o%2Fu'
+    pts='points-o%2Fu'
+    rebs = 'rebounds-o%2Fu'
+    asts = 'assists-o%2Fu'
+    threes = 'threes-o%2Fu'
 
 def subtract_all(series):
     return reduce(lambda x, y: x - y, series)
+
+
 def get_url_soup(url):
     if (response := requests.get(url)).status_code == 200:
         return BeautifulSoup(response.content, 'html.parser')
@@ -77,6 +88,7 @@ def load_json(json_file):
     with open(json_file, 'rb') as jfile:
         return json.load(jfile)
 
+
 def step_thru_parents(soup: BeautifulSoup, text_to_find):
     child = soup.find(string=text_to_find)
     print(child)
@@ -94,6 +106,7 @@ def clear_html(directory):
     for file in (file for file in Path(directory).iterdir() if file.name.endswith('.html')):
         Path.unlink(file)
 
+
 def pickle_it(obj, file):
     with open(file, 'wb') as file:
         pickle.dump(obj, file)
@@ -103,19 +116,21 @@ def unpickle_it(file):
     with open(file, 'rb') as obj:
         return pickle.load(obj)
 
+
 def navigable_str_to_obj(obj):
     return json.loads(str(obj))
 
-def get_category_odds(sport:Sports,category:BaseballCategories,sub_category:BaseballSubCategories,date=datetime.now().strftime("%Y-%m-%d"),save_folder=''):
-    html = Path(save_folder).joinpath(date+sub_category.name+'.html')
+
+def get_category_odds(sport: Sports, category: Categories, sub_category: SubCategories,
+                      date=datetime.now().strftime("%Y-%m-%d"), save_folder='Data'):
+    html = Path(save_folder).joinpath(date + sub_category.name + '.html')
     if not html.exists():
-        complete_url=base_dk_url.format(sport.value,category.value,sub_category.value)
-        load_html_file(html,complete_url)
+        complete_url = base_dk_url.format(sport.value, category.value, sub_category.value)
+        load_html_file(html, complete_url)
     stat_df = pd.concat(pd.read_html(html)).drop(columns='UNDER')
     stat_df['PLAYER'] = stat_df['PLAYER'].apply(lambda player: re.sub(r'New!.*', '', player))
     stat_df['OVER'] = stat_df['OVER'].apply(
         lambda line: math.ceil(float(re.match(r'O\xa0(.+)[+−]', line).group(1))))
-    stat_df.rename(columns={'OVER': "LINE","PLAYER":"name"}, inplace=True)
+    stat_df.rename(columns={'OVER': "LINE", "PLAYER": "name"}, inplace=True)
     stat_df.set_index('name', inplace=True)
     return stat_df
-
