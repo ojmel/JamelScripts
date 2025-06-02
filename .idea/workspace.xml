@@ -8,12 +8,53 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="after moving to class data structure">
-      <change afterPath="$PROJECT_DIR$/WNBA/test" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/JamelScripts.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/JamelScripts.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_8_2025_1_42_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_8_2025_1_42_PM__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_8_2025_1_44_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_3_8_2025_1_44_PM__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/launch.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jamar.py" beforeDir="false" afterPath="$PROJECT_DIR$/Jamar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JamarHtml/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/JamarHtml/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MLB/Data/2025-05-26SOs.html" beforeDir="false" afterPath="$PROJECT_DIR$/MLB/Data/2025-05-26SOs.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MLB/MLB Betting Odds &amp; Lines_ Pitcher Props - Strikeouts Thrown O_u _ DraftKings Sportsbook.html" beforeDir="false" afterPath="$PROJECT_DIR$/MLB/MLB Betting Odds &amp; Lines_ Pitcher Props - Strikeouts Thrown O_u _ DraftKings Sportsbook.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MLB/ml_pred_v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/MLB/ml_pred_v3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MLB/mlb_pred_v2.py" beforeDir="false" afterPath="$PROJECT_DIR$/MLB/mlb_pred_v2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/10-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/11-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/12-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/15-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/16-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/17-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/18-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/19-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/19-12_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/20-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/20-12_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/21-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/22-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/22-12_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/23-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/23-12_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/24-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/25-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/26-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/27-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NBA/29-11_lines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SOs.html" beforeDir="false" afterPath="$PROJECT_DIR$/SOs.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScraperScripts.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScraperScripts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WNBA/2025-05-28test" beforeDir="false" afterPath="$PROJECT_DIR$/WNBA/2025-05-28test" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WNBA/2025-05-29test" beforeDir="false" afterPath="$PROJECT_DIR$/WNBA/2025-05-29test" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WNBA/2025-05-30info" beforeDir="false" afterPath="$PROJECT_DIR$/WNBA/2025-05-30info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WNBA/2025-05-30test" beforeDir="false" afterPath="$PROJECT_DIR$/WNBA/2025-05-30test" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WNBA/2025-05-31info" beforeDir="false" afterPath="$PROJECT_DIR$/WNBA/2025-05-31info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WNBA/test" beforeDir="false" afterPath="$PROJECT_DIR$/WNBA/test" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WNBA/wnba.py" beforeDir="false" afterPath="$PROJECT_DIR$/WNBA/wnba.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scratch.py" beforeDir="false" afterPath="$PROJECT_DIR$/scratch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server_flask.py" beforeDir="false" afterPath="$PROJECT_DIR$/draft_app/server_flask.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Draft.html" beforeDir="false" afterPath="$PROJECT_DIR$/draft_app/templates/Draft.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test" beforeDir="false" afterPath="$PROJECT_DIR$/test" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,10 +117,12 @@
     &quot;Python.prost.executor&quot;: &quot;Run&quot;,
     &quot;Python.scores.executor&quot;: &quot;Run&quot;,
     &quot;Python.scratch.executor&quot;: &quot;Run&quot;,
+    &quot;Python.server_flask.executor&quot;: &quot;Run&quot;,
     &quot;Python.test.executor&quot;: &quot;Run&quot;,
     &quot;Python.wnba.executor&quot;: &quot;Run&quot;,
     &quot;Python.youtube_download.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;homeaway&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/jamel/PycharmProjects/JamelScripts&quot;,
@@ -132,7 +175,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-0509580d9d50-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.14494.241" />
+        <option value="bundled-python-sdk-dfff61a61320-9cdd278e9d02-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.25410.159" />
       </set>
     </attachedChunks>
   </component>

@@ -4,7 +4,7 @@ import flask
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, Namespace, emit
 import ScraperScripts
-
+import pathlib
 
 class PlayerInfo:
     name = None
@@ -54,7 +54,7 @@ HTTP_PORT = 5554
 
 @app.route("/")
 def index():
-    return render_template(r"Draft.html", addr=f'ws://{HOST}:{HTTP_PORT}')
+    return render_template(Path, addr=f'ws://{HOST}:{HTTP_PORT}')
 
 
 class GodotServer(Namespace):
@@ -164,4 +164,4 @@ if __name__ == "__main__":
     if ipv4 := get_ipv4():
         HOST = ipv4
     print(HOST)
-    socketio.run(app, debug=True, host=HOST, port=HTTP_PORT)
+    socketio.run(app, debug=True, host=HOST, port=HTTP_PORT,allow_unsafe_werkzeug=True)
