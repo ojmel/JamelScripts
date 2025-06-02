@@ -95,7 +95,7 @@ def show_player_lines(stats=None):
         stats = [stat for stat in odds_dict.keys()]
     matchup_table=print_next_matchups()
     matchup_table=matchup_table.rename(columns={'3PM':'THREES'})
-    odds_dfs=[]
+    odds_dfs=[] #
     for stat in stats:
         subcat=odds_dict[stat]
         odds_df = ScraperScripts.get_category_odds(ScraperScripts.Sports.wnba, stat, subcat)
