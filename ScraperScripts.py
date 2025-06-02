@@ -51,10 +51,11 @@ def get_url_soup(url):
 def download_page(url, new_html_file):
     driver = webdriver.Edge()
     driver.get(url)
-    time.sleep(2)
+    time.sleep(3)
     html = driver.page_source
     with open(new_html_file, "w", encoding="utf-8") as file:
         file.write(html)
+    driver.quit()
     return html
 
 
@@ -120,7 +121,7 @@ def unpickle_it(file):
 def navigable_str_to_obj(obj):
     return json.loads(str(obj))
 
-
+# Dont work no more because they took away the tables
 def get_category_odds(sport: Sports, category: Categories, sub_category: SubCategories,
                       date=datetime.now().strftime("%Y-%m-%d"), save_folder='Data'):
     html = Path(save_folder).joinpath(date + sub_category.name + '.html')
@@ -131,6 +132,4 @@ def get_category_odds(sport: Sports, category: Categories, sub_category: SubCate
     stat_df['PLAYER'] = stat_df['PLAYER'].apply(lambda player: re.sub(r'New!.*', '', player))
     stat_df['OVER'] = stat_df['OVER'].apply(
         lambda line: math.ceil(float(re.match(r'O\xa0(.+)[+−]', line).group(1))))
-    stat_df.rename(columns={'OVER': "LINE", "PLAYER": "name"}, inplace=True)
-    stat_df.set_index('name', inplace=True)
-    return stat_df
+    return stat_df.rename(columns={'OVER': "LINE", "PLAYER": "name"}).set_index('name')
