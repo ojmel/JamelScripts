@@ -17,3 +17,7 @@ test.html
 /MLB/Data
 *.png
 /WNBA/Data
+*.xlsx
+*.html
+*.xlsx
+*.pyc
