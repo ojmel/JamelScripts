@@ -1,10 +1,14 @@
+import multiprocessing
+import os
 import re
 import subprocess
+import sys
 import flask
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, Namespace, emit
 import ScraperScripts
-
+import pathlib
+from engineio.async_drivers import gevent
 
 class PlayerInfo:
     name = None
@@ -25,7 +29,7 @@ class PlayerHandler:
     game_state = 'wait'
     tourney_ready = None
     draft_done = None
-    topic='Topic'
+    topic=''
 
     def check_for_player_name(self, name):
         return name in [player.name for player in self.players.values()]
@@ -46,7 +50,7 @@ class PlayerHandler:
 
 
 app = Flask(__name__)
-socketio = SocketIO(app,ping_timeout=30)
+socketio = SocketIO(app,ping_timeout=30,async_mode='gevent')
 HOST = "192.168.1.12"
 HTTP_PORT = 5554
 
@@ -54,7 +58,7 @@ HTTP_PORT = 5554
 
 @app.route("/")
 def index():
-    return render_template(r"Draft.html", addr=f'ws://{HOST}:{HTTP_PORT}')
+    return render_template('Draft.html', addr=f'ws://{HOST}:{HTTP_PORT}')
 
 
 class GodotServer(Namespace):
@@ -94,7 +98,7 @@ class Player(Namespace):
             if player.sid != request.sid:
                 player.sid = request.sid
         print(f"Client connected to {request.sid} namespace.")
-        emit('game_state', {'state': handler.game_state, 'in_game': handler.check_for_player_addr(request.remote_addr)},
+        emit('game_state', {'state': handler.game_state, 'in_game': handler.check_for_player_addr(request.remote_addr),'topic':handler.topic},
              to=request.sid)
 
     def on_new_player(self, message):
@@ -160,8 +164,18 @@ def get_ipv4():
 
 handler = PlayerHandler()
 
-if __name__ == "__main__":
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+def test():
+    subprocess.run([resource_path('draft_godot.exe')])
+
+if __name__=='__main__':
     if ipv4 := get_ipv4():
         HOST = ipv4
+    # multiprocessing.freeze_support()
+    # process=multiprocessing.Process(target=test)
+    # process.start()
     print(HOST)
-    socketio.run(app, debug=True, host=HOST, port=HTTP_PORT)
+    socketio.run(app, host=HOST, port=HTTP_PORT)

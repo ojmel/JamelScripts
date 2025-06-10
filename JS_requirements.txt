@@ -1,0 +1,6 @@
+python-mlb-statsapi
+matplotlib
+pandas
+MLB-StatsAPI
+lxml
+xlsxwriter
