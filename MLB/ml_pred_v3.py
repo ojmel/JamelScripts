@@ -231,7 +231,7 @@ def pitcher_table(same_day=True):
 if __name__ == '__main__':
     _,runpot=pitcher_table()
     import os
-    # TODO make this better over the last 15-20 games
+    # TODO make this better over the last 15-20 games and put in master list with team name and opposing pitcher
     print('Home')
     for team in runpot.index:
         print(team)

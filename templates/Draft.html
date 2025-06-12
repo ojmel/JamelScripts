@@ -275,16 +275,19 @@
         };
 
         function sendMessage() {
-            if (inputField.value === '2908') {
-                socket.emit('host', 'make_host');
-            }
-            else if (in_game) {
-                socket.emit('draft_pick', { pick: inputField.value });
-            }
-            else {
-                socket.emit('new_player', { name: inputField.value });
-            }
-            inputField.value = '';
+
+            if (inputField.value) {
+                if (inputField.value === '2908') {
+                    socket.emit('host', 'make_host');
+                }
+                else if (in_game) {
+                    socket.emit('draft_pick', { pick: inputField.value });
+                }
+                else {
+                    socket.emit('new_player', { name: inputField.value });
+                }
+                inputField.value = '';
+                }
         };
 
         function deleteByName(pick) {

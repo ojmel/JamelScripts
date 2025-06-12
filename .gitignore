@@ -21,3 +21,4 @@ test.html
 *.html
 *.xlsx
 *.pyc
+/build

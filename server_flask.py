@@ -4,11 +4,13 @@ import re
 import subprocess
 import sys
 import flask
+import requests
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, Namespace, emit
 import ScraperScripts
 import pathlib
 from engineio.async_drivers import gevent
+#pyinstaller -F --add-binary="draft_godot.exe;." --add-data="templates;templates" --hidden-import=ScraperScripts --hidden-import=engineio.async_threading -p .  .\server_flask.py& C:/Users/jamel/PycharmProjects/JamelScripts/.venv/Scripts/python.exe c:/Users/jamel/PycharmProjects/JamelScripts/server_flask.py
 
 class PlayerInfo:
     name = None
@@ -59,6 +61,12 @@ HTTP_PORT = 5554
 @app.route("/")
 def index():
     return render_template('Draft.html', addr=f'ws://{HOST}:{HTTP_PORT}')
+
+# TODO I might be able to use this to make a whole different app for the host
+@app.route('/shutdown')
+def shutdown():
+    socketio.stop()
+    return "Server shutting down..."
 
 
 class GodotServer(Namespace):
@@ -168,14 +176,18 @@ def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
-def test():
-    subprocess.run([resource_path('draft_godot.exe')])
+
+def run_godot(shutdown_address):
+    godot=subprocess.Popen([resource_path('draft_godot.exe')])
+    godot.wait()
+    requests.get(shutdown_address)
+    print('Shutting Down')
 
 if __name__=='__main__':
     if ipv4 := get_ipv4():
         HOST = ipv4
-    # multiprocessing.freeze_support()
-    # process=multiprocessing.Process(target=test)
-    # process.start()
+    multiprocessing.freeze_support()
+    process=multiprocessing.Process(target=run_godot,args=(f"http://{HOST}:{HTTP_PORT}/shutdown",))
+    process.start()
     print(HOST)
     socketio.run(app, host=HOST, port=HTTP_PORT)
