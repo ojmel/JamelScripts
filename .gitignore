@@ -1,5 +1,5 @@
 *.json
-scratch.py
+deal_card/scratch.py
 output.pdf
 *.json
 *.json
@@ -22,3 +22,9 @@ test.html
 *.xlsx
 *.pyc
 /build
+build/server_flask/base_library.zip
+/build/server_flask
+build/server_flask/Analysis-00.toc
+*.zip
+*.pck
+/build/server_flask

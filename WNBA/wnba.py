@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 from pathlib import Path
 
@@ -27,7 +28,8 @@ schedule_url='https://www.wnba.com/schedule?season=2025&month=all'
 today = datetime.now().strftime("%Y-%m-%d")
 next_game_day_info=ScraperScripts.load_html_file(f'Data\\{today}info.html', schedule_url).find_all('section', class_="GameSection_GameSection__CDIMc")[0]
 game_day=next_game_day_info.find('h2', class_="GameSection_dateHeading__m5d5a").text.replace(' ', '').replace(',', '-')
-games=next_game_day_info.find_all('div' ,class_="_GameTile__scoreboard_1y4oh_52")
+# games=next_game_day_info.find_all('div' ,class_="_GameTile__scoreboard_1y4oh_52")
+games=next_game_day_info.find_all('div' ,class_=re.compile(r'GameTile__scoreboard'))
 stats_of_interest=['PTS','REB','AST']
 miscellaneous_stats=['THREES']
 odds_dict={ScraperScripts.Categories.PTS:ScraperScripts.SubCategories.pts,

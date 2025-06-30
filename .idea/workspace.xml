@@ -17,6 +17,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/JS_requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/JS_requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MLB/ml_pred_v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/MLB/ml_pred_v3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScraperScripts.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScraperScripts.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WNBA/2025-06-10test" beforeDir="false" afterPath="$PROJECT_DIR$/WNBA/2025-06-10test" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WNBA/wnba.py" beforeDir="false" afterPath="$PROJECT_DIR$/WNBA/wnba.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/server_flask/Analysis-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/server_flask/Analysis-00.toc" afterDir="false" />
@@ -28,6 +29,7 @@
       <change beforePath="$PROJECT_DIR$/build/server_flask/server_flask.pkg" beforeDir="false" afterPath="$PROJECT_DIR$/build/server_flask/server_flask.pkg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/server_flask/warn-server_flask.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/server_flask/warn-server_flask.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/server_flask/xref-server_flask.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/server_flask/xref-server_flask.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scratch.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server_flask.py" beforeDir="false" afterPath="$PROJECT_DIR$/server_flask.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server_flask.spec" beforeDir="false" afterPath="$PROJECT_DIR$/server_flask.spec" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Draft.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Draft.html" afterDir="false" />
@@ -57,7 +59,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/ojmel/JamelScripts.git&quot;,
-    &quot;accountId&quot;: &quot;06c91305-869e-4d68-85cc-bdb4c6db4b3b&quot;
+    &quot;accountId&quot;: &quot;9efc83c5-ef6b-42de-8b5e-932ae4a9a089&quot;
   }
 }</component>
   <component name="ProblemsViewState">
@@ -73,6 +75,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Python tests.Doctests in concat.executor&quot;: &quot;Debug&quot;,
     &quot;Python.GromacsAnalysis.executor&quot;: &quot;Run&quot;,
     &quot;Python.Indicator.executor&quot;: &quot;Run&quot;,
     &quot;Python.Jamar.executor&quot;: &quot;Run&quot;,
@@ -96,7 +99,7 @@
     &quot;Python.scratch.executor&quot;: &quot;Run&quot;,
     &quot;Python.server_flask.executor&quot;: &quot;Run&quot;,
     &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.wnba.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.wnba.executor&quot;: &quot;Run&quot;,
     &quot;Python.youtube_download.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
@@ -113,11 +116,11 @@
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\NFL" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\deal_card" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\MLB\Data" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\WNBA\Data" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\MLB" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts" />
-      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\online" />
     </key>
   </component>
   <component name="RunManager">

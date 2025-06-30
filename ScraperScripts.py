@@ -133,4 +133,4 @@ def get_category_odds(sport: Sports, category: Categories, sub_category: SubCate
         lambda line: math.ceil(float(re.match(r'O\xa0(.+)[+−]', line).group(1))))
     stat_df.rename(columns={'OVER': "LINE", "PLAYER": "name"}, inplace=True)
     stat_df.set_index('name', inplace=True)
-    return stat_df
+    return stat_df[~stat_df.index.duplicated(keep='first')]

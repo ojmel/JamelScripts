@@ -85,7 +85,7 @@ def get_pitching_lastxgames(pitcher_id, hit_rank: dict[str,pd.DataFrame], num_of
         games = games[-num_of_games:]
         aggregate_stats[
             'team'] = f'=HYPERLINK("https://www.mlb.com/player/{aggregate_stats["name"].replace(" ", "-").lower()}-{pitcher_id}?stats=gamelogs-r-pitching-mlb&year=2025", "{games[-1].team.name}")'
-        aggregate_stats['runs'] = median(tuple(game.stat.runs for game in games))
+        aggregate_stats['runs'] = mean(tuple(game.stat.runs for game in games))
         # TODO or weighted average
         # or find performance against closest rank
         # TODO increasing SO by when against top 10 and vice versa decreasing against bottom 10
@@ -138,7 +138,7 @@ def get_team_stats(stats_of_interest=None, stat_type='pitching'):
             for stat in stats_of_interest:
                 stat_dict[stat] = mean([game['stat'][stat] for game in games if game.get('isHome') == (side == 'home')])
             total_team_stats.append(stat_dict)
-        return pd.DataFrame(total_team_stats).set_index('team')
+        return pd.DataFrame(total_team_stats).set_index('team').rename(index={'Oakland Athletics':'Athletics'})
 
     return {side:pool_stats(side) for side in ['home', 'away']}
 
@@ -232,12 +232,12 @@ if __name__ == '__main__':
     _,runpot=pitcher_table()
     import os
     # TODO make this better over the last 15-20 games and put in master list with team name and opposing pitcher
-    print('Home')
-    for team in runpot.index:
-        print(team)
-        print(pd.read_html(rf'https://www.mlb.com/orioles/stats/{team.lower().replace(" ","-").replace(".","")}/hits?split=h')[0].set_index('PLAYERPLAYER').rename(columns={'caret-upcaret-downHcaret-upcaret-downH':'H'})[['H','ABAB','RR','SOSO','RBIRBI','AVGAVG']])
-    print('Away')
-    for team in runpot['away']:
-        print(team)
-        print(pd.read_html(rf'https://www.mlb.com/orioles/stats/{team.lower().replace(" ","-")}/hits?split=a')[0].set_index('PLAYERPLAYER').rename(columns={'caret-upcaret-downHcaret-upcaret-downH':'H'})[['H','ABAB','RR','SOSO','RBIRBI','AVGAVG']])
+    # print('Home')
+    # for team in runpot.index:
+    #     print(team)
+    #     print(pd.read_html(rf'https://www.mlb.com/orioles/stats/{team.lower().replace(" ","-").replace(".","")}/hits?split=h')[0].set_index('PLAYERPLAYER').rename(columns={'caret-upcaret-downHcaret-upcaret-downH':'H'})[['H','ABAB','RR','SOSO','RBIRBI','AVGAVG']])
+    # print('Away')
+    # for team in runpot['away']:
+    #     print(team)
+    #     print(pd.read_html(rf'https://www.mlb.com/orioles/stats/{team.lower().replace(" ","-")}/hits?split=a')[0].set_index('PLAYERPLAYER').rename(columns={'caret-upcaret-downHcaret-upcaret-downH':'H'})[['H','ABAB','RR','SOSO','RBIRBI','AVGAVG']])
     os.system(f"Data\\{today}_scores.xlsx")

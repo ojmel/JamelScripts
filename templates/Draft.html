@@ -11,7 +11,32 @@
             --text: rgb(65, 32, 250);
             --bg: rgb(175, 195, 255);
         }
-
+        #popup {
+            color: var(--text);
+            background-color: var(--bg);
+            top: 0;
+            left: 0;
+            font-size: 40px;
+            width: 100vw;
+            height: 100vh;  
+            display: none;
+            position: fixed;
+            border-radius: 10px;
+            /* top: 50%;
+            left: 50%;    
+            transform: translate(-50%, -50%); */
+            background-color: rgb(175, 195, 255);;
+            border: 1px solid rgb(65, 32, 250);
+            /* box-shadow: 0 0 10px rgba(0,0,0,0.5); */
+            z-index: 1000;
+        }
+        #popup label {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* space between radio and label text */
+            margin-bottom: 10px;
+            cursor: pointer;
+            }
         .queue {
             display: flex;
             flex-direction: column;
@@ -159,6 +184,13 @@
         <ul id="queue" class="queue"></ul>
 
     </div>
+
+    <div id="popup">
+        <form id="optionsForm">
+            <p>Select an option:</p>
+        </form>
+    <button onclick="submitOption()">Submit</button>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
         let in_game = false
@@ -166,6 +198,7 @@
         const main = document.getElementById("main-page");
         const instruction = document.getElementById("instructionsPage");
         const queue = document.getElementById("queuePage");
+
         function getIndex(element) {
             return [...element.parentNode.children].indexOf(element);
         }
@@ -175,10 +208,8 @@
                 inputField.blur();
             }
         });
+
         let draggedItem = null;
-        function start() {
-            socket.send("host|start");
-        }
 
         function saveList() {
             let listItems = [];
@@ -197,6 +228,7 @@
                 });
             }
         }
+
         function addDraftItem(draftPick) {
             const queueInput = document
                 .getElementById('queueInput');
@@ -235,6 +267,7 @@
             let pick = button.parentNode.querySelector('span').textContent;
             socket.emit('draft_pick', { pick: pick });
         }
+
         function makeDraggable(item) {
             item.draggable = true;
             item.addEventListener("touchstart", function (e) {
@@ -266,6 +299,7 @@
                 });
             });
         };
+
         function vibratePhone() {
             // Check if the Vibration API is supported
             if (navigator.vibrate) {
@@ -290,6 +324,37 @@
                 }
         };
 
+        function showPopup(options) {
+            const form = document.getElementById("optionsForm");
+            form.innerHTML = '<p>Send to Final Battle:</p>'; // reset
+            options.forEach((opt, index) => {
+            const id = `opt${index}`;
+            form.innerHTML += `
+                <label><input type="radio" name="option" value="${opt}" id="${id}"> ${opt.slice(0,15)}</label><br>`;
+            });
+            disableBackgroundInteraction(true)
+            document.getElementById("popup").style.display = "block";
+            // document.getElementById("overlay").style.display = "block";
+        }
+
+        function submitOption() {
+            const selected = document.querySelector('input[name="option"]:checked');
+            if (selected) {
+                socket.emit('sudden_death', { pick: selected.value })
+                alert("You selected: " + selected.value);
+                document.getElementById("popup").style.display = "none";
+                disableBackgroundInteraction(false)
+            } else {
+                alert("Please select an option.");
+            }
+            
+        }
+
+        function disableBackgroundInteraction(disable) {
+        document.body.style.pointerEvents = disable ? 'none' : 'auto';
+        document.getElementById("popup").style.pointerEvents = "auto"; // allow popup interaction
+        }
+
         function deleteByName(pick) {
             let spans = document.getElementById("queue").querySelectorAll("li span");
             
@@ -301,32 +366,42 @@
                 }
             }
         }
+
         function addtoDash(text) {
             const outputDiv = document
                 .getElementById('output');
             outputDiv.innerHTML += `<p><b>"${text}"</b></p>`;
         }
+
         function makeHost() {
             vibratePhone();
             document.getElementById('host').style.display = 'flex';
         };
+
         function hostCommand(command) {
             socket.emit('host', command);
         }
+
+        function changeHeader(new_header) {
+            document.getElementById('header').innerText = document.getElementById('header1').innerText =new_header
+        }
+
         function vote(vote) {
             socket.emit('vote', { vote: vote });
         };
+
         function showInstructions() {
             main.style.display = 'none';
             instruction.style.display = 'block';
             queue.style.display = 'none';
         };
-        // Function to show the main page
+
         function showMainPage() {
             main.style.display = 'block';
             instruction.style.display = 'none';
             queue.style.display = 'none';
         };
+
         function showQueuePage() {
             main.style.display = 'none';
             instruction.style.display = 'none';
@@ -337,33 +412,41 @@
         let reconnectInterval = 1000;
 
         function connectWebSocket() {
-            // socket.on('connect', function () {
-            //     pass
-            // });
             socket.on('game_state', function (state) {
                 switch (state.state) {
                     case 'wait':
-                        document.getElementById('header').innerText = 'Enter Your Name'
-                        document.getElementById('header1').innerText = 'Enter Your Name'
+                        if (state.in_game){
+                            changeHeader('Get Ready to Draft') 
+                        } else {
+                            changeHeader('Enter Your Name')
+                        }
+                        document.getElementById('queue').innerHTML=''
+                        saveList()
                         localStorage.clear()
                         break;
                     case 'draft':
-                        document.getElementById('header').innerText = "Drafting Topic".replace("Topic", state.topic)
-                        document.getElementById('header1').innerText = "Drafting Topic".replace("Topic", state.topic)
+                        changeHeader("Drafting Topic".replace("Topic", state.topic))
                         break;
                     case 'vote':
-                        document.getElementById('header').innerText = 'Vote Left or Right'
-                        document.getElementById('header1').innerText = 'Vote Left or Right'
+                        changeHeader('Vote Left or Right')
+                        document.getElementById('queue').innerHTML=''
+                        saveList()
                         localStorage.clear()
                     default:
                         break;
                 }
                 in_game = state.in_game
             });
+
             socket.on('too_similar', function (message) {
-                alert(message)
-            });
+            if (confirm(message.warning+'\n Do you still want to draft this?'.replace("this", message.pick))) {
+              socket.emit('draft_override', { pick: message.pick});
+            } else {
+              alert('Try Again')
+            }});
+
             socket.on('notify_player', function (message) {
+                console.log(message);
                 switch (message.action) {
                     case 'confirm_player':
                         let notification = "Got it, you're {message['name']}.".replace("{message['name']}", message.name)
@@ -373,21 +456,42 @@
                         alert("You're Up");
                         break;
                     case 'confirm_pick':
-                        let pick = "You drafted {message['pick']}.".replace("{message['pick']}", message.pick)
-                        addtoDash(pick)
-                        
-                        deleteByName(message.pick)
+                        let pick = "You drafted {message['pick']}.".replace("{message['pick']}", message.pick);
+                        addtoDash(pick);
+                        deleteByName(message.pick);
                         break;
                     case 'confirm_host':
-                        makeHost()
+                        makeHost();
+                        break;
+                    case 'vote':
+                        alert('You have 30 seconds to vote');
+                        break;
+                    case 'snitch':
+                        alert(message.names.join("\n"));
+                        break;
+                    case 'topic':
+                        let userInput = prompt("What's the Topic?");
+                        socket.emit('host', {topic:userInput});
+                        break;
+                    case 'sudden_death':
+                        showPopup(message.info);
+                        break;
+                    case 'restart':
+                        console.log('restsart')
+                        if (confirm('Wanna play again?')) {
+                        socket.emit('restart', true );
+                        } else {
+                        socket.emit('restart', false );
+                        alert('bye bye')
+                        };
                         break;
                     default:
                         break;
                 }
             });
+
             socket.on('disconnect', function (message) {
-                document.getElementById('header').innerText = 'Disconnected'
-                document.getElementById('header1').innerText = 'Disconnected'
+                changeHeader('Disconnected')
             });
 
         }
