@@ -9,7 +9,6 @@ from datetime import datetime
 from enum import Enum
 from functools import reduce
 from pathlib import Path
-
 import pandas as pd
 from selenium import webdriver
 import requests
@@ -76,7 +75,7 @@ def load_html_file(html_file, url=''):
     else:
         with open(html_file, "r", encoding="utf-8") as file:
             html = file.read()
-    return BeautifulSoup(html, 'html.parser')
+    return html
 
 
 def create_json(obj: dict, json_file):
@@ -124,10 +123,12 @@ def navigable_str_to_obj(obj):
 def get_category_odds(sport: Sports, category: Categories, sub_category: SubCategories,
                       date=datetime.now().strftime("%Y-%m-%d"), save_folder='Data'):
     html = Path(save_folder).joinpath(date + sub_category.name + '.html')
+    print(base_dk_url.format(sport.value, category.value, sub_category.value))
+
     if not html.exists():
         complete_url = base_dk_url.format(sport.value, category.value, sub_category.value)
         load_html_file(html, complete_url)
-    stat_df = pd.concat(pd.read_html(html)).drop(columns='UNDER')
+    stat_df = pd.concat(pd.read_html(html)).drop(columns='UNDER',errors='ignore')
     stat_df['PLAYER'] = stat_df['PLAYER'].apply(lambda player: re.sub(r'New!.*', '', player))
     stat_df['OVER'] = stat_df['OVER'].apply(
         lambda line: math.ceil(float(re.match(r'O\xa0(.+)[+−]', line).group(1))))
