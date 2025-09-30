@@ -42,15 +42,20 @@ def subtract_all(series):
     return reduce(lambda x, y: x - y, series)
 
 
-def get_url_soup(url):
-    if (response := requests.get(url)).status_code == 200:
-        return BeautifulSoup(response.content, 'html.parser')
-
+def get_url_soup(url,selenium=False):
+    html='nothing'
+    if selenium:
+        driver = webdriver.Edge()
+        driver.get(url)
+        html = driver.page_source
+    elif (response := requests.get(url)).status_code == 200:
+        html=response.content
+    return BeautifulSoup(html, 'html.parser')
 
 def download_page(url, new_html_file):
-    driver = webdriver.Edge()
+    driver = webdriver.Chrome()
     driver.get(url)
-    time.sleep(2)
+    time.sleep(1)
     html = driver.page_source
     with open(new_html_file, "w", encoding="utf-8") as file:
         file.write(html)
@@ -62,9 +67,8 @@ def download_multipages(html_url_dict: dict[str, str]):
     for html_file, url in html_url_dict.items():
         if not os.path.exists(html_file):
             driver.get(url)
-            time.sleep(2)
+            time.sleep(1)
             html = driver.page_source
-            time.sleep(2)
             with open(html_file, "w", encoding="utf-8") as file:
                 file.write(html)
 
