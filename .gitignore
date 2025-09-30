@@ -29,3 +29,5 @@ build/server_flask/Analysis-00.toc
 *.pck
 /build/server_flask
 /StockData/stock_htmls
+scratch.py
+merged_output.pdf
