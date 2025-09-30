@@ -8,29 +8,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d6079f8c-9eff-4b50-878a-d74f3ad11e67" name="Changes" comment="after moving to class data structure">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/JamelScripts.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/JamelScripts.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JS_requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MLB/ml_pred_v3.py" beforeDir="false" afterPath="$PROJECT_DIR$/MLB/ml_pred_v3.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NFL/2024_Defense.csv" beforeDir="false" afterPath="$PROJECT_DIR$/NFL/2024_Defense.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_10.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_11.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_12.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_13.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_14.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_15.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_16.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_2.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_3.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_4.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_5.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_6.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_7.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_8.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFL/nfl_poten_9.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/NFL/nfl_pred.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFL/nfl_pred.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScraperScripts.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScraperScripts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WNBA/2025-06-10test" beforeDir="false" afterPath="$PROJECT_DIR$/WNBA/2025-06-10test" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WNBA/wnba.py" beforeDir="false" afterPath="$PROJECT_DIR$/WNBA/wnba.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/server_flask/Analysis-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/server_flask/Analysis-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/server_flask/EXE-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/server_flask/EXE-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/server_flask/PKG-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/server_flask/PKG-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/server_flask/PYZ-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/server_flask/PYZ-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/server_flask/warn-server_flask.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/server_flask/warn-server_flask.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/server_flask/xref-server_flask.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/server_flask/xref-server_flask.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server_flask.spec" beforeDir="false" afterPath="$PROJECT_DIR$/server_flask.spec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webull_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/webull_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +56,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/ojmel/JamelScripts.git&quot;,
-    &quot;accountId&quot;: &quot;06c91305-869e-4d68-85cc-bdb4c6db4b3b&quot;
+    &quot;accountId&quot;: &quot;9efc83c5-ef6b-42de-8b5e-932ae4a9a089&quot;
   }
 }</component>
   <component name="ProblemsViewState">
@@ -94,6 +93,7 @@
     &quot;Python.prost.executor&quot;: &quot;Run&quot;,
     &quot;Python.scores.executor&quot;: &quot;Run&quot;,
     &quot;Python.scratch.executor&quot;: &quot;Run&quot;,
+    &quot;Python.server.executor&quot;: &quot;Run&quot;,
     &quot;Python.server_flask.executor&quot;: &quot;Run&quot;,
     &quot;Python.test.executor&quot;: &quot;Run&quot;,
     &quot;Python.wnba.executor&quot;: &quot;Run&quot;,
@@ -152,7 +152,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-0509580d9d50-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.14494.241" />
+        <option value="bundled-python-sdk-dfff61a61320-9cdd278e9d02-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.25410.159" />
       </set>
     </attachedChunks>
   </component>

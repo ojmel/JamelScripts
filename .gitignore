@@ -28,3 +28,4 @@ build/server_flask/Analysis-00.toc
 *.zip
 *.pck
 /build/server_flask
+/StockData/stock_htmls
