@@ -266,5 +266,5 @@ if __name__=='__main__':
     multiprocessing.freeze_support()
     process=multiprocessing.Process(target=run_godot,args=(f"http://{HOST}:{HTTP_PORT}/shutdown",))
     process.start()
-    print(HOST)
+    print(HOST,HTTP_PORT)
     socketio.run(app, host=HOST, port=HTTP_PORT)

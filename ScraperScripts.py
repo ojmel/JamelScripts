@@ -53,12 +53,14 @@ def get_url_soup(url,selenium=False):
     return BeautifulSoup(html, 'html.parser')
 
 def download_page(url, new_html_file):
-    driver = webdriver.Chrome()
-    driver.get(url)
-    time.sleep(1)
-    html = driver.page_source
-    with open(new_html_file, "w", encoding="utf-8") as file:
-        file.write(html)
+    with webdriver.Firefox() as driver:
+        driver.get(url)
+        time.sleep(1)
+        html = driver.page_source
+        with open(new_html_file, "w", encoding="utf-8") as file:
+            file.write(html)
+        print(html)
+        driver.close()
     return html
 
 

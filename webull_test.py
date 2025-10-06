@@ -115,7 +115,7 @@ def combine_corporations(corporation_one,corp_one_name, corporation_two,corp_two
     return combine_corp_df
 
 if __name__=='__main__':
-    start_over = True
+    start_over = False
     geode_picks = find_corporate_picks(
         'https://www.sec.gov/Archives/edgar/data/1214717/000121471725000012/xslForm13F_X02/GCMQ2202513F.xml',
         'https://www.sec.gov/Archives/edgar/data/1214717/000121471725000006/xslForm13F_X02/GCMQ1202513F.xml',
