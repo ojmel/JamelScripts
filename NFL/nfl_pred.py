@@ -1,3 +1,4 @@
+import string
 import time
 from enum import Enum
 
@@ -90,15 +91,38 @@ def get_weekly_matchup(week):
     match_ups = []
     for row, data in schedule.iterrows():
         match_ups.extend(match_up_stats(nfl_teams[data['home_team']], nfl_teams[data['away_team']]))
-    pd.DataFrame(match_ups).to_csv(f'NFL_{week}.csv')
+    matchup_table=pd.DataFrame(match_ups)
+    with pd.ExcelWriter(f"NFL_{week}.xlsx", engine="xlsxwriter") as writer:
+        matchup_table.to_excel(writer, sheet_name="potentials")
+        worksheet = writer.sheets["potentials"]
+        red = writer.book.add_format(({"bg_color": "red"}))
+        green = writer.book.add_format(({"bg_color": "green"}))
+        #also color code team names
+        for column in ['passing_potential','rushing_potential','total']:
+            excel_column = list(string.ascii_uppercase)[matchup_table.columns.get_loc(column) + 1]
+            _range = f'{excel_column}2:{excel_column}{matchup_table[column].__len__() + 1}'
+            worksheet.conditional_format(_range, {"type": "3_color_scale", "min_color": "red",
+                                                  "mid_color": "yellow",
+                                                  "max_color": "green",
+                                                  "min_value": matchup_table[column].min(),
+                                                  "max_value": matchup_table[column].max()})
+        excel_column = list(string.ascii_uppercase)[matchup_table.columns.get_loc('team') + 1]
+        for row,data in matchup_table.iterrows():
+            row=int(row)
+            _range = f'{excel_column}{row+2}'
+            format=green if data['total']>matchup_table.loc[row+1*(1 if row%2==0 else -1),'total'] else red
+
+            worksheet.conditional_format(_range, {"type": "cell", "format":format,"criteria": "!=",'value':-1000})
 
 
 def get_team_data_cbs(offense_or_defense='offense'):
     data_table = \
     pd.read_html(fr'https://www.cbssports.com/nfl/stats/team/{Side[offense_or_defense].value}/total/nfl/regular/',
                  header=1)[0]
-    data_table.columns = ['Team', 'GP', 'total', 'total_average', 'pass', 'pass_average', 'rush', 'rush_average', 'pts',
-                          'pts_average']
+    data_table.columns = ['Team', 'GP', 'total', 'total_average', 'pass_total', 'passing', 'rush_total', 'rushing', 'pts_total',
+                          'points']
+    data_table=data_table.set_index('Team')
+    data_table.index=[ScraperScripts.word_match(old_name,nfl_teams.values(),0.5) for old_name in data_table.index]
     for stat in stats_of_interest:
         data_table[stat] = data_table[stat].rank(pct=True, ascending=bool(offense_or_defense == 'offense')).round(2)
     return data_table
@@ -129,9 +153,11 @@ def get_team_data_cbs(offense_or_defense='offense'):
 #     defense[stats_of_interest] = defense[stats_of_interest].apply(lambda column: column.rank(pct=True, ascending=False))
 #     defense.to_csv('2024_Defense.csv')
 
-OFF_STATS = pd.read_csv('2024_Offense.csv',index_col='Teams')
-DEF_STATS = pd.read_csv('2024_Defense.csv',index_col='Teams')
+# OFF_STATS = pd.read_csv('2024_Offense.csv',index_col='Teams')
+# DEF_STATS = pd.read_csv('2024_Defense.csv',index_col='Teams')
 
+OFF_STATS = get_team_data_cbs()
+DEF_STATS = get_team_data_cbs('defense')
 
 def find_rank(sorted_dataframe: pd.DataFrame, team):
     return sorted_dataframe[sorted_dataframe['Team'] == team].index + 1
@@ -144,7 +170,7 @@ def match_up_stats(team1, team2):
     def score_team(off, defen, off_stat_dict):
         for stat in stats_of_interest:
             off_stat_dict[stat + '_potential'] = (OFF_STATS.loc[off, stat] - DEF_STATS.loc[defen, stat]).round(2)
-        off_stat_dict['PTS'] = (OFF_STATS.loc[off, 'PTS']+DEF_STATS.loc[defen, 'PTS'])/2
+        off_stat_dict['pts_total'] = (OFF_STATS.loc[off, 'pts_total']/OFF_STATS.loc[off, 'GP']+DEF_STATS.loc[defen, 'pts_total']/OFF_STATS.loc[off, 'GP'])/2
         off_stat_dict['total'] = sum(off_stat_dict[stat + '_potential'] for stat in stats_of_interest)
         off_stat_dict['opp'] = defen
 
@@ -169,15 +195,8 @@ def get_espn_df(url, csv, number_of_scrolls=3):
     return stat_df
 
 
+
 if __name__ == '__main__':
-    # show(get_schedule())
-    get_weekly_matchup(2)
-    #https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2024/types/2/athletes/4036378/statistics/0?lang=en&region=us
-    # test=pd.concat([pd.read_html(f"https://www.cbssports.com/nfl/stats/player/receiving/nfl/regular/qualifiers/?page={x}")[0] for x in range(1,11)])
-    # test=pd.read_csv('receiver_stuff.csv')
-    # print(test)
-    # pandasgui.show(test)
-    # test.to_csv('receiver_stuff.csv',index_label='')
-    # week = 1
-    # file=f'nfl_poten_{week}.csv'
-    # weekly_match_up(week,file)
+    #do conditional format here
+    #have home/away splits
+    get_weekly_matchup(6)

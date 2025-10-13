@@ -41,3 +41,6 @@ build/server_flask/base_library.zip
 >>>>>>> Stashed changes
 /build/server_flask
 .google-cookie
+*.csv
+*.pkl
+*.pkl

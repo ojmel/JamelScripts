@@ -190,7 +190,8 @@ def pitcher_table(same_day=True):
                 opp_pitcher =unidecode(attrgetter(f"{opp_side}.fullname")(game_data.gamedata.probablepitchers))
                 opp_pitcher =ScraperScripts.word_match(opp_pitcher,pitcher_df.index)
                 if (pitch_er :=pitcher_df.at[opp_pitcher, 'runs']) is not np.nan and pitcher_df.at[opp_pitcher, 'IP']>=3.0:
-                    run_pot[side+'_pot'] += [pitch_er]
+                    #weigh by number of innings played era/IP*9
+                    run_pot[side+'_pot'] += [pitch_er/pitcher_df.at[opp_pitcher, 'IP']*9]
             run_pot[side+'_pot']=mean(run_pot[side+'_pot'])
         run_pot['diff'] = run_pot['home_pot'] - run_pot['away_pot']
         run_pot['total'] = run_pot['home_pot'] + run_pot['away_pot']
