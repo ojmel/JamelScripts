@@ -44,3 +44,8 @@ build/server_flask/base_library.zip
 *.csv
 *.pkl
 *.pkl
+test
+test821
+test_earnings
+*.xml
+/build

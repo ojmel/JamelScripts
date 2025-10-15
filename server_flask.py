@@ -4,8 +4,6 @@ import re
 import subprocess
 import sys
 from enum import Enum
-
-import flask
 import requests
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, Namespace, emit
@@ -61,7 +59,7 @@ class PlayerHandler:
 
 app = Flask(__name__)
 socketio = SocketIO(app,ping_timeout=30,async_mode='gevent')
-HOST = "192.168.1.12"
+HOST = ""
 HTTP_PORT = 5554
 
 #python server_flask.py
@@ -262,7 +260,6 @@ def run_godot(shutdown_address):
 if __name__=='__main__':
     if ipv4 := get_ipv4():
         HOST = ipv4
-
     multiprocessing.freeze_support()
     process=multiprocessing.Process(target=run_godot,args=(f"http://{HOST}:{HTTP_PORT}/shutdown",))
     process.start()
