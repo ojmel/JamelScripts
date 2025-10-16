@@ -5,8 +5,9 @@ import mlb_pred_v2
 import numpy as np
 from sklearn.model_selection import train_test_split
 from keras import Sequential, layers, models
+from pathlib import Path
 # pip install tensorflow
-MLB_MODEL = r'C:\Users\jamel\PycharmProjects\JamelScripts\MLB\mlb_predictor.keras'
+MLB_MODEL = Path(r'mlb_predictor.keras')
 
 
 def mlb_database_to_matrix(table):
@@ -38,19 +39,20 @@ if __name__ == '__main__':
     mlb_data = mlb_data[mlb_data['homeoraway'] != 2]
     X = mlb_data[['away_ops', 'home_ops', 'away_fp', 'home_fp', 'away_era', 'home_era']]
     y = mlb_data['homeoraway']
-
-    # Split the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    if not MLB_MODEL.exists():
+        model = Sequential()
+        model.add(layers.Dense(12, activation='relu', input_shape=(6,), kernel_initializer='he_uniform'))
+        # model.add(layers.Dense(18, activation='relu'))
+        model.add(layers.Dense(1, activation='sigmoid'))
+        opt = SGD(learning_rate=0.001, momentum=0.9)
+        model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
 
-    model = Sequential()
-    model.add(layers.Dense(12, activation='relu', input_shape=(6,), kernel_initializer='he_uniform'))
-    # model.add(layers.Dense(18, activation='relu'))
-    model.add(layers.Dense(1, activation='sigmoid'))
-    opt = SGD(learning_rate=0.001, momentum=0.9)
-    model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
-
-    model.fit(X_train, y_train, epochs=50, batch_size=10, validation_data=(X_test, y_test))
+        model.fit(X_train, y_train, epochs=50, batch_size=10, validation_data=(X_test, y_test))
+        model.save(MLB_MODEL)
+    else:
+        model = models.load_model(MLB_MODEL)
     _, accuracy = model.evaluate(X_test, y_test)
     print('Accuracy: %.2f' % (accuracy * 100))
-    model.save(MLB_MODEL)
-    model = models.load_model(MLB_MODEL)
+
+

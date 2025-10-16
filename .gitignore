@@ -28,17 +28,14 @@ build/server_flask/Analysis-00.toc
 *.zip
 *.pck
 /build/server_flask
-<<<<<<< Updated upstream
 /StockData/stock_htmls
 scratch.py
 merged_output.pdf
-=======
 /build
 /StockData/stock_htmls
 /build
 /build/server_flask
 build/server_flask/base_library.zip
->>>>>>> Stashed changes
 /build/server_flask
 .google-cookie
 *.csv
@@ -49,3 +46,7 @@ test821
 test_earnings
 *.xml
 /build
+.google-cookie
+test_earnings
+test821
+/StockData/filings/
