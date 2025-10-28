@@ -80,7 +80,9 @@ class GodotServer(Namespace):
         print(f"godot connected")
         handler.godot_server = request.sid
         emit('connected', True)
-
+    def on_matchup(self,message):
+        emit('matchup', message, broadcast=True,
+             namespace='/player')
     def on_ready(self, message):
         print(message)
         if message == 'vote':
@@ -100,6 +102,7 @@ class GodotServer(Namespace):
             case 'confirm_pick':
                 print('someone drafted')
                 handler.answers.append(message['pick'])
+
             case 'topic':
                 if handler.host_player:
                     emit('notify_player', {'action': 'topic'}, namespace='/player',
@@ -117,6 +120,7 @@ class GodotServer(Namespace):
                 for player in message['names']:
                     emit('notify_player', message, namespace='/player', to=handler.find_player_by_name(player).sid)
                 return
+
         emit('notify_player', message, namespace='/player', to=handler.find_player_by_name(message['name']).sid)
 
     def on_restart(self, message):
@@ -260,8 +264,8 @@ def run_godot(shutdown_address):
 if __name__=='__main__':
     if ipv4 := get_ipv4():
         HOST = ipv4
-    multiprocessing.freeze_support()
-    process=multiprocessing.Process(target=run_godot,args=(f"http://{HOST}:{HTTP_PORT}/shutdown",))
-    process.start()
+    # multiprocessing.freeze_support()
+    # process=multiprocessing.Process(target=run_godot,args=(f"http://{HOST}:{HTTP_PORT}/shutdown",))
+    # process.start()
     print(HOST,HTTP_PORT)
     socketio.run(app, host=HOST, port=HTTP_PORT)

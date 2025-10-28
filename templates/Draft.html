@@ -142,8 +142,8 @@
         </div>
 
         <div class="button-row" id="vote-button" style="display: flex;">
-            <button onclick="vote('left')" style="width: 120px; font-size: 40px;">Left</button>
-            <button onclick="vote('right')" style="width: 120px; font-size: 40px;">Right</button>
+            <button onclick="vote('left')" id="left" style="width: 120px; font-size: 40px;">Left</button>
+            <button onclick="vote('right')" id="right" style="width: 120px; font-size: 40px;">Right</button>
         </div>
         <div id="output" style="font-size: 25px; color: var(--text);"></div>
         <div class="button-row" id="host" style="display: none; position: fixed; gap: 25px; right: 5px;">
@@ -198,7 +198,8 @@
         const main = document.getElementById("main-page");
         const instruction = document.getElementById("instructionsPage");
         const queue = document.getElementById("queuePage");
-
+        let last_vote=''
+        let game_state=''
         function getIndex(element) {
             return [...element.parentNode.children].indexOf(element);
         }
@@ -218,7 +219,13 @@
             });
             localStorage.setItem("listItems", JSON.stringify(listItems));
         }
-
+        function changeButtonColor(color,button_id){
+            let button_ = document.getElementById(button_id).style.backgroundColor = color;
+        }
+        function resetVoteButton() {
+            changeButtonColor(document.documentElement.style.getPropertyValue('--bg'),'left')
+            changeButtonColor(document.documentElement.style.getPropertyValue('--bg'),'right')
+        }
         function loadList() {
             let storedList = JSON.parse(localStorage.getItem("listItems"));
             if (storedList) {
@@ -382,12 +389,21 @@
             socket.emit('host', command);
         }
 
-        function changeHeader(new_header) {
-            document.getElementById('header').innerText = document.getElementById('header1').innerText =new_header
+        function changeHeader(new_header,header_id) {
+            document.getElementById(header_id).innerText = new_header
         }
-
+        function changeBothHeaders(new_header) {
+            changeHeader(new_header,'header')
+            changeHeader(new_header,'header1')
+        }
         function vote(vote) {
-            socket.emit('vote', { vote: vote });
+            if (game_state=='vote'){
+                socket.emit('vote', { vote: vote });
+                resetVoteButton()
+                changeButtonColor('yellow',vote)
+                last_vote=vote}
+            
+
         };
 
         function showInstructions() {
@@ -408,28 +424,31 @@
             queue.style.display = 'block';
         };
 
-        var socket = io('/player');
+        var socket = io('wss://gygokkp4n4.execute-api.us-east-2.amazonaws.com/production');
         let reconnectInterval = 1000;
 
         function connectWebSocket() {
             socket.on('game_state', function (state) {
+                game_state=state.state
                 switch (state.state) {
                     case 'wait':
                         if (state.in_game){
-                            changeHeader('Get Ready to Draft') 
+                            changeBothHeaders('Get Ready to Draft') 
                         } else {
-                            changeHeader('Enter Your Name')
+                            changeBothHeaders('Enter Your Name')
                         }
                         document.getElementById('queue').innerHTML=''
                         saveList()
                         localStorage.clear()
                         break;
                     case 'draft':
-                        changeHeader("Drafting Topic".replace("Topic", state.topic))
+                        changeBothHeaders("Drafting Topic".replace("Topic", state.topic))
                         break;
                     case 'vote':
-                        changeHeader('Vote Left or Right')
+                        changeHeader('Vote by Pressing Left or Right Button','header')
+                        changeHeader('Return to Main Page with Top Left Button','header1')
                         document.getElementById('queue').innerHTML=''
+                        showMainPage()
                         saveList()
                         localStorage.clear()
                     default:
@@ -444,6 +463,10 @@
             } else {
               alert('Try Again')
             }});
+
+            socket.on('matchup', function (message) {
+                resetVoteButton()
+            });
 
             socket.on('notify_player', function (message) {
                 console.log(message);
@@ -464,8 +487,10 @@
                         makeHost();
                         break;
                     case 'vote':
-                        alert('You have 30 seconds to vote');
+                        alert("You haven't vote yet");
                         break;
+                    case 'confirm_vote':
+                        changeButtonColor('green',last_vote)
                     case 'snitch':
                         alert(message.names.join("\n"));
                         break;
@@ -489,9 +514,11 @@
                         break;
                 }
             });
-
+            socket.on('connect', (message) => {
+                console.log("Connected to WSS server!");
+            });
             socket.on('disconnect', function (message) {
-                changeHeader('Disconnected')
+                changeBothHeaders('Disconnected')
             });
 
         }

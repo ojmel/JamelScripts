@@ -102,6 +102,9 @@ def find_corporate_picks(current_filing_url, previous_filing_url, picks_csv, oth
     return combined
 
 def combine_corporations(corporation_one,corp_one_name, corporation_two,corp_two_name):
+    corporation_one=corporation_one.query('(new_price>old_price and holding_change<0) or (new_price<old_price and holding_change>0)')
+    corporation_two = corporation_two.query(
+        '(new_price>old_price and holding_change<0) or (new_price<old_price and holding_change>0)')
     corporation_one = corporation_one.drop(columns=['new_amount', 'old_amount']).rename(
         columns={'old_price': f'{corp_one_name}_old', 'new_price': f'{corp_one_name}_new'})
     corporation_two = corporation_two.drop(columns=['new_amount', 'old_amount']).rename(
