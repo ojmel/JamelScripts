@@ -5,7 +5,7 @@
             "type": "msedge",
             "request": "launch",
             "name": "Open main.html",
-            "file": "c:\\Users\\jamel\\PycharmProjects\\JamelScripts\\JamarHtml\\main.html"
+            "file": "c:\\Users\\jamel\\PycharmProjects\\JamelScripts\\templates\\Draft.html"
         },
         {
             "name": "(Windows) Launch",

@@ -11,6 +11,7 @@
             --text: rgb(65, 32, 250);
             --bg: rgb(175, 195, 255);
         }
+
         #popup {
             color: var(--text);
             background-color: var(--bg);
@@ -18,25 +19,29 @@
             left: 0;
             font-size: 40px;
             width: 100vw;
-            height: 100vh;  
+            height: 100vh;
             display: none;
             position: fixed;
             border-radius: 10px;
             /* top: 50%;
             left: 50%;    
             transform: translate(-50%, -50%); */
-            background-color: rgb(175, 195, 255);;
+            background-color: rgb(175, 195, 255);
+            ;
             border: 1px solid rgb(65, 32, 250);
             /* box-shadow: 0 0 10px rgba(0,0,0,0.5); */
             z-index: 1000;
         }
+
         #popup label {
             display: flex;
             align-items: center;
-            gap: 10px; /* space between radio and label text */
+            gap: 10px;
+            /* space between radio and label text */
             margin-bottom: 10px;
             cursor: pointer;
-            }
+        }
+
         .queue {
             display: flex;
             flex-direction: column;
@@ -68,6 +73,7 @@
         }
 
         h1 {
+            color: var(--text);
             font-size: 40px;
         }
 
@@ -109,9 +115,9 @@
         }
 
         .transition-button {
-            position: fixed;
-            top: 15px;
-            right: 5px;
+            /* position: fixed; */
+            /* top: 15px; */
+            /* right: 5px; */
             height: 25px;
             border-radius: 15px;
             width: 120px;
@@ -124,16 +130,20 @@
         }
 
         .button-row {
+            display: flex;
             justify-content: center;
-            /* Align buttons horizontally */
             gap: 10px;
-            bottom: 20px;
         }
     </style>
 </head>
 
 <body style="background-color: var(--bg); text-align: center;">
     <div id="main-page" class="container" style="display: block;">
+        <div class="button-row" style="justify-content: space-evenly;">
+            <button class="transition-button" onclick="switchPage(queue)">Queue</button>
+            <button class="transition-button" onclick="switchPage(draft_list)">Draft List</button>
+            <button class="transition-button" onclick="switchPage(instruction)">Instructions</button>
+        </div>
         <h1>Draftology</h1>
         <h2 id="header">Disconnected</h2>
         <div class="container" style="height: 25%;">
@@ -141,22 +151,28 @@
             <button onclick="sendMessage()">Send</button>
         </div>
 
-        <div class="button-row" id="vote-button" style="display: flex;">
+        <div class="button-row" id="vote-button">
             <button onclick="vote('left')" id="left" style="width: 120px; font-size: 40px;">Left</button>
             <button onclick="vote('right')" id="right" style="width: 120px; font-size: 40px;">Right</button>
         </div>
         <div id="output" style="font-size: 25px; color: var(--text);"></div>
-        <div class="button-row" id="host" style="display: none; position: fixed; gap: 25px; right: 5px;">
+        <div class="button-row" id="host" style="display: none; justify-content: space-evenly; position: fixed; bottom: 10%; width: 100%;">
             <button onclick="hostCommand('start')">Start</button>
             <button onclick="hostCommand('left')">Left</button>
             <button onclick="hostCommand('right')">Right</button>
             <button onclick="hostCommand('next')">Next</button>
+            <button style="background-color:#e40602" onclick="hostCommand('zoom_out')">Zoom</button>
+            <button style="background-color:#057d03" onclick="hostCommand('zoom_in')">Zoom</button>
         </div>
-        <button class="transition-button" style="left: 5px;" onclick="showQueuePage()">Queue</button>
-        <button class="transition-button" onclick="showInstructions()">Instructions</button>
+
     </div>
 
     <div id="instructionsPage" class="container" style="display: none;">
+        <div class="button-row" style="justify-content: space-evenly;">
+            <button class="transition-button" onclick="switchPage(queue)">Queue</button>
+            <button class="transition-button" onclick="switchPage(draft_list)">Draft List</button>
+            <button class="transition-button" onclick="switchPage(main)">Main Page</button>
+        </div>
         <h1>Instructions</h1>
         <p style="font-size: 30px;">Here you will learn the study of the draft</p>
         <ol>
@@ -167,13 +183,15 @@
             <li>When its time to vote press left or right to send in your vote.</li>
             <li>Thanks for playing.</li>
         </ol>
-        <button class="transition-button" style="left: 5px;" onclick="showQueuePage()">Queue</button>
-        <button class="transition-button" onclick="showMainPage()">Main Page</button>
+        
     </div>
 
     <div id="queuePage" class="container" style="display: none;">
-        <button class="transition-button" style="left: 5px;" onclick="showMainPage()">Main Page</button>
-        <button class="transition-button" onclick="showInstructions()">Instructions</button>
+        <div class="button-row" style="justify-content: space-evenly;">
+            <button class="transition-button" onclick="switchPage(main)">Main Page</button>
+            <button class="transition-button" onclick="switchPage(draft_list)">Draft List</button>
+            <button class="transition-button" onclick="switchPage(instruction)">Instructions</button>
+        </div>
         <h1>Draft Queue</h1>
         <h2 id="header1">Disconnected</h2>
         <div class="container" style="display: flex; flex-direction: row; align-items: center; gap: 10px;">
@@ -184,22 +202,37 @@
         <ul id="queue" class="queue"></ul>
 
     </div>
+    <div id="draftPage" class="container" style="display: none;">
+        <div class="button-row"  style="justify-content: space-evenly;">
+            <button class="transition-button" onclick="switchPage(queue)">Queue</button>
+            <button class="transition-button" onclick="switchPage(main)">Main Page</button>
+            <button class="transition-button" onclick="switchPage(instruction)">Instructions</button>
+        </div>
+        <h1>Draft List</h1>
+        <h2 id="header1">Disconnected</h2>
+        <div id="draft_output" style="font-size: 25px; color: var(--text);"></div>
+
+    </div>
 
     <div id="popup">
         <form id="optionsForm">
             <p>Select an option:</p>
         </form>
-    <button onclick="submitOption()">Submit</button>
+        <button onclick="submitOption()">Submit</button>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
-        let in_game = false
         const inputField = document.getElementById("messageInput");
         const main = document.getElementById("main-page");
         const instruction = document.getElementById("instructionsPage");
         const queue = document.getElementById("queuePage");
-        let last_vote=''
-        let game_state=''
+        const draft_list = document.getElementById("draftPage");
+        const pages=[main,instruction,queue,draft_list];
+        let last_vote = '';
+        let host_code='2222';
+        let game_states = { need_code: 'need_code', need_name: 'need_name', drafting: 'drafting', vote: 'voting' };
+        let game_state = game_states.need_code;
+        let access_code = ''
         function getIndex(element) {
             return [...element.parentNode.children].indexOf(element);
         }
@@ -219,12 +252,12 @@
             });
             localStorage.setItem("listItems", JSON.stringify(listItems));
         }
-        function changeButtonColor(color,button_id){
+        function changeButtonColor(color, button_id) {
             let button_ = document.getElementById(button_id).style.backgroundColor = color;
         }
         function resetVoteButton() {
-            changeButtonColor(document.documentElement.style.getPropertyValue('--bg'),'left')
-            changeButtonColor(document.documentElement.style.getPropertyValue('--bg'),'right')
+            changeButtonColor(document.documentElement.style.getPropertyValue('--bg'), 'left')
+            changeButtonColor(document.documentElement.style.getPropertyValue('--bg'), 'right')
         }
         function loadList() {
             let storedList = JSON.parse(localStorage.getItem("listItems"));
@@ -314,30 +347,36 @@
                 navigator.vibrate(500);
             }
         };
-
+        function checkGameState(needed_state) {
+            return game_state == needed_state
+        }
         function sendMessage() {
+            let message = inputField.value;
+            if (message) {
+                if (message === host_code) {
+                    socketSend({ action: 'host', subaction: 'make_host' });
+                }
 
-            if (inputField.value) {
-                if (inputField.value === '2908') {
-                    socket.emit('host', 'make_host');
+                else if (checkGameState(game_states.need_code)) {
+                    access_code = message
+                    socketSend({ action: 'start' });
                 }
-                else if (in_game) {
-                    socket.emit('draft_pick', { pick: inputField.value });
+                else if (checkGameState(game_states.need_name)) {
+                    socketSend({ action: 'name', name: message });
                 }
-                else {
-                    socket.emit('new_player', { name: inputField.value });
+                else if (checkGameState(game_states.drafting)) {
+                    socketSend({ action: 'pick', pick: message })
                 }
                 inputField.value = '';
-                }
-        };
-
+            }
+        }
         function showPopup(options) {
             const form = document.getElementById("optionsForm");
             form.innerHTML = '<p>Send to Final Battle:</p>'; // reset
             options.forEach((opt, index) => {
-            const id = `opt${index}`;
-            form.innerHTML += `
-                <label><input type="radio" name="option" value="${opt}" id="${id}"> ${opt.slice(0,15)}</label><br>`;
+                const id = `opt${index}`;
+                form.innerHTML += `
+                <label><input type="radio" name="option" value="${opt}" id="${id}"> ${opt.slice(0, 15)}</label><br>`;
             });
             disableBackgroundInteraction(true)
             document.getElementById("popup").style.display = "block";
@@ -347,29 +386,29 @@
         function submitOption() {
             const selected = document.querySelector('input[name="option"]:checked');
             if (selected) {
-                socket.emit('sudden_death', { pick: selected.value })
+                socketSend({ action: 'sudden_death', pick: selected.value })
                 alert("You selected: " + selected.value);
                 document.getElementById("popup").style.display = "none";
                 disableBackgroundInteraction(false)
             } else {
                 alert("Please select an option.");
             }
-            
+
         }
 
         function disableBackgroundInteraction(disable) {
-        document.body.style.pointerEvents = disable ? 'none' : 'auto';
-        document.getElementById("popup").style.pointerEvents = "auto"; // allow popup interaction
+            document.body.style.pointerEvents = disable ? 'none' : 'auto';
+            document.getElementById("popup").style.pointerEvents = "auto"; // allow popup interaction
         }
 
         function deleteByName(pick) {
             let spans = document.getElementById("queue").querySelectorAll("li span");
-            
+
             for (let span of spans) {
                 if (span.textContent === pick) {
                     span.parentElement.remove();
                     saveList();
-                    break;  // Stops loop after removing the first match
+                    break;  
                 }
             }
         }
@@ -379,150 +418,192 @@
                 .getElementById('output');
             outputDiv.innerHTML += `<p><b>"${text}"</b></p>`;
         }
-
+        function addtoDraftPage(text) {
+            const outputDiv = document
+                .getElementById('draft_output');
+            outputDiv.innerHTML += `<p><b>"${text}"</b></p>`;
+        }
+        function populateDraftPage(answers) {
+            for (let [pick, name] of Object.entries(answers)) {
+                addtoDraftPage(`${name} drafted ${pick}`);
+            }
+        }
         function makeHost() {
             vibratePhone();
             document.getElementById('host').style.display = 'flex';
         };
 
         function hostCommand(command) {
-            socket.emit('host', command);
+            socketSend({ action: 'host', subaction: command });
         }
 
-        function changeHeader(new_header,header_id) {
-            document.getElementById(header_id).innerText = new_header
+        function changeHeader(new_header, header_id) {
+            document.getElementById(header_id).innerText = new_header;
         }
         function changeBothHeaders(new_header) {
-            changeHeader(new_header,'header')
-            changeHeader(new_header,'header1')
+            changeHeader(new_header, 'header');
+            changeHeader(new_header, 'header1');
         }
         function vote(vote) {
-            if (game_state=='vote'){
-                socket.emit('vote', { vote: vote });
-                resetVoteButton()
-                changeButtonColor('yellow',vote)
-                last_vote=vote}
-            
-
+            if (checkGameState(game_states.vote)) {
+                socketSend({ action: 'vote', vote: vote });
+                resetVoteButton();
+                changeButtonColor('yellow', vote);
+                last_vote = vote;
+            }
         };
+        function switchPage(desired_page) {
+            for (let page of pages) {
+                page.style.display ='none';
+            }
+            desired_page.style.display = 'block';
+        }
+        
+        function socketSend(message) {
+            message['type'] = 'player'
+            message['code'] = access_code
+            console.log(message)
+            socket.send(JSON.stringify(message))
+        }
 
-        function showInstructions() {
-            main.style.display = 'none';
-            instruction.style.display = 'block';
-            queue.style.display = 'none';
-        };
+        let reconnections = 0;
+        let socket = new WebSocket('wss://qrku7dmlia.execute-api.us-east-2.amazonaws.com/production/');
 
-        function showMainPage() {
-            main.style.display = 'block';
-            instruction.style.display = 'none';
-            queue.style.display = 'none';
-        };
+        function socketConnect() {
 
-        function showQueuePage() {
-            main.style.display = 'none';
-            instruction.style.display = 'none';
-            queue.style.display = 'block';
-        };
-
-        var socket = io('wss://gygokkp4n4.execute-api.us-east-2.amazonaws.com/production');
-        let reconnectInterval = 1000;
-
-        function connectWebSocket() {
-            socket.on('game_state', function (state) {
-                game_state=state.state
-                switch (state.state) {
-                    case 'wait':
-                        if (state.in_game){
-                            changeBothHeaders('Get Ready to Draft') 
-                        } else {
-                            changeBothHeaders('Enter Your Name')
-                        }
-                        document.getElementById('queue').innerHTML=''
-                        saveList()
-                        localStorage.clear()
-                        break;
-                    case 'draft':
-                        changeBothHeaders("Drafting Topic".replace("Topic", state.topic))
-                        break;
-                    case 'vote':
-                        changeHeader('Vote by Pressing Left or Right Button','header')
-                        changeHeader('Return to Main Page with Top Left Button','header1')
-                        document.getElementById('queue').innerHTML=''
-                        showMainPage()
-                        saveList()
-                        localStorage.clear()
-                    default:
-                        break;
+            socket.onopen = function (event) {
+                // changeBothHeaders('Connected');
+                reconnections = false;
+                // console.log('connect')
+                if (game_state == game_states.need_code) {
+                    changeBothHeaders('Enter Room Code');
                 }
-                in_game = state.in_game
-            });
-
-            socket.on('too_similar', function (message) {
-            if (confirm(message.warning+'\n Do you still want to draft this?'.replace("this", message.pick))) {
-              socket.emit('draft_override', { pick: message.pick});
-            } else {
-              alert('Try Again')
-            }});
-
-            socket.on('matchup', function (message) {
-                resetVoteButton()
-            });
-
-            socket.on('notify_player', function (message) {
-                console.log(message);
-                switch (message.action) {
-                    case 'confirm_player':
-                        let notification = "Got it, you're {message['name']}.".replace("{message['name']}", message.name)
-                        addtoDash(notification)
-                        break;
-                    case 'next':
-                        alert("You're Up");
-                        break;
-                    case 'confirm_pick':
-                        let pick = "You drafted {message['pick']}.".replace("{message['pick']}", message.pick);
-                        addtoDash(pick);
-                        deleteByName(message.pick);
-                        break;
-                    case 'confirm_host':
-                        makeHost();
-                        break;
-                    case 'vote':
-                        alert("You haven't vote yet");
-                        break;
-                    case 'confirm_vote':
-                        changeButtonColor('green',last_vote)
-                    case 'snitch':
-                        alert(message.names.join("\n"));
-                        break;
-                    case 'topic':
-                        let userInput = prompt("What's the Topic?");
-                        socket.emit('host', {topic:userInput});
-                        break;
-                    case 'sudden_death':
-                        showPopup(message.info);
-                        break;
-                    case 'restart':
-                        console.log('restsart')
-                        if (confirm('Wanna play again?')) {
-                        socket.emit('restart', true );
-                        } else {
-                        socket.emit('restart', false );
-                        alert('bye bye')
-                        };
-                        break;
-                    default:
-                        break;
+                //sned message with accesscode to get game state
+            };
+            socket.onmessage = function (event) {
+                if (event.data) {
+                    console.log(event.data);
+                    parse_message(JSON.parse(event.data));
                 }
-            });
-            socket.on('connect', (message) => {
-                console.log("Connected to WSS server!");
-            });
-            socket.on('disconnect', function (message) {
-                changeBothHeaders('Disconnected')
-            });
+
+            };
+            socket.onclose = function (event) {
+                alert('disconnect')
+                if (reconnections<10) {
+                    socketConnect();
+                    reconnections += 1;
+                }
+                changeBothHeaders('Disconnected');
+            };
+        }
+
+
+        function parse_message(message) {
+            switch (message.action) {
+                case 'game_state':
+                    game_state = message.state
+                    host_code=message.host_code
+                    switch (message.state) {
+                        case 'wait':
+                            if (message.in_game) {
+                                changeBothHeaders('Get Ready to Draft');
+                            } else {
+                                changeBothHeaders('Enter Your Name');
+                            }
+                            document.getElementById('queue').innerHTML = '';
+                            saveList();
+                            localStorage.clear();
+                            break;
+                        case 'draft':
+                            changeBothHeaders("Drafting Topic".replace("Topic", message.topic));
+                            game_state = game_states.drafting
+                            populateDraftPage(message.answers)
+                            break;
+                        case 'vote':
+                            changeHeader('Vote by Pressing Left or Right Button', 'header');
+                            changeHeader('Return to Main Page with Top Left Button', 'header1');
+                            game_state = game_states.vote
+                            document.getElementById('queue').innerHTML = '';
+                            showMainPage();
+                            saveList();
+                            localStorage.clear();
+                        default:
+                            break;
+                    }
+
+                case 'too_similar':
+                    switch (message.subaction) {
+                        case 'pick':
+                            if (confirm(message.warning + '\n Do you still want to draft this?'.replace("this", message.pick))) {
+                                socketSend({ action: 'draft_override', pick: message.pick });
+                            } else {
+                                alert('Try Again');
+                            }
+                            break;
+                        case 'name':
+                            alert('That name\'s taken')
+                            break;
+                    };
+                    break;
+
+                case 'matchup':
+                    resetVoteButton();
+                    break;
+
+                case 'notify_player':
+                    console.log(message);
+                    switch (message.subaction) {
+                        case "wrong_code":
+                        case "your_turn":
+                        case 'snitch':
+                        case 'vote':
+                            alert(message.warning)
+                            break;
+                        case 'confirm_code':
+                            access_code = message.code;
+                            game_state = game_states.need_name
+                            changeBothHeaders('Enter Your Name');
+                            break;
+                        case 'confirm_player':
+                            let notification = "Got it, you're {message['name']}.".replace("{message['name']}", message.name)
+                            addtoDash(notification)
+                            changeBothHeaders('Get Ready to Draft')
+                            game_state = game_states.drafting
+                            break;
+                        case 'confirm_pick':
+                            let pick = "You drafted {message['pick']}.".replace("{message['pick']}", message.pick);
+                            addtoDash(pick);
+                            deleteByName(message.pick);
+                            break;
+                        case 'confirm_host':
+                            makeHost();
+                            break;
+                        case 'confirm_vote':
+                            changeButtonColor('green', last_vote);
+                            break;
+                        case 'topic_select':
+                            let userInput = prompt("What's the Topic?");
+                            socketSend({ action: 'host', subaction: 'topic_select', topic: userInput });
+                            break;
+                        case 'sudden_death':
+                            showPopup(message.picks);
+                            break;
+                        case 'restart':
+                            console.log('restsart')
+                            if (confirm('Wanna play again?')) {
+                                socketSend({ action: 'restart', answer: true });
+                            } else {
+                                socketSend({ action: 'restart', answer: false });
+                                alert('bye bye');
+                            };
+                            break;
+                    }
+            };
+
+
 
         }
-        connectWebSocket();
+        socketConnect();
         window.onload = loadList();
     </script>
 

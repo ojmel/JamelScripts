@@ -198,5 +198,5 @@ def get_espn_df(url, csv, number_of_scrolls=3):
 if __name__ == '__main__':
     #do conditional format here
     #have home/away splits
-    get_weekly_matchup(8)
+    get_weekly_matchup(9)
 

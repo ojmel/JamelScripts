@@ -50,3 +50,5 @@ test_earnings
 test_earnings
 test821
 /StockData/filings/
+/amerzon/pymysql/constants
+/build

@@ -27,10 +27,6 @@
       <change beforePath="$PROJECT_DIR$/build/server_flask/PYZ-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/server_flask/PYZ-00.toc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/server_flask/warn-server_flask.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/server_flask/warn-server_flask.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/server_flask/xref-server_flask.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/server_flask/xref-server_flask.html" afterDir="false" />
-<<<<<<< Updated upstream
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-=======
->>>>>>> Stashed changes
       <change beforePath="$PROJECT_DIR$/server_flask.spec" beforeDir="false" afterPath="$PROJECT_DIR$/server_flask.spec" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/webull_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/webull_test.py" afterDir="false" />
     </list>
@@ -117,19 +113,11 @@
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\NFL" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-<<<<<<< Updated upstream
-      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\MLB\Data" />
-      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\WNBA\Data" />
-      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\MLB" />
-      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts" />
-      <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\online" />
-=======
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\StockData\filings" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\StockData\stock_htmls" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\StockData\earnings_htmls" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\StockData" />
       <recent name="C:\Users\jamel\PycharmProjects\JamelScripts\deal_card" />
->>>>>>> Stashed changes
     </key>
   </component>
   <component name="RunManager">
