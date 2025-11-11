@@ -45,9 +45,10 @@ def subtract_all(series):
 def get_url_soup(url,selenium=False):
     html='nothing'
     if selenium:
-        driver = webdriver.Edge()
+        driver = webdriver.Firefox()
         driver.get(url)
         html = driver.page_source
+        driver.close()
     elif (response := requests.get(url)).status_code == 200:
         html=response.content
     return BeautifulSoup(html, 'html.parser')
@@ -141,3 +142,8 @@ def get_category_odds(sport: Sports, category: Categories, sub_category: SubCate
     stat_df.rename(columns={'OVER': "LINE", "PLAYER": "name"}, inplace=True)
     stat_df.set_index('name', inplace=True)
     return stat_df[~stat_df.index.duplicated(keep='first')]
+
+def search(query):
+    time.sleep(2)
+    url=f'https://duckduckgo.com/?q={"+".join(query.split(" "))}'
+    return get_url_soup(url,True)

@@ -1,4 +1,5 @@
 import datetime
+import time
 from pathlib import Path
 from googlesearch import search
 from pandasgui import show
@@ -6,11 +7,12 @@ import re
 import pandas as pd
 import ScraperScripts
 from datetime import date
-
+import yfinance as yf
+from ddgs import DDGS
 "Manager is 5 for JPM Securities LLC"
 "MorganStanley is 2"
 change_cutoff=2
-price_cutoff=40
+price_cutoff=200
 ticker_json='StockData\\company_tickers.json'
 company_name_ticker=ScraperScripts.load_json(ticker_json)
 
@@ -21,7 +23,7 @@ def get_tickers_with_earnings(from_date:date,to_date:date):
         try:
             if _date.weekday() >= 5: continue
             url=base_url.format(from_date.strftime('%Y-%m-%d'),to_date.strftime('%Y-%m-%d'),_date.strftime('%Y-%m-%d'))
-            html=f'StockData\\earnings_htmls\\{_date.strftime('%Y-%m-%d')}_earnings.html'
+            html=f'StockData\\earnings_htmls\\{_date.strftime("%Y-%m-%d")}_earnings.html'
             ScraperScripts.load_html_file(html, url)
             earnings=pd.read_html(html)[0]
             earnings['date']=_date
@@ -38,12 +40,16 @@ def update_tickers(company_name,ticker):
 earning_tickers=get_tickers_with_earnings(datetime.date.today(),datetime.date.today()+datetime.timedelta(days=14))
 
 def find_ticker(company_name):
+    if company_name_try:=ScraperScripts.word_match(company_name.lower(),list(name.lower() for name in company_name_ticker.keys()),0.65):
+        company_name=company_name_try
     if ticker:=company_name_ticker.get(company_name,None):
         return ticker
-    top_result=next(search(f'{company_name} yahoo ticker',pause=2,num=1,stop=1))
+
+    time.sleep(1)
+    top_result=[site.get('href') for site in DDGS().text(company_name+' site:https://finance.yahoo.com/', max_results=3)]
     print(top_result,company_name)
     try:
-        ticker=re.search(r'/([^a-z]+)[/?]', top_result).group(1)
+        ticker=re.search(r'quote/([^a-z]+)/', top_result[0]).group(1)
         print(ticker)
         update_tickers(company_name,ticker)
         return ticker
@@ -88,8 +94,8 @@ def find_corporate_picks(current_filing_url, previous_filing_url, picks_csv, oth
     if Path(picks_csv).exists() and not make_new_df:
         combined = pd.read_csv(picks_csv, index_col='NAME_OF_ISSUER')
     else:
-        current_filing=f'StockData\\filings\\{current_filing_url.split('/')[-1]}'
-        previous_filing = f'StockData\\filings\\{previous_filing_url.split('/')[-1]}'
+        current_filing=f"StockData\\filings\\{current_filing_url.split('/')[-1]}"
+        previous_filing = f"StockData\\filings\\{previous_filing_url.split('/')[-1]}"
         ScraperScripts.load_html_file(current_filing,current_filing_url)
         ScraperScripts.load_html_file(previous_filing, previous_filing_url)
         current_df=read_13f_filing(current_filing,other_manger,make_new_df=make_new_df).rename(columns={'PRN_AMT': "new_amount",'price':'new_price'})
@@ -117,22 +123,41 @@ def combine_corporations(corporation_one,corp_one_name, corporation_two,corp_two
     show(combine_corp_df)
     return combine_corp_df
 
+def quantify_corp(corp_df,corp_name):
+    corp_df = corp_df.query(
+        '(new_price>old_price and holding_change<0) or (new_price<old_price and holding_change>0)')
+    corp_df = corp_df.drop(columns=['new_amount', 'old_amount']).rename(
+        columns={'old_price': f'{corp_name}_old', 'new_price': f'{corp_name}_new'})
+    corp_df.index = [find_ticker(name) for name in corp_df.index]
+    combine_corp_df = pd.merge(corp_df, earning_tickers, left_index=True, right_index=True, how='inner')
+    combine_corp_df = combine_corp_df[combine_corp_df.index.notnull()]
+    return combine_corp_df
+
+def get_price(ticker:str):
+    time.sleep(1)
+    stock = yf.Ticker(ticker)
+    return stock.history()['Close'].iloc[-1]
+
 if __name__=='__main__':
-    start_over = False
-    geode_picks = find_corporate_picks(
-        'https://www.sec.gov/Archives/edgar/data/1214717/000121471725000012/xslForm13F_X02/GCMQ2202513F.xml',
-        'https://www.sec.gov/Archives/edgar/data/1214717/000121471725000006/xslForm13F_X02/GCMQ1202513F.xml',
-        'StockData\\filings\\geode_q1_q2.csv', make_new_df=start_over)
-    jpm_picks = find_corporate_picks(
+    start_over = True
+    # geode_picks = find_corporate_picks(
+    #     'https://www.sec.gov/Archives/edgar/data/1214717/000121471725000012/xslForm13F_X02/GCMQ2202513F.xml',
+    #     'https://www.sec.gov/Archives/edgar/data/1214717/000121471725000006/xslForm13F_X02/GCMQ1202513F.xml',
+    #     'StockData\\filings\\geode_q1_q2.csv', make_new_df=start_over)
+    jpm_picks = find_corporate_picks('https://www.sec.gov/Archives/edgar/data/19617/000001961725001081/xslForm13F_X02/Information_Table_09.30.2025.xml',
         'https://www.sec.gov/Archives/edgar/data/19617/000091918525000009/xslForm13F_X02/Information_Table_06.30.2025.xml',
-        'https://www.sec.gov/Archives/edgar/data/19617/000001961725000443/xslForm13F_X02/Information_Table_03.31.2025.xml',
-        'StockData\\filings\\jpm_q1_q2.csv', other_manger=5, make_new_df=start_over)
-    morgan_picks=find_corporate_picks('https://www.sec.gov/Archives/edgar/data/895421/000089542125000499/xslForm13F_X02/US_13F-408-20250630.xml',
-        'https://www.sec.gov/Archives/edgar/data/895421/000089542125000381/xslForm13F_X02/US_13F-408-20250331.xml',
-        'StockData\\filings\\morgan_q1_q2.csv', other_manger=2, make_new_df=start_over)
-    combine_corporations(morgan_picks,'morgan',jpm_picks,'jpm')
-    combine_corporations(geode_picks, 'geode', jpm_picks, 'jpm')
-    combine_corporations(morgan_picks, 'morgan', geode_picks, 'geode')
+        'StockData\\filings\\jpm_q2_q3.csv', other_manger=5, make_new_df=start_over)
+    jpm_picks=quantify_corp(jpm_picks,'jpm')
+    jpm_picks['Last']=jpm_picks.index.map(get_price)
+    jpm_picks['dist']=jpm_picks.apply(lambda row: calculate_percent_change(row['Last'],row['jpm_new']),axis=1)
+
+    show(jpm_picks.query('dist>-0.25'))
+    # morgan_picks=find_corporate_picks('https://www.sec.gov/Archives/edgar/data/895421/000089542125000499/xslForm13F_X02/US_13F-408-20250630.xml',
+    #     'https://www.sec.gov/Archives/edgar/data/895421/000089542125000381/xslForm13F_X02/US_13F-408-20250331.xml',
+    #     'StockData\\filings\\morgan_q1_q2.csv', other_manger=2, make_new_df=start_over)
+    # combine_corporations(morgan_picks,'morgan',jpm_picks,'jpm')
+    # combine_corporations(geode_picks, 'geode', jpm_picks, 'jpm')
+    # combine_corporations(morgan_picks, 'morgan', geode_picks, 'geode')
     # jpm_picks.index = [find_ticker(name) for name in jpm_picks.index]
     # jpm_picks = pd.merge(jpm_picks, earning_tickers, left_index=True, right_index=True, how='inner')
     # jpm_picks['price_change']=jpm_picks.apply(lambda row: calculate_percent_change(row['jpm_new'],row['jpm_old']),axis=1)
