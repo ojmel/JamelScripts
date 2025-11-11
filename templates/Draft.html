@@ -110,7 +110,7 @@
             height: 60px;
             border-radius: 15px;
             width: 60px;
-            font-size: 20px;
+            font-size: 19px;
 
         }
 
@@ -129,6 +129,12 @@
             background-color: #ff5900;
         }
 
+        .button-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 10px;
+        }
         .button-row {
             display: flex;
             justify-content: center;
@@ -156,14 +162,15 @@
             <button onclick="vote('right')" id="right" style="width: 120px; font-size: 40px;">Right</button>
         </div>
         <div id="output" style="font-size: 25px; color: var(--text);"></div>
-        <div class="button-row" id="host" style="display: none; justify-content: space-evenly; position: fixed; bottom: 10%; width: 100%;">
-            <button onclick="hostCommand('start')">Start</button>
-            <button onclick="hostCommand('left')">Left</button>
-            <button onclick="hostCommand('right')">Right</button>
-            <button onclick="hostCommand('next')">Next</button>
-            <button style="background-color:#e40602" onclick="hostCommand('zoom_out')">Zoom</button>
-            <button style="background-color:#057d03" onclick="hostCommand('zoom_in')">Zoom</button>
+        <div class="button-grid" id="host" style=" justify-content: space-evenly; position: fixed; bottom: 5%; width: 100%;">
+            <button style="width: 70px;" onclick="hostCommand('start')">Start</button>
+            <button style="width: 70px;" onclick="hostCommand('left')">Left</button>
+            <button style="width: 70px;" onclick="hostCommand('right')">Right</button>
+            <button style="width: 70px;" onclick="hostCommand('next')">Next</button>
+            <button style="width: 70px; background-color:#e40602" onclick="hostCommand('zoom_out')">Zoom</button>
+            <button style="width: 70px; background-color:#057d03" onclick="hostCommand('zoom_in')">Zoom</button>
         </div>
+        
 
     </div>
 
@@ -209,7 +216,7 @@
             <button class="transition-button" onclick="switchPage(instruction)">Instructions</button>
         </div>
         <h1>Draft List</h1>
-        <h2 id="header1">Disconnected</h2>
+        <h2 id="header2">Disconnected</h2>
         <div id="draft_output" style="font-size: 25px; color: var(--text);"></div>
 
     </div>
@@ -440,9 +447,10 @@
         function changeHeader(new_header, header_id) {
             document.getElementById(header_id).innerText = new_header;
         }
-        function changeBothHeaders(new_header) {
+        function changeAllHeaders(new_header) {
             changeHeader(new_header, 'header');
             changeHeader(new_header, 'header1');
+            changeHeader(new_header, 'header2');
         }
         function vote(vote) {
             if (checkGameState(game_states.vote)) {
@@ -465,20 +473,25 @@
             console.log(message)
             socket.send(JSON.stringify(message))
         }
-
+        function pingPong() {
+            socketSend({action:'ping'})
+        }
         let reconnections = 0;
-        let socket = new WebSocket('wss://qrku7dmlia.execute-api.us-east-2.amazonaws.com/production/');
-
+        
+        const startTime = performance.now()
+        let myVar 
+        let socket
         function socketConnect() {
+            socket = new WebSocket('wss://qrku7dmlia.execute-api.us-east-2.amazonaws.com/production/');
 
             socket.onopen = function (event) {
-                // changeBothHeaders('Connected');
+                myVar = setInterval(pingPong, 1000*75);
+                changeAllHeaders('Connected');
                 reconnections = false;
                 // console.log('connect')
                 if (game_state == game_states.need_code) {
-                    changeBothHeaders('Enter Room Code');
+                    changeAllHeaders('Enter Room Code');
                 }
-                //sned message with accesscode to get game state
             };
             socket.onmessage = function (event) {
                 if (event.data) {
@@ -488,17 +501,19 @@
 
             };
             socket.onclose = function (event) {
-                alert('disconnect')
+                clearInterval(myVar);
+                alert(` ${performance.now() - startTime}`)
                 if (reconnections<10) {
                     socketConnect();
                     reconnections += 1;
                 }
-                changeBothHeaders('Disconnected');
+                changeAllHeaders('Disconnected');
             };
         }
 
 
         function parse_message(message) {
+            console.log(message);
             switch (message.action) {
                 case 'game_state':
                     game_state = message.state
@@ -506,16 +521,16 @@
                     switch (message.state) {
                         case 'wait':
                             if (message.in_game) {
-                                changeBothHeaders('Get Ready to Draft');
+                                changeAllHeaders('Get Ready to Draft');
                             } else {
-                                changeBothHeaders('Enter Your Name');
+                                changeAllHeaders('Enter Your Name');
                             }
                             document.getElementById('queue').innerHTML = '';
                             saveList();
                             localStorage.clear();
                             break;
                         case 'draft':
-                            changeBothHeaders("Drafting Topic".replace("Topic", message.topic));
+                            changeAllHeaders("Drafting Topic".replace("Topic", message.topic));
                             game_state = game_states.drafting
                             populateDraftPage(message.answers)
                             break;
@@ -549,9 +564,12 @@
                 case 'matchup':
                     resetVoteButton();
                     break;
+                case 'pick':
+                    addtoDraftPage(`${message.name} drafted ${message.pick}`);
+                    alert(message)
+                    break;
 
                 case 'notify_player':
-                    console.log(message);
                     switch (message.subaction) {
                         case "wrong_code":
                         case "your_turn":
@@ -562,12 +580,12 @@
                         case 'confirm_code':
                             access_code = message.code;
                             game_state = game_states.need_name
-                            changeBothHeaders('Enter Your Name');
+                            changeAllHeaders('Enter Your Name');
                             break;
                         case 'confirm_player':
                             let notification = "Got it, you're {message['name']}.".replace("{message['name']}", message.name)
                             addtoDash(notification)
-                            changeBothHeaders('Get Ready to Draft')
+                            changeAllHeaders('Get Ready to Draft')
                             game_state = game_states.drafting
                             break;
                         case 'confirm_pick':
@@ -599,7 +617,6 @@
                             break;
                     }
             };
-
 
 
         }
